@@ -1,0 +1,279 @@
+# Authentication Flow Implementation Guide
+
+## 1. File Structure
+```
+lib/
+  screens/
+    auth/
+      auth_choice_screen.dart   # Initial screen with Sign In/Sign Up buttons
+      login_screen.dart         # Email/password login screen
+      signup_screen.dart        # Registration screen with required fields
+      index.dart               # Export file
+  providers/
+    auth_provider.dart         # Authentication state management
+  models/
+    auth_user.dart            # User model
+  widgets/
+    auth/
+      privacy_notice.dart      # Reusable T&C component
+```
+
+## 2. Backend Implementation
+
+### AuthProvider (auth_provider.dart)
+```dart
+class AuthNotifier extends StateNotifier<AuthState> {
+  AuthNotifier() : super(const AuthState()) {
+    _initializeState();
+  }
+
+  Future<void> _initializeState() async {
+    state = state.copyWith(
+      isLoading: false,
+      isInitialized: true,
+    );
+  }
+
+  Future<void> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+      
+      // Demo credentials check
+      if (email == "demo@gmail.com" && password == "Demo1234&&") {
+        final user = AuthUser(
+          id: "demo_user_123",
+          email: email,
+          displayName: "Demo User",
+          isEmailVerified: true,
+          provider: AuthProvider.email,
+          createdAt: DateTime.now(),
+          lastSignIn: DateTime.now(),
+        );
+        
+        state = state.copyWith(
+          user: user,
+          isLoading: false,
+          error: null,
+          lastAction: AuthAction.signIn,
+        );
+        return;
+      }
+      
+      state = state.copyWith(
+        isLoading: false,
+        error: "Invalid credentials. Use demo@gmail.com / Demo1234&&",
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  Future<void> signUpWithEmail({
+    required String email,
+    required String password,
+    required String fullName,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+      
+      // Demo registration
+      final user = AuthUser(
+        id: "user_${DateTime.now().millisecondsSinceEpoch}",
+        email: email,
+        displayName: fullName,
+        isEmailVerified: false,
+        provider: AuthProvider.email,
+        createdAt: DateTime.now(),
+        lastSignIn: DateTime.now(),
+      );
+      
+      state = state.copyWith(
+        user: user,
+        isLoading: false,
+        error: null,
+        lastAction: AuthAction.signUp,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  void signOut() {
+    state = AuthState(isInitialized: true);
+  }
+}
+```
+
+### AuthState Model
+```dart
+class AuthState {
+  final AuthUser? user;
+  final bool isLoading;
+  final bool isInitialized;
+  final String? error;
+  final AuthAction? lastAction;
+
+  const AuthState({
+    this.user,
+    this.isLoading = false,
+    this.isInitialized = false,
+    this.error,
+    this.lastAction,
+  });
+
+  bool get isAuthenticated => user != null && isInitialized;
+  bool get isReady => isInitialized && !isLoading;
+
+  AuthState copyWith({
+    AuthUser? user,
+    bool? isLoading,
+    bool? isInitialized,
+    String? error,
+    AuthAction? lastAction,
+    bool clearError = false,
+  }) {
+    return AuthState(
+      user: user ?? this.user,
+      isLoading: isLoading ?? this.isLoading,
+      isInitialized: isInitialized ?? this.isInitialized,
+      error: clearError ? null : (error ?? this.error),
+      lastAction: lastAction ?? this.lastAction,
+    );
+  }
+}
+```
+
+## 3. Screen Implementations
+
+### AuthChoiceScreen
+- Clean, minimal design with logo
+- Two main buttons: "Sign In" and "Sign Up"
+- Terms & Conditions at bottom
+- No social login options
+- Desert theme colors
+
+### LoginScreen
+- Email field
+- Password field
+- "Sign In" button
+- "Forgot Password?" link
+- Terms & Conditions
+- Back button to AuthChoiceScreen
+- Integration with AuthProvider
+
+### SignUpScreen
+- Full Name field
+- Email field
+- Password field with requirements:
+  - Min 6 characters
+  - One uppercase
+  - One lowercase
+  - One number
+  - One special character
+- Confirm Password field
+- "Create Account" button
+- Terms & Conditions
+- Back button to AuthChoiceScreen
+- Integration with AuthProvider
+
+## 4. Navigation Flow
+```dart
+// Router configuration
+final routerProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    initialLocation: '/splash',
+    routes: [
+      GoRoute(path: '/auth', builder: (_, __) => const AuthChoiceScreen()),
+      GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
+      GoRoute(path: '/signup', builder: (_, __) => const SignUpScreen()),
+    ],
+    redirect: (context, state) {
+      final authState = ref.read(authStateProvider);
+      final isAuthenticated = authState.isAuthenticated;
+      final isInitialized = authState.isInitialized;
+
+      if (!isInitialized) return null;
+
+      if (isAuthenticated) {
+        return '/home';
+      }
+
+      final isAuthRoute = state.matchedLocation.startsWith('/auth') ||
+          state.matchedLocation.startsWith('/login') ||
+          state.matchedLocation.startsWith('/signup');
+
+      return isAuthRoute ? null : '/auth';
+    },
+  );
+});
+```
+
+## 5. Form Validation
+```dart
+final emailValidationProvider = Provider.family<String?, String>((ref, email) {
+  if (email.isEmpty) return 'Email is required';
+  if (!email.contains('@')) return 'Please enter a valid email';
+  return null;
+});
+
+final passwordValidationProvider = Provider.family<String?, String>((ref, password) {
+  if (password.isEmpty) return 'Password is required';
+  if (password == 'Demo1234&&') return null;  // Demo bypass
+  if (password.length < 6) return 'Password must be at least 6 characters';
+  if (!password.contains(RegExp(r'[A-Z]'))) return 'Must contain uppercase letter';
+  if (!password.contains(RegExp(r'[a-z]'))) return 'Must contain lowercase letter';
+  if (!password.contains(RegExp(r'[0-9]'))) return 'Must contain number';
+  if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) return 'Must contain special character';
+  return null;
+});
+```
+
+## 6. UI/UX Guidelines
+- Desert theme colors
+- Consistent padding (24px)
+- Button height: 56px
+- Border radius: 16px
+- Input field styling:
+  - Outlined border
+  - Label text
+  - Error states
+- Loading indicators
+- Error messages in red container
+
+## 7. Testing Steps
+1. Launch app → AuthChoiceScreen
+2. Test navigation between screens
+3. Test form validation
+4. Test error states
+5. Test loading states
+6. Test successful auth flow with demo credentials
+
+## 8. Demo Credentials
+- Email: demo@gmail.com
+- Password: Demo1234&&
+
+## 9. Implementation Order
+1. Update AuthProvider implementation
+2. Create AuthState and AuthUser models
+3. Implement AuthChoiceScreen
+4. Implement LoginScreen with provider integration
+5. Implement SignUpScreen with provider integration
+6. Update router configuration
+7. Test full flow with demo credentials
+
+## 10. Debug Logging
+```dart
+// Add these debug prints in AuthProvider
+print('DEBUG: Auth state - $state');
+print('DEBUG: Login attempt with email: $email');
+print('DEBUG: Auth action completed: ${state.lastAction}');
+```

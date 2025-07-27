@@ -1,0 +1,358 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:validators/validators.dart';
+import '../models/auth_user.dart';
+import '../services/firebase_auth_service.dart';
+
+// Auth Service Provider
+final authServiceProvider = Provider<FirebaseAuthService>((ref) {
+  return FirebaseAuthService();
+});
+
+// Auth State Provider
+final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  return AuthNotifier(ref.read(authServiceProvider));
+});
+
+// Auth Stream Provider
+final authStreamProvider = StreamProvider<AuthUser?>((ref) {
+  return ref.read(authServiceProvider).authStateChanges;
+});
+
+class AuthNotifier extends StateNotifier<AuthState> {
+  final FirebaseAuthService _authService;
+
+  AuthNotifier(this._authService) : super(const AuthState()) {
+    _initialize();
+  }
+
+  void _initialize() {
+    state = state.copyWith(isInitialized: true);
+  }
+
+  // Sign Up with Email
+  Future<void> signUpWithEmail({
+    required String email,
+    required String password,
+    String? displayName,
+  }) async {
+    if (!_validateEmailAndPassword(email, password)) return;
+
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      final user = await _authService.signUpWithEmail(
+        email: email,
+        password: password,
+        displayName: displayName,
+      );
+      
+      state = state.copyWith(
+        user: user,
+        isLoading: false,
+        lastAction: AuthAction.signUp,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.signUp,
+      );
+    }
+  }
+
+  // Sign In with Email
+  Future<void> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    if (!_validateEmailAndPassword(email, password)) return;
+
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      final user = await _authService.signInWithEmail(
+        email: email,
+        password: password,
+      );
+      
+      state = state.copyWith(
+        user: user,
+        isLoading: false,
+        lastAction: AuthAction.signIn,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.signIn,
+      );
+    }
+  }
+
+  // Sign In with Google
+  Future<void> signInWithGoogle() async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      final user = await _authService.signInWithGoogle();
+      
+      state = state.copyWith(
+        user: user,
+        isLoading: false,
+        lastAction: AuthAction.signIn,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.signIn,
+      );
+    }
+  }
+
+  // Sign In with Apple
+  Future<void> signInWithApple() async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      final user = await _authService.signInWithApple();
+      
+      state = state.copyWith(
+        user: user,
+        isLoading: false,
+        lastAction: AuthAction.signIn,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.signIn,
+      );
+    }
+  }
+
+  // Send Email Verification
+  Future<void> sendEmailVerification() async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      await _authService.sendEmailVerification();
+      
+      state = state.copyWith(
+        isLoading: false,
+        lastAction: AuthAction.sendEmailVerification,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.sendEmailVerification,
+      );
+    }
+  }
+
+  // Reset Password
+  Future<void> resetPassword(String email) async {
+    if (!_validateEmail(email)) return;
+
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      await _authService.resetPassword(email);
+      
+      state = state.copyWith(
+        isLoading: false,
+        lastAction: AuthAction.resetPassword,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.resetPassword,
+      );
+    }
+  }
+
+  // Sign Out
+  Future<void> signOut() async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      await _authService.signOut();
+      
+      state = state.copyWith(
+        isLoading: false,
+        clearUser: true,
+        lastAction: AuthAction.signOut,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.signOut,
+      );
+    }
+  }
+
+  // Delete Account
+  Future<void> deleteAccount() async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      await _authService.deleteAccount();
+      
+      state = state.copyWith(
+        isLoading: false,
+        clearUser: true,
+        lastAction: AuthAction.deleteAccount,
+      );
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.deleteAccount,
+      );
+    }
+  }
+
+  // Update Profile
+  Future<void> updateProfile({
+    String? displayName,
+    String? photoURL,
+  }) async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      await _authService.updateProfile(
+        displayName: displayName,
+        photoURL: photoURL,
+      );
+      
+      // Update local state
+      if (state.user != null) {
+        final updatedUser = state.user!.copyWith(
+          displayName: displayName,
+          photoURL: photoURL,
+        );
+        
+        state = state.copyWith(
+          user: updatedUser,
+          isLoading: false,
+          lastAction: AuthAction.updateProfile,
+        );
+      }
+    } on AuthError catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message,
+        lastAction: AuthAction.updateProfile,
+      );
+    }
+  }
+
+  // Clear Error
+  void clearError() {
+    state = state.copyWith(clearError: true);
+  }
+
+  // Validation methods
+  bool _validateEmail(String email) {
+    if (email.isEmpty) {
+      state = state.copyWith(error: 'Email is required');
+      return false;
+    }
+    
+    if (!isEmail(email)) {
+      state = state.copyWith(error: 'Please enter a valid email address');
+      return false;
+    }
+    
+    return true;
+  }
+
+  bool _validatePassword(String password) {
+    if (password.isEmpty) {
+      state = state.copyWith(error: 'Password is required');
+      return false;
+    }
+    
+    if (!_isPasswordValid(password)) {
+      state = state.copyWith(error: _getPasswordRequirements());
+      return false;
+    }
+    
+    return true;
+  }
+
+  bool _validateEmailAndPassword(String email, String password) {
+    return _validateEmail(email) && _validatePassword(password);
+  }
+
+  // Password validation helper methods
+  bool _isPasswordValid(String password) {
+    // At least 8 characters
+    if (password.length < 8) return false;
+    
+    // Contains uppercase letter
+    if (!password.contains(RegExp(r'[A-Z]'))) return false;
+    
+    // Contains lowercase letter
+    if (!password.contains(RegExp(r'[a-z]'))) return false;
+    
+    // Contains number
+    if (!password.contains(RegExp(r'[0-9]'))) return false;
+    
+    // Contains special character
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?\":{}|<>]'))) return false;
+    
+    return true;
+  }
+
+  String _getPasswordRequirements() {
+    return 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+  }
+}
+
+// Form Validation Providers
+final emailValidationProvider = StateProvider.family<String?, String>((ref, email) {
+  if (email.isEmpty) return null;
+  if (!isEmail(email)) return 'Please enter a valid email address';
+  return null;
+});
+
+final passwordValidationProvider = StateProvider.family<String?, String>((ref, password) {
+  if (password.isEmpty) return null;
+  if (!_isPasswordValidStatic(password)) {
+    return 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+  }
+  return null;
+});
+
+// Static password validation for use in providers
+bool _isPasswordValidStatic(String password) {
+  // At least 8 characters
+  if (password.length < 8) return false;
+  
+  // Contains uppercase letter
+  if (!password.contains(RegExp(r'[A-Z]'))) return false;
+  
+  // Contains lowercase letter
+  if (!password.contains(RegExp(r'[a-z]'))) return false;
+  
+  // Contains number
+  if (!password.contains(RegExp(r'[0-9]'))) return false;
+  
+  // Contains special character
+  if (!password.contains(RegExp(r'[!@#$%^&*(),.?\":{}|<>]'))) return false;
+  
+  return true;
+}
+
+final confirmPasswordValidationProvider = StateProvider.family<String?, Map<String, String>>((ref, passwords) {
+  final password = passwords['password'] ?? '';
+  final confirmPassword = passwords['confirmPassword'] ?? '';
+  
+  if (confirmPassword.isEmpty) return null;
+  if (password != confirmPassword) return 'Passwords do not match';
+  return null;
+});

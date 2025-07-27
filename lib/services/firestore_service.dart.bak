@@ -1,0 +1,450 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../models/journal_entry.dart';
+import '../models/ai_analysis.dart';
+
+class FirestoreService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Collections
+  static const String _usersCollection = 'users';
+  static const String _entriesCollection = 'journal_entries';
+  static const String _audioFilesPath = 'audio_files';
+
+  // Get current user ID
+  String? get _currentUserId => _auth.currentUser?.uid;
+
+  // Journal Entries Stream for current user
+  Stream<List<JournalEntry>> getJournalEntriesStream() {
+    final userId = _currentUserId;
+    if (userId == null) {
+      return Stream.value([]);
+    }
+
+    return _firestore
+        .collection(_entriesCollection)
+        .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id; // Ensure ID is included
+        return JournalEntry.fromJson(data);
+      }).toList();
+    });
+  }
+
+  // Get journal entries for a specific date range
+  Stream<List<JournalEntry>> getEntriesForDateRange({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) {
+    final userId = _currentUserId;
+    if (userId == null) {
+      return Stream.value([]);
+    }
+
+    return _firestore
+        .collection(_entriesCollection)
+        .where('userId', isEqualTo: userId)
+        .where('createdAt', isGreaterThanOrEqualTo: Timestamp.fromDate(startDate))
+        .where('createdAt', isLessThanOrEqualTo: Timestamp.fromDate(endDate))
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return JournalEntry.fromJson(data);
+      }).toList();
+    });
+  }
+
+  // Get a specific journal entry
+  Future<JournalEntry?> getJournalEntry(String entryId) async {
+    try {
+      final doc = await _firestore
+          .collection(_entriesCollection)
+          .doc(entryId)
+          .get();
+
+      if (!doc.exists) {
+        return null;
+      }
+
+      final data = doc.data()!;
+      data['id'] = doc.id;
+      return JournalEntry.fromJson(data);
+    } catch (e) {
+      throw FirestoreException('Failed to get journal entry: $e');
+    }
+  }
+
+  // Save a journal entry
+  Future<String> saveJournalEntry(JournalEntry entry) async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      // Upload audio file if it exists locally
+      String? audioUrl;
+      if (entry.localAudioPath != null) {
+        audioUrl = await _uploadAudioFile(entry.localAudioPath!, userId);
+      }
+
+      // Prepare entry data for Firestore
+      final entryWithAudio = entry.copyWith(
+        userId: userId,
+        audioPath: audioUrl,
+        isSynced: true,
+        updatedAt: DateTime.now(),
+      );
+
+      final entryData = entryWithAudio.toJson();
+      entryData.remove('id'); // Remove ID for new documents
+      entryData.remove('localAudioPath'); // Don't store local path in Firestore
+
+      // Save to Firestore
+      final docRef = await _firestore
+          .collection(_entriesCollection)
+          .add(entryData);
+
+      return docRef.id;
+    } catch (e) {
+      throw FirestoreException('Failed to save journal entry: $e');
+    }
+  }
+
+  // Update a journal entry
+  Future<void> updateJournalEntry(JournalEntry entry) async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      if (entry.userId != userId) {
+        throw FirestoreException('Permission denied: Cannot update entry');
+      }
+
+      // Upload new audio file if changed
+      String? audioUrl = entry.audioPath;
+      if (entry.localAudioPath != null && 
+          entry.localAudioPath != entry.audioPath) {
+        audioUrl = await _uploadAudioFile(entry.localAudioPath!, userId);
+      }
+
+      final updatedEntry = entry.copyWith(
+        audioPath: audioUrl,
+        isSynced: true,
+        updatedAt: DateTime.now(),
+      );
+
+      final entryData = updatedEntry.toJson();
+      entryData.remove('id');
+      entryData.remove('localAudioPath');
+
+      await _firestore
+          .collection(_entriesCollection)
+          .doc(entry.id)
+          .update(entryData);
+    } catch (e) {
+      throw FirestoreException('Failed to update journal entry: $e');
+    }
+  }
+
+  // Delete a journal entry
+  Future<void> deleteJournalEntry(String entryId) async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      // Get entry to check ownership and get audio path
+      final entry = await getJournalEntry(entryId);
+      if (entry == null) {
+        throw FirestoreException('Entry not found');
+      }
+
+      if (entry.userId != userId) {
+        throw FirestoreException('Permission denied: Cannot delete entry');
+      }
+
+      // Delete audio file if it exists
+      if (entry.audioPath != null) {
+        await _deleteAudioFile(entry.audioPath!);
+      }
+
+      // Delete entry from Firestore
+      await _firestore
+          .collection(_entriesCollection)
+          .doc(entryId)
+          .delete();
+    } catch (e) {
+      throw FirestoreException('Failed to delete journal entry: $e');
+    }
+  }
+
+  // Upload audio file to Firebase Storage
+  Future<String> _uploadAudioFile(String localPath, String userId) async {
+    try {
+      final file = File(localPath);
+      if (!await file.exists()) {
+        throw FirestoreException('Audio file not found');
+      }
+
+      // Generate unique file name
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = 'audio_$timestamp.m4a';
+      final storageRef = _storage
+          .ref()
+          .child(_audioFilesPath)
+          .child(userId)
+          .child(fileName);
+
+      // Upload file
+      final uploadTask = storageRef.putFile(file);
+      final snapshot = await uploadTask;
+      
+      // Get download URL
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+      
+      return downloadUrl;
+    } catch (e) {
+      throw FirestoreException('Failed to upload audio file: $e');
+    }
+  }
+
+  // Delete audio file from Firebase Storage
+  Future<void> _deleteAudioFile(String audioUrl) async {
+    try {
+      // Extract the file path from the URL
+      final ref = _storage.refFromURL(audioUrl);
+      await ref.delete();
+    } catch (e) {
+      // Log error but don't throw - file might already be deleted
+      print('Warning: Could not delete audio file: $e');
+    }
+  }
+
+  // Get user statistics
+  Future<Map<String, dynamic>> getUserStats() async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      // Get total entries count
+      final entriesQuery = await _firestore
+          .collection(_entriesCollection)
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      final totalEntries = entriesQuery.docs.length;
+
+      // Get entries from the last 30 days
+      final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
+      final recentEntriesQuery = await _firestore
+          .collection(_entriesCollection)
+          .where('userId', isEqualTo: userId)
+          .where('createdAt', isGreaterThanOrEqualTo: Timestamp.fromDate(thirtyDaysAgo))
+          .get();
+
+      final recentEntries = recentEntriesQuery.docs.length;
+
+      // Calculate mood distribution
+      final moodCounts = <String, int>{};
+      for (final doc in entriesQuery.docs) {
+        final data = doc.data();
+        final mood = data['mood'] as String?;
+        if (mood != null) {
+          moodCounts[mood] = (moodCounts[mood] ?? 0) + 1;
+        }
+      }
+
+      // Get the first entry date
+      DateTime? firstEntryDate;
+      if (entriesQuery.docs.isNotEmpty) {
+        final oldestEntry = entriesQuery.docs.last;
+        final createdAt = oldestEntry.data()['createdAt'] as Timestamp?;
+        firstEntryDate = createdAt?.toDate();
+      }
+
+      return {
+        'totalEntries': totalEntries,
+        'recentEntries': recentEntries,
+        'moodDistribution': moodCounts,
+        'firstEntryDate': firstEntryDate?.toIso8601String(),
+        'daysSinceFirstEntry': firstEntryDate != null 
+            ? DateTime.now().difference(firstEntryDate).inDays 
+            : 0,
+      };
+    } catch (e) {
+      throw FirestoreException('Failed to get user stats: $e');
+    }
+  }
+
+  // Batch operations for offline sync
+  Future<void> syncPendingEntries(List<JournalEntry> pendingEntries) async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      final batch = _firestore.batch();
+      
+      for (final entry in pendingEntries) {
+        if (!entry.isSynced) {
+          // Upload audio file if needed
+          String? audioUrl = entry.audioPath;
+          if (entry.localAudioPath != null) {
+            audioUrl = await _uploadAudioFile(entry.localAudioPath!, userId);
+          }
+
+          final syncedEntry = entry.copyWith(
+            userId: userId,
+            audioPath: audioUrl,
+            isSynced: true,
+            updatedAt: DateTime.now(),
+          );
+
+          final entryData = syncedEntry.toJson();
+          entryData.remove('id');
+          entryData.remove('localAudioPath');
+
+          if (entry.id.isEmpty || entry.id.startsWith('local_')) {
+            // New entry - add to collection
+            final docRef = _firestore.collection(_entriesCollection).doc();
+            batch.set(docRef, entryData);
+          } else {
+            // Existing entry - update
+            final docRef = _firestore.collection(_entriesCollection).doc(entry.id);
+            batch.update(docRef, entryData);
+          }
+        }
+      }
+
+      await batch.commit();
+    } catch (e) {
+      throw FirestoreException('Failed to sync pending entries: $e');
+    }
+  }
+
+  // Search journal entries
+  Future<List<JournalEntry>> searchEntries(String query) async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      // Note: Firestore doesn't support full-text search natively
+      // This is a basic implementation that searches in transcription
+      final snapshot = await _firestore
+          .collection(_entriesCollection)
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      final entries = snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return JournalEntry.fromJson(data);
+      }).where((entry) {
+        return entry.transcription.toLowerCase().contains(query.toLowerCase()) ||
+               entry.mood.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+
+      // Sort by relevance (most recent first for now)
+      entries.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+      return entries;
+    } catch (e) {
+      throw FirestoreException('Failed to search entries: $e');
+    }
+  }
+
+  // Clean up old entries (privacy feature)
+  Future<void> deleteEntriesOlderThan(Duration duration) async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      final cutoffDate = DateTime.now().subtract(duration);
+      final oldEntriesQuery = await _firestore
+          .collection(_entriesCollection)
+          .where('userId', isEqualTo: userId)
+          .where('createdAt', isLessThan: Timestamp.fromDate(cutoffDate))
+          .get();
+
+      final batch = _firestore.batch();
+      
+      for (final doc in oldEntriesQuery.docs) {
+        // Delete associated audio file
+        final data = doc.data();
+        final audioPath = data['audioPath'] as String?;
+        if (audioPath != null) {
+          await _deleteAudioFile(audioPath);
+        }
+
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
+    } catch (e) {
+      throw FirestoreException('Failed to delete old entries: $e');
+    }
+  }
+
+  // Export user data (GDPR compliance)
+  Future<Map<String, dynamic>> exportUserData() async {
+    try {
+      final userId = _currentUserId;
+      if (userId == null) {
+        throw FirestoreException('User not authenticated');
+      }
+
+      final entriesQuery = await _firestore
+          .collection(_entriesCollection)
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      final entries = entriesQuery.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return data;
+      }).toList();
+
+      final stats = await getUserStats();
+
+      return {
+        'userId': userId,
+        'exportedAt': DateTime.now().toIso8601String(),
+        'entries': entries,
+        'statistics': stats,
+      };
+    } catch (e) {
+      throw FirestoreException('Failed to export user data: $e');
+    }
+  }
+}
+
+class FirestoreException implements Exception {
+  final String message;
+  FirestoreException(this.message);
+  
+  @override
+  String toString() => 'FirestoreException: $message';
+}

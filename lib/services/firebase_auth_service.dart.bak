@@ -1,0 +1,275 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
+// Temporarily commented out for testing
+// import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+import 'dart:math';
+import '../models/auth_user.dart';
+
+class FirebaseAuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // Temporarily commented out for testing
+  // final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  // Current user stream
+  Stream<AuthUser?> get authStateChanges {
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
+  }
+
+  // Current user
+  AuthUser? get currentUser {
+    final user = _auth.currentUser;
+    return user != null ? _userFromFirebaseUser(user) : null;
+  }
+
+  // Convert Firebase User to AuthUser
+  AuthUser? _userFromFirebaseUser(User? user) {
+    if (user == null) return null;
+
+    AuthProvider provider = AuthProvider.email;
+    
+    // Determine provider based on provider data
+    for (final providerData in user.providerData) {
+      switch (providerData.providerId) {
+        case 'google.com':
+          provider = AuthProvider.google;
+          break;
+        case 'apple.com':
+          provider = AuthProvider.apple;
+          break;
+        case 'password':
+        default:
+          provider = AuthProvider.email;
+          break;
+      }
+    }
+
+    return AuthUser(
+      id: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      isEmailVerified: user.emailVerified,
+      provider: provider,
+      createdAt: user.metadata.creationTime ?? DateTime.now(),
+      lastSignIn: user.metadata.lastSignInTime,
+    );
+  }
+
+  // Sign up with email and password
+  Future<AuthUser> signUpWithEmail({
+    required String email,
+    required String password,
+    String? displayName,
+  }) async {
+    try {
+      final credential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (credential.user == null) {
+        throw AuthError.custom('Failed to create user account');
+      }
+
+      // Update display name if provided
+      if (displayName != null && displayName.isNotEmpty) {
+        await credential.user!.updateDisplayName(displayName);
+        await credential.user!.reload();
+      }
+
+      // Send email verification
+      if (!credential.user!.emailVerified) {
+        await credential.user!.sendEmailVerification();
+      }
+
+      final authUser = _userFromFirebaseUser(credential.user);
+      if (authUser == null) {
+        throw AuthError.custom('Failed to create user profile');
+      }
+
+      return authUser;
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.signUp);
+    } catch (e) {
+      throw AuthError.custom('An unexpected error occurred during sign up');
+    }
+  }
+
+  // Sign in with email and password
+  Future<AuthUser> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (credential.user == null) {
+        throw AuthError.custom('Failed to sign in');
+      }
+
+      final authUser = _userFromFirebaseUser(credential.user);
+      if (authUser == null) {
+        throw AuthError.custom('Failed to load user profile');
+      }
+
+      return authUser;
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.signIn);
+    } catch (e) {
+      throw AuthError.custom('An unexpected error occurred during sign in');
+    }
+  }
+
+  // Sign in with Google - temporarily disabled for testing
+  Future<AuthUser> signInWithGoogle() async {
+    throw AuthError.custom('Google Sign-In temporarily disabled for testing');
+  }
+
+  // Sign in with Apple - temporarily disabled for testing
+  Future<AuthUser> signInWithApple() async {
+    throw AuthError.custom('Apple Sign-In temporarily disabled for testing');
+  }
+
+  // Send email verification
+  Future<void> sendEmailVerification() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw AuthError.custom('No user is currently signed in');
+      }
+
+      if (user.emailVerified) {
+        throw AuthError.custom('Email is already verified');
+      }
+
+      await user.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.sendEmailVerification);
+    } catch (e) {
+      throw AuthError.custom('Failed to send email verification');
+    }
+  }
+
+  // Reset password
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.resetPassword);
+    } catch (e) {
+      throw AuthError.custom('Failed to send password reset email');
+    }
+  }
+
+  // Update profile
+  Future<void> updateProfile({
+    String? displayName,
+    String? photoURL,
+  }) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw AuthError.custom('No user is currently signed in');
+      }
+
+      if (displayName != null) {
+        await user.updateDisplayName(displayName);
+      }
+
+      if (photoURL != null) {
+        await user.updatePhotoURL(photoURL);
+      }
+
+      await user.reload();
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.updateProfile);
+    } catch (e) {
+      throw AuthError.custom('Failed to update profile');
+    }
+  }
+
+  // Sign out
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      throw AuthError.custom('Failed to sign out');
+    }
+  }
+
+  // Delete account
+  Future<void> deleteAccount() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw AuthError.custom('No user is currently signed in');
+      }
+
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.deleteAccount);
+    } catch (e) {
+      throw AuthError.custom('Failed to delete account');
+    }
+  }
+
+  // Helper method to generate a cryptographically secure nonce for Apple Sign In
+  String _generateNonce([int length = 32]) {
+    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
+  }
+
+  // Check if user needs reauthentication
+  Future<bool> needsReauthentication() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) return false;
+
+      // Check if the user was created recently (within the last 5 minutes)
+      final lastSignIn = user.metadata.lastSignInTime;
+      if (lastSignIn == null) return true;
+
+      final now = DateTime.now();
+      final timeDifference = now.difference(lastSignIn);
+      
+      return timeDifference.inMinutes > 5;
+    } catch (e) {
+      return true;
+    }
+  }
+
+  // Reauthenticate user
+  Future<void> reauthenticate({
+    String? email,
+    String? password,
+  }) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw AuthError.custom('No user is currently signed in');
+      }
+
+      if (email != null && password != null) {
+        // Reauthenticate with email/password
+        final credential = EmailAuthProvider.credential(
+          email: email,
+          password: password,
+        );
+        await user.reauthenticateWithCredential(credential);
+      } else {
+        throw AuthError.custom('Email and password are required for reauthentication');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw AuthError.fromFirebaseAuthException(e, action: AuthAction.signIn);
+    } catch (e) {
+      throw AuthError.custom('Failed to reauthenticate');
+    }
+  }
+}

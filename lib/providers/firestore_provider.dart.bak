@@ -1,0 +1,189 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/journal_entry.dart';
+import '../services/firestore_service.dart';
+
+// Firestore Service Provider
+final firestoreServiceProvider = Provider<FirestoreService>((ref) {
+  return FirestoreService();
+});
+
+// Journal Entries Stream Provider
+final journalEntriesStreamProvider = StreamProvider<List<JournalEntry>>((ref) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.getJournalEntriesStream();
+});
+
+// Journal Entries for Date Range Provider
+final journalEntriesForDateRangeProvider = StreamProvider.family<List<JournalEntry>, DateRange>((ref, dateRange) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.getEntriesForDateRange(
+    startDate: dateRange.startDate,
+    endDate: dateRange.endDate,
+  );
+});
+
+// User Statistics Provider
+final userStatsProvider = FutureProvider<Map<String, dynamic>>((ref) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.getUserStats();
+});
+
+// Search Results Provider
+final searchResultsProvider = FutureProvider.family<List<JournalEntry>, String>((ref, query) {
+  if (query.trim().isEmpty) {
+    return Future.value(<JournalEntry>[]);
+  }
+  
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.searchEntries(query);
+});
+
+// Individual Journal Entry Provider
+final journalEntryProvider = FutureProvider.family<JournalEntry?, String>((ref, entryId) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return firestoreService.getJournalEntry(entryId);
+});
+
+// Helper class for date range
+class DateRange {
+  final DateTime startDate;
+  final DateTime endDate;
+
+  const DateRange({
+    required this.startDate,
+    required this.endDate,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DateRange &&
+        other.startDate == startDate &&
+        other.endDate == endDate;
+  }
+
+  @override
+  int get hashCode => startDate.hashCode ^ endDate.hashCode;
+}
+
+// Journal Operations Provider (for CRUD operations)
+class JournalOperationsNotifier extends StateNotifier<AsyncValue<void>> {
+  final FirestoreService _firestoreService;
+
+  JournalOperationsNotifier(this._firestoreService) : super(const AsyncValue.data(null));
+
+  // Save journal entry
+  Future<String> saveEntry(JournalEntry entry) async {
+    state = const AsyncValue.loading();
+    try {
+      final entryId = await _firestoreService.saveJournalEntry(entry);
+      state = const AsyncValue.data(null);
+      return entryId;
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  // Update journal entry
+  Future<void> updateEntry(JournalEntry entry) async {
+    state = const AsyncValue.loading();
+    try {
+      await _firestoreService.updateJournalEntry(entry);
+      state = const AsyncValue.data(null);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  // Delete journal entry
+  Future<void> deleteEntry(String entryId) async {
+    state = const AsyncValue.loading();
+    try {
+      await _firestoreService.deleteJournalEntry(entryId);
+      state = const AsyncValue.data(null);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  // Sync pending entries (for offline support)
+  Future<void> syncPendingEntries(List<JournalEntry> pendingEntries) async {
+    state = const AsyncValue.loading();
+    try {
+      await _firestoreService.syncPendingEntries(pendingEntries);
+      state = const AsyncValue.data(null);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  // Delete old entries (privacy feature)
+  Future<void> deleteOldEntries(Duration duration) async {
+    state = const AsyncValue.loading();
+    try {
+      await _firestoreService.deleteEntriesOlderThan(duration);
+      state = const AsyncValue.data(null);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  // Export user data
+  Future<Map<String, dynamic>> exportUserData() async {
+    state = const AsyncValue.loading();
+    try {
+      final data = await _firestoreService.exportUserData();
+      state = const AsyncValue.data(null);
+      return data;
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+      rethrow;
+    }
+  }
+}
+
+// Journal Operations Provider
+final journalOperationsProvider = StateNotifierProvider<JournalOperationsNotifier, AsyncValue<void>>((ref) {
+  final firestoreService = ref.watch(firestoreServiceProvider);
+  return JournalOperationsNotifier(firestoreService);
+});
+
+// Convenience providers for common date ranges
+final todayEntriesProvider = StreamProvider<List<JournalEntry>>((ref) {
+  final today = DateTime.now();
+  final startOfDay = DateTime(today.year, today.month, today.day);
+  final endOfDay = startOfDay.add(const Duration(days: 1));
+  
+  return ref.watch(journalEntriesForDateRangeProvider(DateRange(
+    startDate: startOfDay,
+    endDate: endOfDay,
+  )).future).asStream().asyncMap((entries) => entries);
+});
+
+final thisWeekEntriesProvider = StreamProvider<List<JournalEntry>>((ref) {
+  final now = DateTime.now();
+  final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+  final startOfWeekDay = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+  final endOfWeek = startOfWeekDay.add(const Duration(days: 7));
+  
+  return ref.watch(journalEntriesForDateRangeProvider(DateRange(
+    startDate: startOfWeekDay,
+    endDate: endOfWeek,
+  )).future).asStream().asyncMap((entries) => entries);
+});
+
+final thisMonthEntriesProvider = StreamProvider<List<JournalEntry>>((ref) {
+  final now = DateTime.now();
+  final startOfMonth = DateTime(now.year, now.month, 1);
+  final endOfMonth = DateTime(now.year, now.month + 1, 1);
+  
+  return ref.watch(journalEntriesForDateRangeProvider(DateRange(
+    startDate: startOfMonth,
+    endDate: endOfMonth,
+  )).future).asStream().asyncMap((entries) => entries);
+});
