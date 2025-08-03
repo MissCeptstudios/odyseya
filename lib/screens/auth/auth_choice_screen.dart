@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
-import '../../widgets/auth/privacy_notice.dart';
 
 class AuthChoiceScreen extends StatelessWidget {
   const AuthChoiceScreen({super.key});
@@ -9,55 +8,57 @@ class AuthChoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DesertColors.background,
+      backgroundColor: Colors.white, // Pure white background
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo and Welcome Text
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [DesertColors.caramelDrizzle, DesertColors.caramelDrizzle],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: DesertColors.caramelDrizzle.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
+              // Logo with Tagline
+              Column(
+                children: [
+                  // Logo
+                  Container(
+                    width: 120,
+                    height: 120,
+                    margin: const EdgeInsets.only(bottom: 24),
+                    child: Image.asset(
+                      'assets/images/Odyseya_Icon.png',
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.contain,
                     ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.self_improvement,
-                  size: 40,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Welcome to Odyseya',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w300,
-                  color: DesertColors.onSurface,
-                  letterSpacing: 1.0,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Your safe space for emotional exploration',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesertColors.onSecondary,
-                  height: 1.4,
-                ),
+                  ),
+                  // Brand Name
+                  Image.asset(
+                    'assets/images/Odyseya_word.png',
+                    height: 56,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 8),
+                  // Tagline
+                  Text(
+                    'Your voice. Your journey.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: DesertColors.treeBranch,
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Description
+                  Text(
+                    'Your safe space for emotional exploration',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: DesertColors.onSecondary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 48),
 
@@ -100,7 +101,7 @@ class AuthChoiceScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Sign Up',
+                    'Create Account',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -110,8 +111,6 @@ class AuthChoiceScreen extends StatelessWidget {
               ),
 
               const Spacer(),
-              // Privacy Notice
-              const PrivacyNotice(),
             ],
           ),
         ),

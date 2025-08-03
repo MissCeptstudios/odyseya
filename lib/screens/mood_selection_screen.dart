@@ -34,7 +34,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
     final moodState = ref.read(moodProvider);
     if (moodState.selectedMood != null) {
       // Continuing with mood: ${moodState.selectedMood!.label}
-      context.go('/journal');
+      context.go('/main');
     }
   }
 
@@ -44,7 +44,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
     // Building MoodSelectionScreen, hasMood: ${moodState.hasMood}
 
     return Scaffold(
-      backgroundColor: DesertColors.background,
+      backgroundColor: DesertColors.background, // Reverted to original background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

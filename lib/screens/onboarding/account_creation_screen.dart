@@ -15,7 +15,7 @@ class AccountCreationScreen extends ConsumerWidget {
       title: 'Create your account',
       subtitle: 'Secure your journal entries and sync across devices with an Odyseya account.',
       onNext: () => onboardingNotifier.nextStep(),
-      nextButtonText: 'Continue to First Entry',
+      nextButtonText: 'Continue',
       child: Column(
         children: [
           _buildSignUpOption(

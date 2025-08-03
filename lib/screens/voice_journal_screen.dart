@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
 import '../providers/voice_journal_provider.dart';
+import '../providers/mood_provider.dart';
 import '../widgets/voice_recording/record_button.dart';
 import '../widgets/transcription/transcription_display.dart';
 import '../widgets/ai_insights/insight_preview.dart';
-import '../models/mood.dart';
 
 class VoiceJournalScreen extends ConsumerStatefulWidget {
   const VoiceJournalScreen({super.key});
@@ -28,6 +28,14 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       vsync: this,
     );
     
+    // Initialize with mood from MoodSelectionScreen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final moodState = ref.read(moodProvider);
+      if (moodState.selectedMood != null) {
+        // Transfer mood from MoodSelectionScreen
+        ref.read(voiceJournalProvider.notifier).selectMood(moodState.selectedMood!.label);
+      }
+    });
   }
 
   @override
@@ -40,6 +48,35 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
   Widget build(BuildContext context) {
     final voiceState = ref.watch(voiceJournalProvider);
     final canSave = ref.watch(canSaveEntryProvider);
+
+    // Handle navigation to calendar after successful save
+    ref.listen<VoiceJournalState>(voiceJournalProvider, (previous, current) {
+      if (current.shouldNavigateToCalendar && (previous?.shouldNavigateToCalendar != true)) {
+        // Clear the navigation flag
+        ref.read(voiceJournalProvider.notifier).clearNavigationFlag();
+        
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Journal saved successfully! 🎉'),
+            backgroundColor: DesertColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        
+        // Navigate to calendar after a short delay
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted && context.mounted) {
+            context.go('/calendar');
+          }
+        });
+      }
+    });
 
     return Scaffold(
       backgroundColor: DesertColors.background,
@@ -210,8 +247,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   Widget _buildMainContent(VoiceJournalState voiceState) {
     switch (voiceState.currentStep) {
-      case VoiceJournalStep.moodSelection:
-        return _buildMoodSelectionContent();
       case VoiceJournalStep.recording:
         return _buildRecordingContent();
       case VoiceJournalStep.transcription:
@@ -225,172 +260,242 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     }
   }
 
-  Widget _buildMoodSelectionContent() {
-    return Padding(
+
+
+  Widget _buildRecordingContent() {
+    final voiceState = ref.watch(voiceJournalProvider);
+    
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // Intro Text
+          // Input Method Toggle
           Container(
-            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.only(bottom: 24),
             decoration: BoxDecoration(
               color: DesertColors.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: DesertColors.waterWash.withValues(alpha: 0.3),
+              ),
             ),
-            child: Column(
+            child: Row(
               children: [
-                Icon(
-                  Icons.favorite,
-                  size: 32,
-                  color: DesertColors.primary,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'How are you feeling right now?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => ref.read(voiceJournalProvider.notifier).setInputMethod('voice'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: voiceState.inputMethod == 'voice' 
+                            ? DesertColors.primary 
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.mic_rounded,
+                            size: 18,
+                            color: voiceState.inputMethod == 'voice'
+                                ? Colors.white
+                                : DesertColors.onSurface,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Voice',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: voiceState.inputMethod == 'voice'
+                                  ? Colors.white
+                                  : DesertColors.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Choose the mood that best represents your current state. This helps us understand your emotional context.',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.4,
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => ref.read(voiceJournalProvider.notifier).setInputMethod('text'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: voiceState.inputMethod == 'text' 
+                            ? DesertColors.primary 
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.edit_rounded,
+                            size: 18,
+                            color: voiceState.inputMethod == 'text'
+                                ? Colors.white
+                                : DesertColors.onSurface,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Type',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: voiceState.inputMethod == 'text'
+                                  ? Colors.white
+                                  : DesertColors.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),
           ),
           
-          const SizedBox(height: 24),
-          
-          // Mood Selection
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
+          // Input Interface
+          if (voiceState.inputMethod == 'voice') ...[
+            // Voice Recording Interface
+            const SizedBox(height: 40),
+            const RecordButton(),
+            const SizedBox(height: 40),
+            
+            // Voice Instructions
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: DesertColors.surface.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(12),
               ),
-              itemCount: Mood.defaultMoods.length,
-              itemBuilder: (context, index) {
-                final mood = Mood.defaultMoods[index];
-                return _buildMoodCard(mood);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMoodCard(Mood mood) {
-    final voiceState = ref.watch(voiceJournalProvider);
-    final isSelected = voiceState.selectedMood == mood.label;
-
-    return GestureDetector(
-      onTap: () {
-        ref.read(voiceJournalProvider.notifier).selectMood(mood.label);
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isSelected ? mood.color.withValues(alpha: 0.2) : DesertColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? mood.color : DesertColors.waterWash.withValues(alpha: 0.3),
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: mood.color.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.tips_and_updates,
+                    color: DesertColors.primary,
+                    size: 20,
                   ),
-                ]
-              : null,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              mood.emoji,
-              style: const TextStyle(fontSize: 32),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              mood.label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: isSelected ? mood.color : DesertColors.onSurface,
+                  const SizedBox(height: 8),
+                  Text(
+                    'Speak freely about what\'s on your mind. There\'s no right or wrong way to express yourself.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: DesertColors.onSecondary,
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              mood.description,
-              style: TextStyle(
-                fontSize: 12,
-                color: DesertColors.onSecondary,
+          ] else ...[
+            // Text Input Interface
+            Container(
+              decoration: BoxDecoration(
+                color: DesertColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: DesertColors.waterWash.withValues(alpha: 0.3),
+                ),
               ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.edit_note_rounded,
+                          color: DesertColors.primary,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Write your thoughts',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: DesertColors.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 200,
+                    margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    decoration: BoxDecoration(
+                      color: DesertColors.cardBackground,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: DesertColors.waterWash.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: TextField(
+                      maxLines: null,
+                      expands: true,
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        hintText: 'Share what\'s on your mind...',
+                        hintStyle: TextStyle(
+                          color: DesertColors.onSurface.withValues(alpha: 0.5),
+                          fontSize: 16,
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.all(16),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: DesertColors.onSurface,
+                        height: 1.5,
+                      ),
+                      onChanged: (text) {
+                        ref.read(voiceJournalProvider.notifier).updateTranscription(text);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Text Instructions
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: DesertColors.surface.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.tips_and_updates,
+                    color: DesertColors.primary,
+                    size: 20,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Type freely about your thoughts and feelings. Take your time to express yourself fully.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: DesertColors.onSecondary,
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildRecordingContent() {
-    return Column(
-      children: [
-        const Spacer(),
-        
-        // Recording Interface
-        const RecordButton(),
-        
-        const Spacer(),
-        
-        // Instructions
-        Container(
-          margin: const EdgeInsets.all(24),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: DesertColors.surface.withValues(alpha: 0.8),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              Icon(
-                Icons.tips_and_updates,
-                color: DesertColors.primary,
-                size: 20,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Speak freely about what\'s on your mind. There\'s no right or wrong way to express yourself.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: DesertColors.onSecondary,
-                  height: 1.4,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -668,10 +773,9 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     if (voiceState.isProcessing) return false;
     
     switch (voiceState.currentStep) {
-      case VoiceJournalStep.moodSelection:
-        return voiceState.selectedMood.isNotEmpty;
       case VoiceJournalStep.recording:
-        return voiceState.hasRecording;
+        // Allow continue if either has recording (voice) or has transcription (text)
+        return voiceState.hasRecording || voiceState.hasTranscription;
       case VoiceJournalStep.transcription:
         return voiceState.hasTranscription;
       case VoiceJournalStep.analysis:
@@ -685,8 +789,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   String _getPrimaryActionText(VoiceJournalState voiceState) {
     switch (voiceState.currentStep) {
-      case VoiceJournalStep.moodSelection:
-        return 'Continue';
       case VoiceJournalStep.recording:
         return 'Continue';
       case VoiceJournalStep.transcription:
@@ -702,6 +804,15 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   void _handlePrimaryAction(VoiceJournalState voiceState) {
     switch (voiceState.currentStep) {
+      case VoiceJournalStep.recording:
+        // If using text input, skip transcription step and go directly to analysis
+        if (voiceState.inputMethod == 'text' && voiceState.hasTranscription) {
+          ref.read(voiceJournalProvider.notifier).goToStep(VoiceJournalStep.analysis);
+        } else {
+          // Voice recording - go to transcription step
+          ref.read(voiceJournalProvider.notifier).goToStep(VoiceJournalStep.transcription);
+        }
+        break;
       case VoiceJournalStep.review:
         ref.read(voiceJournalProvider.notifier).saveEntry();
         break;
@@ -718,10 +829,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   String _getStepTitle(VoiceJournalStep step) {
     switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return 'Choose Your Mood';
       case VoiceJournalStep.recording:
-        return 'Share Your Voice';
+        return 'Share Your Thoughts';
       case VoiceJournalStep.transcription:
         return 'Review Your Words';
       case VoiceJournalStep.analysis:
@@ -735,10 +844,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   String _getStepSubtitle(VoiceJournalStep step) {
     switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return 'How are you feeling right now?';
       case VoiceJournalStep.recording:
-        return 'Express yourself freely';
+        return 'Choose voice or text to express yourself';
       case VoiceJournalStep.transcription:
         return 'Your voice, in text';
       case VoiceJournalStep.analysis:
@@ -752,8 +859,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   IconData _getStepIcon(VoiceJournalStep step) {
     switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return Icons.sentiment_satisfied;
       case VoiceJournalStep.recording:
         return Icons.mic;
       case VoiceJournalStep.transcription:
@@ -863,8 +968,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   String _getHelpText(VoiceJournalStep step) {
     switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return 'Select the mood that best represents how you\'re feeling right now. This helps us understand the emotional context of your journal entry.';
       case VoiceJournalStep.recording:
         return 'Tap the record button and speak freely about what\'s on your mind. There\'s no right or wrong way to express yourself. You can pause and resume anytime.';
       case VoiceJournalStep.transcription:

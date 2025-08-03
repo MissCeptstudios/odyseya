@@ -71,6 +71,46 @@ class OnboardingNotifier extends StateNotifier<OnboardingData> {
     state = const OnboardingData();
   }
 
+  // New questionnaire methods
+  void updateQ1Goals(List<String> goals) {
+    state = state.copyWith(q1Goals: goals);
+  }
+
+  void toggleQ1Goal(String goal) {
+    final currentGoals = List<String>.from(state.q1Goals);
+    if (currentGoals.contains(goal)) {
+      currentGoals.remove(goal);
+    } else {
+      currentGoals.add(goal);
+    }
+    state = state.copyWith(q1Goals: currentGoals);
+  }
+
+  void updateQ2Frequency(String frequency) {
+    state = state.copyWith(q2Frequency: frequency);
+  }
+
+  void updateQ3Feelings(List<String> feelings) {
+    state = state.copyWith(q3Feelings: feelings);
+  }
+
+  void toggleQ3Feeling(String feeling) {
+    final currentFeelings = List<String>.from(state.q3Feelings);
+    if (currentFeelings.contains(feeling)) {
+      currentFeelings.remove(feeling);
+    } else {
+      // Limit to 2 selections
+      if (currentFeelings.length < 2) {
+        currentFeelings.add(feeling);
+      }
+    }
+    state = state.copyWith(q3Feelings: currentFeelings);
+  }
+
+  void updateQ4HardestEmotion(String? emotion) {
+    state = state.copyWith(q4HardestEmotion: emotion);
+  }
+
   bool get canProceedFromCurrentStep {
     switch (state.currentStep) {
       case 0: // Welcome screen

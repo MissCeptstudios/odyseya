@@ -107,14 +107,18 @@ class JournalCalendarScreen extends ConsumerWidget {
                 // Entry Preview
                 if (calendarState.selectedDateEntries.isNotEmpty)
                   Expanded(
-                    child: EntryPreviewCard(
-                      entries: calendarState.selectedDateEntries,
-                      selectedDate: calendarState.selectedDate,
+                    child: SingleChildScrollView(
+                      child: EntryPreviewCard(
+                        entries: calendarState.selectedDateEntries,
+                        selectedDate: calendarState.selectedDate,
+                      ),
                     ),
                   )
                 else if (!calendarState.isLoading)
                   Expanded(
-                    child: _buildEmptyState(context, calendarState.selectedDate),
+                    child: SingleChildScrollView(
+                      child: _buildEmptyState(context, calendarState.selectedDate),
+                    ),
                   ),
               ],
             ),

@@ -19,14 +19,14 @@ class Mood {
   static const List<Mood> defaultMoods = [
     Mood(
       id: 'joyful',
-      emoji: '😊',
+      emoji: '😄', // Keep the face emoji
       label: 'Joyful',
       color: DesertColors.sunsetOrange,
       description: 'Feeling happy and uplifted',
     ),
     Mood(
       id: 'calm',
-      emoji: '😌',
+      emoji: '😌', // Keep the face emoji
       label: 'Calm',
       color: DesertColors.sageGreen,
       description: 'Peaceful and centered',
@@ -40,7 +40,7 @@ class Mood {
     ),
     Mood(
       id: 'melancholy',
-      emoji: '😔',
+      emoji: '😢', // Keep the face emoji
       label: 'Melancholy',
       color: DesertColors.dustyRose,
       description: 'Feeling a bit down or pensive',

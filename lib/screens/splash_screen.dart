@@ -67,21 +67,20 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _startAnimations() async {
     await Future.delayed(const Duration(milliseconds: 300));
-    _fadeController.forward();
+    if (mounted) _fadeController.forward();
     
     await Future.delayed(const Duration(milliseconds: 200));
-    _scaleController.forward();
+    if (mounted) _scaleController.forward();
     
     await Future.delayed(const Duration(milliseconds: 400));
-    _textController.forward();
+    if (mounted) _textController.forward();
     
-    await Future.delayed(const Duration(milliseconds: 2000));
-    _navigateToHome();
+    // Removed auto-navigation - now user controls with Continue button
   }
 
-  void _navigateToHome() {
+  void _navigateToNext() {
     if (mounted) {
-      context.go('/onboarding');
+      context.go('/auth');
     }
   }
 
@@ -96,20 +95,11 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DesertColors.background,
+      backgroundColor: Colors.white, // Pure white background
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              DesertColors.background,
-              DesertColors.warmBeige,
-              DesertColors.desertMist,
-            ],
-          ),
-        ),
+        // Pure white - no gradient for splash
+        color: Colors.white,
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -127,16 +117,10 @@ class _SplashScreenState extends State<SplashScreen>
                         return Transform.scale(
                           scale: _scaleAnimation.value,
                           child: Container(
-                            width: 120,
-                            height: 120,
+                            width: 140,
+                            height: 140,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: [
-                                  DesertColors.sunsetOrange.withValues(alpha: 0.8),
-                                  DesertColors.terracotta,
-                                ],
-                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: DesertColors.terracotta.withValues(alpha: 0.3),
@@ -145,10 +129,13 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ],
                             ),
-                            child: const Icon(
-                              Icons.self_improvement,
-                              size: 60,
-                              color: Colors.white,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/Odyseya_Icon.png',
+                                width: 140,
+                                height: 140,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         );
@@ -167,20 +154,26 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _textFadeAnimation,
                     child: Column(
                       children: [
+                        Image.asset(
+                          'assets/images/Odyseya_word.png',
+                          height: 60,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(height: 8),
                         Text(
-                          'Odyseya',
+                          'Your voice. Your journey.',
                           style: TextStyle(
-                            fontSize: 42,
-                            fontWeight: FontWeight.w300,
-                            color: DesertColors.onSurface,
-                            letterSpacing: 2.0,
+                            fontSize: 16,
+                            color: DesertColors.treeBranch,
+                            fontStyle: FontStyle.italic,
+                            letterSpacing: 0.5,
                           ),
                         ),
                         const SizedBox(height: 12),
                         Text(
                           'Your emotional journey awaits',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: DesertColors.onSurface.withValues(alpha: 0.7),
                             letterSpacing: 0.5,
                           ),
@@ -200,11 +193,28 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _textFadeAnimation,
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 40),
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          DesertColors.sageGreen.withValues(alpha: 0.6),
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: _navigateToNext,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: DesertColors.caramelDrizzle,
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: const Text(
+                            'Continue',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                        strokeWidth: 2,
                       ),
                     ),
                   );

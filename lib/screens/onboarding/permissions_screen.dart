@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
+import '../../providers/notification_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
 
 class PermissionsScreen extends ConsumerStatefulWidget {
@@ -16,13 +18,12 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
   @override
   Widget build(BuildContext context) {
     final onboardingData = ref.watch(onboardingProvider);
-    final onboardingNotifier = ref.read(onboardingProvider.notifier);
 
     return OnboardingLayout(
       title: 'Let\'s set up your experience',
       subtitle: 'These permissions help us provide you with the best journaling experience. You can always change these later in settings.',
-      onNext: () => onboardingNotifier.nextStep(),
-      onSkip: () => onboardingNotifier.nextStep(),
+      onNext: () => context.go('/welcome'),
+      onSkip: () => context.go('/welcome'),
       child: Column(
         children: [
           _buildPermissionCard(
@@ -228,8 +229,13 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
 
   Future<void> _requestNotificationPermission() async {
     final onboardingNotifier = ref.read(onboardingProvider.notifier);
-    final status = await Permission.notification.request();
-    onboardingNotifier.updateNotificationPermission(status.isGranted);
+    final notificationNotifier = ref.read(notificationProvider.notifier);
+    
+    // Use the notification service to request permissions
+    final granted = await notificationNotifier.requestPermissions();
+    
+    // Update onboarding state
+    onboardingNotifier.updateNotificationPermission(granted);
   }
 
   Future<void> _requestLocationPermission() async {

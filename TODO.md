@@ -1,262 +1,253 @@
-# Odyseya MVP1 Development TODO
+# TODO - Odyseya Voice Journaling App
 
-## 📱 Screens Checklist
-- [x] ✅ Mood Selection Screen (COMPLETE: Swipeable cards, animations, desert theme)
-- [x] ✅ Splash / Loading Screen (COMPLETE: Animated logo, auto-navigation)
-- [x] ✅ Onboarding Screens (COMPLETE: Full 9-screen flow with state management)
-- [x] ✅ Login / Sign-Up Screen (COMPLETE: Firebase Auth, form validation, tabbed UI)
-- [x] ✅ Voice Journal Screen (COMPLETE: 5-step flow with Firestore integration)
-- [x] ✅ AI Insight Screen (COMPLETE: Integrated in voice journal flow)
-- [x] ✅ Journal Calendar Screen (COMPLETE: Custom calendar with desert theme, daily indicators, statistics)
-- [ ] Daily Affirmation Screen
-- [ ] Paywall / Subscription Screen (Placeholder only)
-- [ ] Settings Screen (Placeholder only)
-- [ ] Reminder Modal / Overlay
+## ✅ CORE FEATURES – MVP1 (RECENTLY COMPLETED)
 
-## 🛠️ Setup & Infrastructure
-- [x] Set up Firebase project and configuration files (✅ COMPLETE: Real Firebase config files added)
-- [x] Configure Firebase for iOS and Android platforms (✅ COMPLETE: GoogleService-Info.plist & google-services.json)
-- [x] Add Firebase SDK dependencies to pubspec.yaml (✅ COMPLETE: All Firebase packages enabled)
-- [x] ✅ Set up Riverpod/Provider for state management (COMPLETE: Comprehensive providers implemented)
-- [x] ✅ Configure app icons and splash screen with desert theme (COMPLETE: Animated splash with branding)
-- [x] ✅ Set up proper folder structure for services, providers, utils (COMPLETE: Professional architecture)
-- [x] ✅ Add voice recording dependencies (COMPLETE: record, audio_waveforms, http integrated)
-- [ ] Configure CI/CD pipeline for testing and deployment
-- [ ] Set up environment variables for API keys and secrets
+### User Experience Flow - ✅ COMPLETED
+- [x] **Complete Onboarding Flow** ✅
+  - SplashScreen with Continue button (no auto-navigation)
+  - AuthChoiceScreen with clean UI (removed privacy notices)
+  - SignupScreen with pre-filled dummy data for testing
+  - GDPR Consent Screen with full legal documents
+  - WelcomeScreen with feature showcase
+  - Seamless navigation flow without loops
 
-## 🎯 Core Features
+- [x] **GDPR Compliance System** ✅
+  - Complete Terms & Conditions document
+  - Full Privacy Policy with GDPR rights
+  - Marketing consent (optional)
+  - Required checkboxes validation
+  - Proper user flow: Signup → GDPR → Welcome → Main App
 
-### Voice Recording & Transcription
-- [x] ✅ Implement permission handling for microphone access (COMPLETE: Permissions screen in onboarding)
-- [x] ✅ Create voice recording service with pause/resume functionality (COMPLETE: Full VoiceRecordingService)
-- [x] ✅ Integrate speech-to-text service (COMPLETE: TranscriptionService with mock API ready)
-- [x] ✅ Build voice recording UI with desert theme animations (COMPLETE: Animated record button)
-- [ ] Add audio playback functionality for recorded entries
-- [ ] Add waveform visualization during recording
-- [ ] Implement audio file compression and storage optimization
+- [x] **Authentication Screens** ✅
+  - Clean login/signup forms with validation
+  - High-quality logo assets (Odyseya_Icon.png, Odyseya_word.png)
+  - White background theme throughout
+  - Form validation with real-time feedback
 
-### Mood Selection
-- [x] ✅ Create mood model with emoji, label, and colors (COMPLETE: Full Mood data model)
-- [x] ✅ Build swipeable mood cards widget with desert theme (COMPLETE: SwipeableMoodCards widget)
-- [x] ✅ Implement mood selection screen with animations (COMPLETE: MoodSelectionScreen)
-- [x] ✅ Add page indicators and selection feedback (COMPLETE: Visual feedback implemented)
-- [x] ✅ Test mood selection screen on iOS simulator (COMPLETE: Tested and working)
-- [x] ✅ Integrate mood selection with journal entry flow (COMPLETE: Connected to VoiceJournalScreen)
+### Mood Selection System - ✅ COMPLETED
+- [x] **Face Emoji Mood Cards** ✅
+  - Three mood options: 😄 Joyful, 😌 Calm, 😢 Melancholy
+  - Clean white card backgrounds
+  - Desert color theme integration
+  - Proper mood state management with Riverpod
 
-### Journal Entry Management
-- [x] ✅ Create journal entry model and data structure (COMPLETE: JournalEntry model with full metadata)
-- [x] ✅ Build journal entry creation flow (COMPLETE: mood + voice + text + AI analysis integrated)
-- [x] ✅ Implement entry editing and deletion functionality (COMPLETE: Firestore CRUD operations)
-- [x] ✅ Add entry timestamps and metadata tracking (COMPLETE: Full tracking implemented)
-- [x] ✅ Add data persistence (COMPLETE: Firestore integration with real-time sync)
-- [ ] Create journal entry list/feed view
-- [ ] Implement search and filtering for entries
+### Navigation & Routing - ✅ COMPLETED
+- [x] **GoRouter Implementation** ✅
+  - Complete route definitions for all screens
+  - Authentication guards and redirects
+  - Fixed navigation loops and flow issues
+  - Support for both authenticated and unauthenticated flows
 
-### Calendar View ✅ COMPLETE
-- [x] ✅ Create calendar widget with custom desert theme (COMPLETE: CalendarWidget with desert styling)
-- [x] ✅ Implement daily entry indicators on calendar (COMPLETE: Mood-based indicators)
-- [x] ✅ Add calendar navigation (month/week/day views) (COMPLETE: Month navigation implemented)
-- [x] ✅ Create daily mood streak visualization (COMPLETE: StatisticsBar with streak tracking)
-- [x] ✅ Implement entry preview on calendar date selection (COMPLETE: EntryPreviewCard widget)
+### Visual Design - ✅ COMPLETED
+- [x] **UI/UX Consistency** ✅
+  - Clean white backgrounds across all screens
+  - High-quality logo assets without brown circles
+  - Consistent desert color palette
+  - Proper spacing and typography
 
-### Daily Affirmations
-- [ ] Create daily affirmation data model
-- [ ] Build affirmation display screen with desert theme
-- [ ] Implement affirmation rotation logic (daily/weekly)
-- [ ] Add favorite affirmations functionality
-- [ ] Create custom affirmation input feature
-- [ ] Integrate with mood-based affirmation suggestions
+### Technical Infrastructure - ✅ COMPLETED
+- [x] **State Management** ✅
+  - Riverpod providers for onboarding, auth, mood
+  - Proper state persistence and management
+  - Error handling for Firebase unavailability
 
-### Reminders & Notifications
-- [ ] Set up Firebase Cloud Messaging (FCM)
-- [ ] Implement local notification scheduling
-- [ ] Create reminder settings screen
-- [ ] Add customizable reminder times and frequency
-- [ ] Implement notification permission handling
-- [ ] Create gentle, supportive notification copy
-
-## 🔥 Firebase Integration
-
-### Authentication
-- [x] Implement email/password authentication (✅ COMPLETE: Real Firebase Auth Service)
-- [x] Add Google Sign-In integration (⚠️ Temporarily disabled due to dependency conflicts)
-- [x] Create onboarding flow for new users
-- [x] Implement password reset functionality (✅ COMPLETE: Firebase Auth Service)
-- [x] Add user profile management (✅ COMPLETE: Firebase Auth Service)
-- [x] Handle authentication state changes (✅ COMPLETE: Real-time streams)
-- [x] Integrate real Firebase Authentication (✅ COMPLETE: FirebaseAuthService implemented)
-
-### Database (Firestore)
-- [x] Design Firestore data structure for users and entries
-- [x] Implement CRUD operations for journal entries (✅ COMPLETE: Full FirestoreService implemented)
-- [x] Add real-time data synchronization (✅ COMPLETE: Stream providers implemented)
-- [x] Create data export feature for user privacy (✅ COMPLETE: GDPR compliance built-in)
-- [ ] Set up Firestore security rules
-- [ ] Add offline data synchronization (partial - needs testing)
-- [ ] Implement data backup and restore functionality
-
-### Storage
-- [x] Set up Firebase Storage for audio files (✅ COMPLETE: Automatic upload implemented)
-- [x] Implement secure file upload/download (✅ COMPLETE: FirestoreService handles uploads)
-- [x] Implement file cleanup for deleted entries (✅ COMPLETE: Automatic cleanup on delete)
-- [ ] Add file compression and optimization
-- [ ] Create storage quota management
-
-## 🤖 AI Integration
-
-### Analysis & Insights
-- [x] ✅ Integrate Claude API for emotional analysis (COMPLETE: AIAnalysisService with sophisticated analysis)
-- [x] ✅ Create prompt engineering for tone analysis (COMPLETE: Advanced prompt engineering implemented)
-- [x] ✅ Implement trigger identification and patterns (COMPLETE: Pattern detection logic)
-- [x] ✅ Build reflection and insight generation (COMPLETE: Personalized insights generated)
-- [x] ✅ Create personalized recommendations system (COMPLETE: Contextual recommendations)
-- [ ] Add privacy-focused local processing options
-- [ ] Connect to real AI APIs (currently using sophisticated mocks)
-
-### Content Processing
-- [x] ✅ Implement text cleaning and preprocessing (COMPLETE: Text processing in AIAnalysisService)
-- [x] ✅ Add sentiment analysis pipeline (COMPLETE: Integrated in AI analysis system)
-- [x] ✅ Create emotional pattern tracking (COMPLETE: Pattern detection implemented)
-- [ ] Build weekly/monthly insight summaries
-- [ ] Implement AI-powered journaling prompts
-
-## 💰 Monetization (RevenueCat)
-
-### Subscription Setup
-- [ ] Set up RevenueCat account and project
-- [ ] Configure subscription products in App Store/Play Store
-- [ ] Integrate RevenueCat SDK
-- [ ] Implement subscription state management
-- [ ] Create premium features gate system
-
-### Premium Features
-- [ ] Design premium tier feature set
-- [ ] Implement unlimited voice recordings
-- [ ] Add advanced AI insights and analytics
-- [ ] Create export to PDF/email functionality
-- [ ] Build premium onboarding flow
-- [ ] Add subscription management screen
-
-## 🧪 Testing & Quality
-
-### Unit Testing
-- [ ] Write tests for mood selection logic
-- [ ] Test voice recording service functionality
-- [ ] Create tests for Firebase integration
-- [ ] Test AI analysis pipeline
-- [ ] Write tests for subscription logic
-
-### Integration Testing
-- [ ] Test complete journal entry flow
-- [ ] Test authentication and user flow
-- [ ] Verify Firebase data synchronization
-- [ ] Test offline functionality
-- [ ] Validate notification system
-
-### UI/UX Testing
-- [ ] Implement accessibility testing
-- [x] ✅ Test on multiple device sizes (COMPLETE: iPhone 16 Pro tested, responsive design)
-- [x] ✅ Verify desert theme consistency (COMPLETE: Consistent theme across all screens)
-- [x] ✅ Test animations and transitions (COMPLETE: Smooth animations implemented)
-- [x] ✅ Conduct user experience testing (COMPLETE: Manual testing of full user flow)
-
-### Performance & Security
-- [x] ✅ Optimize app performance and memory usage (COMPLETE: Efficient Riverpod state management)
-- [x] ✅ Implement security best practices (COMPLETE: Secure storage, input validation, Firebase Auth)
-- [ ] Test with large datasets
-- [x] ✅ Verify data encryption and privacy (COMPLETE: Privacy-focused design, GDPR compliance)
-- [ ] Conduct security audit
-
-## 🚀 Launch Preparation
-- [ ] Create app store screenshots and descriptions
-- [ ] Set up analytics and crash reporting
-- [x] ✅ Prepare privacy policy and terms of service (COMPLETE: Privacy notices in onboarding)
-- [ ] Submit for app store review
-- [ ] Plan launch marketing strategy
-- [x] ✅ Create user documentation and support (COMPLETE: Help dialogs, onboarding guidance)
+- [x] **Firebase Integration** ✅
+  - Authentication setup (temporarily disabled for testing)
+  - Firestore integration with graceful fallbacks
+  - Affirmation provider with demo data
 
 ---
 
-**Current Status:** Complete voice journaling app with production-ready Firebase backend ✅  
-**Next Priority:** Calendar view, premium features, Google/Apple Sign-In restoration  
-**MVP1 Features Complete:** 95% (All core features implemented, only secondary screens pending)  
-**Target MVP1 Launch:** Ready for beta testing and app store submission
+## 🚧 PENDING FEATURES – MVP1
 
-## 📊 **FINAL COMPLETION STATISTICS**
+### Mood Check-In System
+- [ ] **Mood Check-In Slider + Emoji**
+  - Replace carousel with horizontal mood slider
+  - Include emoji and mood labels (e.g., "Low", "Okay-ish", "Peaceful")
+  - Smooth swipe interaction with haptic feedback
 
-### **Screens & UI: 90% Complete** 
-- ✅ 7/8 core screens fully functional (87% of essential screens)
-- ✅ Complete desert-themed design system
-- ✅ All animations and transitions working
-- ✅ 9-screen onboarding flow complete
-- ✅ Journal Calendar with full functionality
-- 🟡 3 secondary screens pending (Daily Affirmation, Settings, Paywall)
+### AI Insights & Summaries
+- [ ] **2-Week Summary Unlock**
+  - Firestore logic: unlock emotional insight after 14 unique check-in days
+  - Summary includes mood trends, tone shifts, and one AI-powered book recommendation
+  - Beautiful summary presentation with charts/graphs
+- [ ] **Monthly Option**
+  - In settings: user can switch between 2-week or 1-month summary cycles
+  - Store user preference in Firestore
 
-### **Core Features: 98% Complete**  
-- ✅ Voice recording system with full UI
-- ✅ AI analysis system with sophisticated logic  
-- ✅ Authentication system with REAL Firebase Auth
-- ✅ Journal entry management with REAL Firestore
-- ✅ Data persistence & real-time synchronization
-- ✅ Mood selection with custom UI
-- 🟡 Google/Apple Sign-In temporarily disabled
+### Notifications & Engagement
+- [ ] **Push Notifications / Mood Reminders**
+  - Daily push reminder to check in (default ON)
+  - Visible on phone lock screen
+  - Opt-out toggle in Settings
+  - Future: smart reminders based on emotional trends
 
-### **Infrastructure: 99% Complete**
-- ✅ Professional architecture & state management
-- ✅ Navigation & routing system  
-- ✅ Data models & comprehensive error handling
-- ✅ Firebase integration (COMPLETE: Auth, Firestore, Storage)
-- ✅ Real-time data synchronization
-- ✅ Privacy & security compliance
+### App Configuration
+- [ ] **Settings Menu**
+  - Toggle for daily reminders
+  - Choose reminder time (time picker)
+  - Select between 2-week or monthly summary cycle
+  - Privacy controls and data export options
+- [ ] **Bottom Navigation Bar**
+  - Add bottom nav bar (Reflectly-style)
+  - Placeholder icons/tabs for now
+  - Styled to match Odyseya's desert theme
+  - Smooth tab transitions
 
-### **Production Readiness: 92% Complete**
-- ✅ Security best practices implemented
-- ✅ Privacy compliance features (GDPR ready)
-- ✅ Performance optimization with Riverpod
-- ✅ Real database & backend connections
-- ✅ User experience testing completed
-- 🟡 Needs app store assets and final deployment
+## 💸 MONETIZATION – MVP1
 
-## 🎯 **UPDATED IMPLEMENTATION STATUS SUMMARY**
+### Trial System
+- [ ] **14-Day Free Trial**
+  - Full feature access for 14 days after signup
+  - Countdown shown (e.g., "You have 9 days left…")
+  - Trial status visible in app header
+- [ ] **Track Trial Period**
+  - Save user's signup date in Firestore
+  - Logic compares current date → activates paywall
+  - Handle edge cases (offline users, etc.)
 
-### ✅ **FULLY COMPLETE (Production Ready)**
-- **UI/UX Architecture**: Complete desert-themed interface
-- **Authentication System**: ✅ REAL Firebase Auth with email/password
-- **Voice Journal Flow**: Complete 5-step process (mood → record → transcribe → analyze → save)
-- **State Management**: Comprehensive Riverpod providers
-- **Navigation & Routing**: Complete with authentication guards
-- **Data Models**: All models implemented with proper structure
-- **Firebase Integration**: ✅ COMPLETE backend with Firestore & Storage
-- **Data Persistence**: ✅ COMPLETE - journal entries save to Firestore
-- **Real-time Sync**: ✅ COMPLETE - changes sync instantly across devices
+### Paywall Implementation
+- [ ] **Soft Paywall After Trial**
+  - After day 14, journaling and insights are locked
+  - Paywall screen prompts user to subscribe
+  - Allow viewing past entries but no new ones
+- [ ] **Paywall Screen Design**
+  - Clearly list benefits
+  - CTA: "Continue your emotional journey…"
+  - Beautiful, non-aggressive design
 
-### 🟡 **CORE LOGIC COMPLETE (Minor Issues to Resolve)**
-- **Voice Recording**: Service implemented, needs audio compression
-- **AI Analysis**: Sophisticated mock analysis, needs real API connection
-- **Transcription**: Mock service ready, needs OpenAI Whisper integration
-- **Google/Apple Sign-In**: Temporarily disabled due to dependency conflicts
+### Payment Processing
+- [ ] **Payment Integration**
+  - Stripe or RevenueCat integration
+  - Monthly ($9.99) or yearly ($99) plans
+  - "Restore purchase" button for returning users
+  - Handle payment failures gracefully
 
-### ❌ **NOT STARTED (Next Phase)**
-- **Calendar View**: Only placeholder screen
-- **Settings & Premium**: Only placeholder screens
-- **Real-time Features**: No notifications or reminders
-- **Testing**: Minimal test coverage
+## 🔧 TECHNICAL IMPROVEMENTS
+
+### Architecture & Performance
+- [ ] **State Management Optimization**
+  - Optimize Riverpod providers for better performance
+  - Implement proper error handling across all screens
+  - Add loading states for better UX
+
+### Data & Storage
+- [ ] **Enhanced Firestore Integration**
+  - Re-enable Firebase for production
+  - Implement proper offline support
+  - Add data sync indicators
+  - Handle network errors gracefully
+- [ ] **Voice Recording Improvements**
+  - Better audio quality settings
+  - Background recording support
+  - Waveform visualization during recording
+
+### Security & Privacy
+- [ ] **Production Firebase Setup**
+  - Configure Firebase for web and iOS
+  - Set up proper authentication flow
+  - Enable Firestore rules and security
+
+## 🌙 COMPANION (Optional – Future Phase)
+
+### Companion System
+- [ ] **Conceptualise Companion Persona**
+  - Ideas: Desert Moon 🌙, Compass 🧭, Owl 🦉, Oracle Whisper 🔮
+  - No robot; poetic emotional guide instead
+  - Develop companion personality and voice
+- [ ] **Sample Dialogues for Companion**
+  - Messages like: "Your inner voice feels gentler today, MissC. Ready to reflect?"
+  - Context-aware based on mood patterns
+  - Supportive, non-judgmental tone
+
+### Integration
+- [ ] **Companion UI Elements**
+  - Subtle presence throughout app
+  - Animated companion icon
+  - Contextual messages and encouragement
+
+## 🚀 FUTURE ENHANCEMENTS
+
+### Advanced Features
+- [ ] **Mood Pattern Recognition**
+  - AI-powered insights from mood data
+  - Trend analysis and predictions
+  - Personalized recommendations
+- [ ] **Social Features (Optional)**
+  - Anonymous community support
+  - Shared wisdom/quotes
+  - Privacy-first approach
+- [ ] **Export & Backup**
+  - PDF export of journal entries
+  - Cloud backup options
+  - Data portability features
+
+### Platform Expansion
+- [ ] **Web Version**
+  - Responsive web app
+  - Cross-platform sync
+  - Same feature parity
+- [ ] **Apple Watch Integration**
+  - Quick mood check-ins
+  - Haptic reminders
+  - Minimal UI for watch
+
+## 🐛 BUG FIXES & MAINTENANCE
+
+### Ongoing Maintenance
+- [ ] **Performance Monitoring**
+  - Add crash reporting
+  - Monitor app performance
+  - User analytics (privacy-compliant)
+- [ ] **Regular Updates**
+  - Flutter/dependency updates
+  - Security patches
+  - Feature improvements based on user feedback
 
 ---
 
-## 🎯 **COMPLETION SUMMARY**
+## 📋 DEVELOPMENT PRIORITIES
 
-### **✅ TASKS COMPLETED: 47 out of 52 major tasks (90%)**
+### Phase 1 (CURRENT FOCUS)
+1. **Bottom Navigation Bar** - Core app navigation
+2. **Settings Menu** - User preferences and controls
+3. **Push Notifications** - User engagement
+4. **2-Week Summary System** - Core AI feature
+5. **Monetization (Trial + Paywall)** - Revenue model
 
-**🏆 MAJOR ACHIEVEMENTS:**
-- **6 Core Screens**: 100% Complete with professional UI/UX
-- **9 Onboarding Screens**: 100% Complete with state management
-- **Firebase Backend**: 100% Complete (Auth + Firestore + Storage)
-- **Voice Recording**: 100% Complete with animations
-- **AI Analysis**: 100% Complete with sophisticated logic
-- **State Management**: 100% Complete with Riverpod
-- **Navigation**: 100% Complete with authentication guards
-- **Data Models**: 100% Complete with proper structure
-- **Security & Privacy**: 100% Complete with GDPR compliance
+### Phase 2 (Post-Launch)
+1. Voice recording improvements
+2. Advanced AI insights
+3. Performance optimizations
+4. Companion system
 
-**Odyseya is now a fully functional voice journaling app with production-ready backend!** 🎉
+### Phase 3 (Future)
+1. Apple Watch app
+2. Social features
+3. Advanced analytics
+4. Platform expansion
+
+---
+
+## 🎯 IMPLEMENTATION STATUS SUMMARY
+
+**✅ COMPLETED (Major Achievement!):**
+- Complete user onboarding flow (Splash → Auth → Signup → GDPR → Welcome)
+- GDPR compliance system with full legal documents
+- Clean UI/UX with high-quality assets
+- Mood selection with face emojis
+- Navigation system without loops
+- State management with Riverpod
+- Firebase integration (temporarily disabled)
+
+**🚧 IN PROGRESS:**
+- Voice journaling functionality
+- Core app features (calendar, affirmations)
+
+**📋 NEXT PRIORITIES:**
+- Bottom navigation bar
+- Settings menu
+- Push notifications
+- Monetization system
+
+The app now has a **solid foundation** with proper user flow, GDPR compliance, and clean UI. Ready for core feature development!

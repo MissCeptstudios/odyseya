@@ -56,7 +56,7 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
     return Column(
       children: [
         SizedBox(
-          height: 280,
+          height: 280, // Reverted to original height
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: (index) {

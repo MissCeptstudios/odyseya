@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import '../models/ai_analysis.dart';
+import 'ai_service_factory.dart';
+import 'ai_service_interface.dart';
 
 class AIAnalysisService {
   static const String _claudeUrl = 'https://api.anthropic.com/v1/messages';
@@ -10,23 +13,43 @@ class AIAnalysisService {
   // Mock API keys - in production, use environment variables or secure storage
   static const String _claudeKey = 'your-claude-api-key';
 
-  Future<AIAnalysis> analyzeEmotion(String text) async {
+  // Use new AI service factory for real analysis
+  final AIServiceFactory _aiFactory = AIServiceFactory();
+
+  Future<AIAnalysis> analyzeEmotion(String text, {String? mood}) async {
     try {
-      // For MVP, we'll use mock analysis
-      // In production, integrate with Claude or GPT for emotional analysis
-      
       if (text.isEmpty) {
         throw AIAnalysisException('Text cannot be empty');
       }
 
-      // Simulate API delay
-      await Future.delayed(const Duration(seconds: 3));
+      // Try to use real AI service first
+      if (_aiFactory.isCurrentServiceConfigured) {
+        if (kDebugMode) {
+          print('Using real AI service: ${_aiFactory.getCurrentService().serviceName}');
+        }
+        
+        try {
+          return await _aiFactory.getCurrentService().analyzeEmotionalContent(
+            text: text,
+            mood: mood,
+          );
+        } catch (e) {
+          if (kDebugMode) {
+            print('Real AI service failed, falling back to mock: $e');
+          }
+          // Fall back to mock if real service fails
+        }
+      }
 
-      // Mock analysis based on text content
-      return _generateMockAnalysis(text);
+      if (kDebugMode) {
+        print('Using mock AI analysis (no API configured)');
+      }
 
-      // Real implementation would look like this:
-      // return await _callClaudeAPI(text);
+      // Simulate API delay for mock
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Enhanced mock analysis
+      return _generateMockAnalysis(text, mood);
       
     } catch (e) {
       throw AIAnalysisException('Failed to analyze emotion: $e');
@@ -60,11 +83,11 @@ class AIAnalysisService {
     }
   }
 
-  AIAnalysis _generateMockAnalysis(String text) {
+  AIAnalysis _generateMockAnalysis(String text, String? mood) {
     final random = Random();
     final words = text.toLowerCase().split(' ');
     
-    // Analyze emotional tone based on keywords
+    // Analyze emotional tone based on keywords and mood
     String emotionalTone;
     Map<String, double> emotionScores = {};
     double confidence;
@@ -75,6 +98,16 @@ class AIAnalysisService {
 
     int positiveCount = words.where((word) => positiveWords.contains(word)).length;
     int negativeCount = words.where((word) => negativeWords.contains(word)).length;
+
+    // Consider mood input if provided
+    if (mood != null) {
+      final moodLower = mood.toLowerCase();
+      if (positiveWords.any((word) => moodLower.contains(word))) {
+        positiveCount++;
+      } else if (negativeWords.any((word) => moodLower.contains(word))) {
+        negativeCount++;
+      }
+    }
 
     if (negativeCount > positiveCount) {
       emotionalTone = 'Reflective and Processing';
@@ -174,6 +207,7 @@ class AIAnalysisService {
     return suggestions.take(4).toList(); // Limit to 4 suggestions
   }
 
+  /* Unused method - commented out to fix warning
   Future<AIAnalysis> _callClaudeAPI(String text) async {
     try {
       final prompt = _buildEmotionalAnalysisPrompt(text);
@@ -207,6 +241,7 @@ class AIAnalysisService {
       throw AIAnalysisException('Claude API call failed: $e');
     }
   }
+  */
 
   String _buildEmotionalAnalysisPrompt(String text) {
     return '''

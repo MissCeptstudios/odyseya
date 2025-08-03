@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/onboarding_provider.dart';
-import 'welcome_screen.dart';
+import 'account_creation_screen.dart';
 import 'permissions_screen.dart';
+import 'welcome_screen.dart';
 import 'journaling_experience_screen.dart';
 import 'emotional_goals_screen.dart';
 import 'preferred_time_screen.dart';
 import 'privacy_preferences_screen.dart';
 import 'feature_demo_screen.dart';
-import 'account_creation_screen.dart';
 import 'first_journal_screen.dart';
 
 class OnboardingFlow extends ConsumerWidget {
@@ -28,25 +28,25 @@ class OnboardingFlow extends ConsumerWidget {
 
     switch (onboardingData.currentStep) {
       case 0:
-        return const WelcomeScreen();
+        return const AccountCreationScreen(); // First: Account Creation
       case 1:
-        return const PermissionsScreen();
+        return const PermissionsScreen(); // Second: Permissions
       case 2:
-        return const JournalingExperienceScreen();
+        return const WelcomeScreen(); // Third: Welcome
       case 3:
-        return const EmotionalGoalsScreen();
+        return const JournalingExperienceScreen(); // Continue normal flow
       case 4:
-        return const PreferredTimeScreen();
+        return const EmotionalGoalsScreen();
       case 5:
-        return const PrivacyPreferencesScreen();
+        return const PreferredTimeScreen();
       case 6:
-        return const FeatureDemoScreen();
+        return const PrivacyPreferencesScreen();
       case 7:
-        return const AccountCreationScreen();
+        return const FeatureDemoScreen();
       case 8:
         return const FirstJournalScreen();
       default:
-        return const WelcomeScreen();
+        return const AccountCreationScreen();
     }
   }
 }

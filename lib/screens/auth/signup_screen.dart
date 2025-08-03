@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/auth_provider.dart';
-import '../../widgets/auth/privacy_notice.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -23,6 +22,16 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   bool _showPasswordRequirements = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Pre-fill with dummy data for testing
+    _nameController.text = 'Dummy Dummy';
+    _emailController.text = 'dummy.demo@gmail.com';
+    _passwordController.text = 'Demo1234&&';
+    _confirmPasswordController.text = 'Demo1234&&';
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -34,21 +43,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   void _submitForm() {
     // Sign Up Form Submission
     if (_formKey.currentState?.validate() ?? false) {
-      // Sign up form validation successful
-      final name = _nameController.text.trim();
-      final email = _emailController.text.trim();
-      final password = _passwordController.text;
+      // For now, simulate successful signup and go to GDPR consent
+      // In production, this would actually create the account first
       
-      // Sign up form values:
-      // Name: $name
-      // Email: $email
-      // Password length: ${password.length}
-
-      ref.read(authStateProvider.notifier).signUpWithEmail(
-        email: email,
-        password: password,
-        fullName: name,
-      );
+      // Navigate to GDPR consent screen after form validation
+      context.go('/gdpr-consent');
     }
     // Sign Up Form Submission Complete
   }
@@ -58,7 +57,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final authState = ref.watch(authStateProvider);
 
     return Scaffold(
-      backgroundColor: DesertColors.background,
+      backgroundColor: Colors.white, // Pure white background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -69,13 +68,55 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                // Logo with Tagline
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 32),
+                    child: Column(
+                      children: [
+                        // Logo
+                        Container(
+                          width: 80,
+                          height: 80,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: Image.asset(
+                            'assets/images/Odyseya_Icon.png',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        // Brand Name
+                        Image.asset(
+                          'assets/images/Odyseya_word.png',
+                          height: 48,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(height: 4),
+                        // Tagline
+                        Text(
+                          'Your voice. Your journey.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: DesertColors.treeBranch,
+                            fontStyle: FontStyle.italic,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Text(
                   'Create Account',
                   style: TextStyle(
@@ -295,7 +336,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             ),
                           )
                         : const Text(
-                            'Create Account',
+                            'Continue',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -305,10 +346,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ),
 
                 const SizedBox(height: 24),
-                const PrivacyNotice(),
-              ],
+                      ],
+                    ),
+                  ),
+                ),
             ),
-          ),
+          ],
         ),
       ),
     );

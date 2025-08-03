@@ -8,6 +8,12 @@ class OnboardingData {
   final bool locationPermission;
   final bool hasCompletedOnboarding;
   final int currentStep;
+  
+  // New questionnaire fields
+  final List<String> q1Goals;
+  final String? q2Frequency;
+  final List<String> q3Feelings;
+  final String? q4HardestEmotion;
 
   const OnboardingData({
     this.journalingExperience,
@@ -19,6 +25,10 @@ class OnboardingData {
     this.locationPermission = false,
     this.hasCompletedOnboarding = false,
     this.currentStep = 0,
+    this.q1Goals = const [],
+    this.q2Frequency,
+    this.q3Feelings = const [],
+    this.q4HardestEmotion,
   });
 
   OnboardingData copyWith({
@@ -31,6 +41,10 @@ class OnboardingData {
     bool? locationPermission,
     bool? hasCompletedOnboarding,
     int? currentStep,
+    List<String>? q1Goals,
+    String? q2Frequency,
+    List<String>? q3Feelings,
+    String? q4HardestEmotion,
   }) {
     return OnboardingData(
       journalingExperience: journalingExperience ?? this.journalingExperience,
@@ -42,6 +56,10 @@ class OnboardingData {
       locationPermission: locationPermission ?? this.locationPermission,
       hasCompletedOnboarding: hasCompletedOnboarding ?? this.hasCompletedOnboarding,
       currentStep: currentStep ?? this.currentStep,
+      q1Goals: q1Goals ?? this.q1Goals,
+      q2Frequency: q2Frequency ?? this.q2Frequency,
+      q3Feelings: q3Feelings ?? this.q3Feelings,
+      q4HardestEmotion: q4HardestEmotion ?? this.q4HardestEmotion,
     );
   }
 
@@ -56,6 +74,10 @@ class OnboardingData {
       'locationPermission': locationPermission,
       'hasCompletedOnboarding': hasCompletedOnboarding,
       'currentStep': currentStep,
+      'q1Goals': q1Goals,
+      'q2Frequency': q2Frequency,
+      'q3Feelings': q3Feelings,
+      'q4HardestEmotion': q4HardestEmotion,
     };
   }
 
@@ -70,6 +92,10 @@ class OnboardingData {
       locationPermission: json['locationPermission'] ?? false,
       hasCompletedOnboarding: json['hasCompletedOnboarding'] ?? false,
       currentStep: json['currentStep'] ?? 0,
+      q1Goals: List<String>.from(json['q1Goals'] ?? []),
+      q2Frequency: json['q2Frequency'],
+      q3Feelings: List<String>.from(json['q3Feelings'] ?? []),
+      q4HardestEmotion: json['q4HardestEmotion'],
     );
   }
 }

@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
 class TranscriptionService {
   static const String _baseUrl = 'https://api.openai.com/v1/audio/transcriptions';
@@ -59,6 +57,7 @@ class TranscriptionService {
     }
   }
 
+  /* Unused method - commented out to fix warning
   Future<String> _callWhisperAPI(String audioPath) async {
     try {
       final request = http.MultipartRequest('POST', Uri.parse(_baseUrl));
@@ -82,6 +81,7 @@ class TranscriptionService {
       throw TranscriptionException('API call failed: $e');
     }
   }
+  */
 
   Future<void> saveTranscription(String entryId, String transcription) async {
     try {

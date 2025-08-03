@@ -24,7 +24,7 @@ class MoodCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: DesertColors.cardBackground,
+          color: Colors.white, // White background for cards
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? DesertColors.westernSunrise : Colors.transparent,

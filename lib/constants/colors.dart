@@ -8,6 +8,12 @@ class DesertColors {
   static const Color westernSunrise = Color(0xFFD8A36C);
   static const Color treeBranch = Color(0xFF8B7362);
   static const Color brownBramble = Color(0xFF57351E);
+  static const Color creamBeige = Color(0xFFF9F6F0); // New cream beige for branding backgrounds
+  
+  // Gradient colors for smooth transitions
+  static const Color gradientBlue = Color(0xFF6BB6FF); // Soft blue for gradients
+  static const Color gradientLightBlue = Color(0xFFB8D4E3); // Light blue
+  static const Color gradientWhite = Colors.white; // Pure white
   
   // Legacy colors (keep for existing screens)
   static const Color sandDune = Color(0xFFE8D4B0);
@@ -24,7 +30,7 @@ class DesertColors {
   // Updated semantic colors
   static const Color primary = westernSunrise;
   static const Color secondary = waterWash;
-  static const Color background = arcticRain;
+  static const Color background = Colors.white; // Changed to white
   static const Color surface = Colors.white;
   static const Color onSurface = brownBramble;
   static const Color onSecondary = treeBranch;

@@ -35,6 +35,8 @@ class VoiceJournalState {
   final bool isSaving;
   final VoiceJournalStep currentStep;
   final String selectedMood;
+  final String inputMethod; // 'voice' or 'text'
+  final bool shouldNavigateToCalendar;
 
   const VoiceJournalState({
     this.isRecording = false,
@@ -48,8 +50,10 @@ class VoiceJournalState {
     this.error,
     this.currentEntry,
     this.isSaving = false,
-    this.currentStep = VoiceJournalStep.moodSelection,
+    this.currentStep = VoiceJournalStep.recording,
     this.selectedMood = '',
+    this.inputMethod = 'voice',
+    this.shouldNavigateToCalendar = false,
   });
 
   VoiceJournalState copyWith({
@@ -66,6 +70,8 @@ class VoiceJournalState {
     bool? isSaving,
     VoiceJournalStep? currentStep,
     String? selectedMood,
+    String? inputMethod,
+    bool? shouldNavigateToCalendar,
     bool clearError = false,
     bool clearAnalysis = false,
     bool clearEntry = false,
@@ -84,6 +90,8 @@ class VoiceJournalState {
       isSaving: isSaving ?? this.isSaving,
       currentStep: currentStep ?? this.currentStep,
       selectedMood: selectedMood ?? this.selectedMood,
+      inputMethod: inputMethod ?? this.inputMethod,
+      shouldNavigateToCalendar: shouldNavigateToCalendar ?? this.shouldNavigateToCalendar,
     );
   }
 
@@ -95,7 +103,6 @@ class VoiceJournalState {
 }
 
 enum VoiceJournalStep {
-  moodSelection,
   recording,
   transcription,
   analysis,
@@ -141,7 +148,6 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
   void selectMood(String mood) {
     state = state.copyWith(
       selectedMood: mood,
-      currentStep: VoiceJournalStep.recording,
       clearError: true,
     );
   }
@@ -250,6 +256,17 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
     );
   }
 
+  void setInputMethod(String method) {
+    state = state.copyWith(
+      inputMethod: method,
+      clearError: true,
+    );
+  }
+
+  void clearNavigationFlag() {
+    state = state.copyWith(shouldNavigateToCalendar: false);
+  }
+
   Future<void> retranscribe() async {
     if (state.currentRecordingPath != null) {
       await _startTranscription(state.currentRecordingPath!);
@@ -261,7 +278,11 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
     try {
       state = state.copyWith(isAnalyzing: true, clearError: true);
       
-      final analysis = await _aiService.analyzeEmotion(text);
+      // Pass selected mood to AI analysis for better context
+      final analysis = await _aiService.analyzeEmotion(
+        text, 
+        mood: state.selectedMood.isNotEmpty ? state.selectedMood : null,
+      );
       
       state = state.copyWith(
         aiAnalysis: analysis,
@@ -326,6 +347,7 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
         currentEntry: savedEntry,
         isSaving: false,
         currentStep: VoiceJournalStep.completed,
+        shouldNavigateToCalendar: true,
       );
     } catch (e) {
       state = state.copyWith(

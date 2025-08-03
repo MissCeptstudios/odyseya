@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
@@ -9,13 +10,12 @@ class WelcomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final onboardingNotifier = ref.read(onboardingProvider.notifier);
 
     return OnboardingLayout(
       showProgress: false,
       showBackButton: false,
-      onNext: () => onboardingNotifier.nextStep(),
-      nextButtonText: 'Begin Your Journey',
+      onNext: () => context.go('/onboarding/questionnaire/q1'),
+      nextButtonText: 'Continue',
       child: Column(
         children: [
           const SizedBox(height: 40),
