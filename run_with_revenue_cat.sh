@@ -1,17 +1,21 @@
 #!/bin/bash
 
 # 🚀 Run Odyseya with RevenueCat configuration
-# Replace the API keys below with your actual keys from RevenueCat dashboard
+# This script loads configuration from .env file
 
-# STEP 1: Replace these with your actual RevenueCat API keys
-export RC_IOS_KEY_DEV="PASTE_YOUR_IOS_API_KEY_HERE"
-export RC_ANDROID_KEY_DEV="PASTE_YOUR_ANDROID_API_KEY_HERE"
+# STEP 1: Load environment variables from .env file
+if [ -f .env ]; then
+    echo "📄 Loading configuration from .env file..."
+    export $(grep -v '^#' .env | xargs)
+else
+    echo "⚠️  Warning: .env file not found. Using defaults."
+fi
 
-# STEP 2: Product IDs (must match what you created in RevenueCat)
-export MONTHLY_PRODUCT_ID="odyseya_monthly_premium"
-export ANNUAL_PRODUCT_ID="odyseya_annual_premium"
-
-# STEP 3: OpenAI Configuration - Use environment variable or .env file
+# STEP 2: Set defaults if not provided in .env
+export RC_IOS_KEY_DEV="${RC_IOS_KEY_DEV:-PASTE_YOUR_IOS_API_KEY_HERE}"
+export RC_ANDROID_KEY_DEV="${RC_ANDROID_KEY_DEV:-PASTE_YOUR_ANDROID_API_KEY_HERE}"
+export MONTHLY_PRODUCT_ID="${MONTHLY_PRODUCT_ID:-odyseya_monthly_premium}"
+export ANNUAL_PRODUCT_ID="${ANNUAL_PRODUCT_ID:-odyseya_annual_premium}"
 export OPENAI_API_KEY="${OPENAI_API_KEY:-PASTE_YOUR_OPENAI_API_KEY_HERE}"
 
 # STEP 4: App Configuration
