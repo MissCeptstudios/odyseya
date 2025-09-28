@@ -27,7 +27,8 @@ class UserSettings {
     AIAnalysisLevel? aiAnalysisLevel,
   }) {
     return UserSettings(
-      dailyRemindersEnabled: dailyRemindersEnabled ?? this.dailyRemindersEnabled,
+      dailyRemindersEnabled:
+          dailyRemindersEnabled ?? this.dailyRemindersEnabled,
       reminderTime: reminderTime ?? this.reminderTime,
       summaryFrequency: summaryFrequency ?? this.summaryFrequency,
       aiAnalysisLevel: aiAnalysisLevel ?? this.aiAnalysisLevel,
@@ -75,9 +76,13 @@ class SettingsNotifier extends StateNotifier<UserSettings> {
           settingsJson.split(',').fold<Map<String, dynamic>>({}, (map, item) {
             final parts = item.split(':');
             if (parts.length == 2) {
-              final key = parts[0].trim().replaceAll('"', '').replaceAll('{', '').replaceAll('}', '');
+              final key = parts[0]
+                  .trim()
+                  .replaceAll('"', '')
+                  .replaceAll('{', '')
+                  .replaceAll('}', '');
               final value = parts[1].trim().replaceAll('"', '');
-              
+
               // Convert string values to appropriate types
               if (value == 'true' || value == 'false') {
                 map[key] = value == 'true';
@@ -102,7 +107,10 @@ class SettingsNotifier extends StateNotifier<UserSettings> {
     try {
       final settingsMap = state.toJson();
       final settingsJson = settingsMap.entries
-          .map((e) => '"${e.key}": ${e.value is String ? '"${e.value}"' : e.value}')
+          .map(
+            (e) =>
+                '"${e.key}": ${e.value is String ? '"${e.value}"' : e.value}',
+          )
           .join(', ');
       await _storage.write(key: _settingsKey, value: '{$settingsJson}');
     } catch (e) {
@@ -113,20 +121,20 @@ class SettingsNotifier extends StateNotifier<UserSettings> {
   Future<void> updateDailyReminders(bool enabled) async {
     state = state.copyWith(dailyRemindersEnabled: enabled);
     await _saveSettings();
-    
+
     // Update notification provider
     if (_notificationNotifier != null) {
-      await _notificationNotifier!.toggleNotifications(enabled);
+      await _notificationNotifier.toggleNotifications(enabled);
     }
   }
 
   Future<void> updateReminderTime(TimeOfDay time) async {
     state = state.copyWith(reminderTime: time);
     await _saveSettings();
-    
+
     // Update notification provider
     if (_notificationNotifier != null) {
-      await _notificationNotifier!.updateReminderTime(time.hour, time.minute);
+      await _notificationNotifier.updateReminderTime(time.hour, time.minute);
     }
   }
 
@@ -141,7 +149,9 @@ class SettingsNotifier extends StateNotifier<UserSettings> {
   }
 }
 
-final settingsProvider = StateNotifierProvider<SettingsNotifier, UserSettings>((ref) {
+final settingsProvider = StateNotifierProvider<SettingsNotifier, UserSettings>((
+  ref,
+) {
   final notificationNotifier = ref.watch(notificationProvider.notifier);
   return SettingsNotifier(notificationNotifier);
 });

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'config/router.dart';
+import 'config/env_config.dart';
 import 'constants/colors.dart';
 import 'services/notification_service.dart';
 import 'services/ai_config_service.dart';
@@ -10,27 +12,42 @@ import 'services/ai_quick_test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  // Initialize environment configuration first
+  await EnvConfig.initialize();
+
   // Initialize Firebase
-  await Firebase.initializeApp();
-  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   // Initialize notification service
   await NotificationService().initialize();
-  
-  // Initialize AI services with your API key
+
+  // Initialize AI services with environment-based API keys
   final aiConfig = AIConfigService();
   await aiConfig.initializeFromStorage(); // Load any stored configuration first
-  
-  // Set your Gemini API key
-  await aiConfig.setGeminiApiKey('AIzaSyDXZpbo7LsybroxC6XAAaQyUM1ysiQwiW0');
+
+  // Set API keys from environment variables
+  if (EnvConfig.hasGeminiKey) {
+    await aiConfig.setGeminiApiKey(EnvConfig.geminiApiKey!);
+  }
+
+  if (EnvConfig.hasGroqKey) {
+    await aiConfig.setGroqApiKey(EnvConfig.groqApiKey!);
+  }
   
   // Test the AI service on startup (debug mode only)
   if (kDebugMode) {
+    // Print environment configuration status
+    final envInfo = EnvConfig.getDebugInfo();
+    debugPrint('Environment configuration: $envInfo');
+
     final testPassed = await aiConfig.testCurrentService();
-    debugPrint(testPassed 
-      ? '✅ AI service initialized successfully!' 
+    debugPrint(testPassed
+      ? '✅ AI service initialized successfully!'
       : '⚠️ AI service test failed - will use fallback analysis');
-    
+
     // Run comprehensive test with sample journal entry
     await AIQuickTest.runQuickTest();
   }

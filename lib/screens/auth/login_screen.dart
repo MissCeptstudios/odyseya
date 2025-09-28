@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/auth/privacy_notice.dart';
 import '../../models/auth_user.dart';
+import '../../widgets/common/app_background.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -57,8 +58,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     });
 
-    return Scaffold(
-      backgroundColor: Colors.white, // Pure white background
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.05,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -329,6 +333,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
         ),
+      ),
     );
   }
 } 

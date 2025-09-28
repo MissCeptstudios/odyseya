@@ -7,6 +7,7 @@ import '../providers/mood_provider.dart';
 import '../widgets/voice_recording/record_button.dart';
 import '../widgets/transcription/transcription_display.dart';
 import '../widgets/ai_insights/insight_preview.dart';
+import '../widgets/common/app_background.dart';
 
 class VoiceJournalScreen extends ConsumerStatefulWidget {
   const VoiceJournalScreen({super.key});
@@ -78,40 +79,31 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       }
     });
 
-    return Scaffold(
-      backgroundColor: DesertColors.background,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              DesertColors.background,
-              DesertColors.warmBeige.withValues(alpha: 0.3),
-              DesertColors.desertMist.withValues(alpha: 0.2),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Header
-              _buildHeader(voiceState),
-              
-              // Progress Indicator
-              _buildProgressIndicator(voiceState),
-              
-              // Main Content
-              Expanded(
-                child: _buildMainContent(voiceState),
-              ),
-              
-              // Bottom Actions
-              _buildBottomActions(voiceState, canSave),
-            ],
-          ),
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.8,
+      child: Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            _buildHeader(voiceState),
+
+            // Progress Indicator
+            _buildProgressIndicator(voiceState),
+
+            // Main Content
+            Expanded(
+              child: _buildMainContent(voiceState),
+            ),
+
+            // Bottom Actions
+            _buildBottomActions(voiceState, canSave),
+          ],
         ),
       ),
+    ),
     );
   }
 

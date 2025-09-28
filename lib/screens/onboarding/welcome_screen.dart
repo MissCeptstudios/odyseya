@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
-import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../widgets/common/app_background.dart';
 
 class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    return OnboardingLayout(
-      showProgress: false,
-      showBackButton: false,
-      onNext: () => context.go('/onboarding/questionnaire/q1'),
-      nextButtonText: 'Continue',
-      child: Column(
-        children: [
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.02,
+      child: OnboardingLayout(
+        showProgress: false,
+        showBackButton: false,
+        onNext: () => context.go('/onboarding/questionnaire/q1'),
+        nextButtonText: 'Continue',
+        child: Column(
+          children: [
           const SizedBox(height: 40),
           
           // Hero Logo Section
@@ -125,6 +127,7 @@ class WelcomeScreen extends ConsumerWidget {
           const SizedBox(height: 40),
         ],
       ),
+    ),
     );
   }
 

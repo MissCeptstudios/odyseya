@@ -26,8 +26,8 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.8);
-    
+    _pageController = PageController(viewportFraction: 0.85);
+
     if (widget.selectedMood != null) {
       final selectedIndex = widget.moods.indexWhere(
         (mood) => mood.id == widget.selectedMood!.id,
@@ -53,53 +53,100 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 280, // Reverted to original height
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            itemCount: widget.moods.length,
-            itemBuilder: (context, index) {
-              final mood = widget.moods[index];
-              final isSelected = widget.selectedMood?.id == mood.id;
-              
-              return Transform.scale(
-                scale: index == _currentIndex ? 1.0 : 0.9,
-                child: MoodCard(
-                  mood: mood,
-                  isSelected: isSelected,
-                  onTap: () => widget.onMoodSelected(mood),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 24),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            widget.moods.length,
-            (index) => AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              height: 8,
-              width: index == _currentIndex ? 24 : 8,
-              decoration: BoxDecoration(
-                color: index == _currentIndex
-                    ? DesertColors.westernSunrise
-                    : DesertColors.surface,
-                borderRadius: BorderRadius.circular(4),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Reserve space for dots and spacing
+        final dotsHeight = 50.0; // Height for dots and spacing
+        final pageViewHeight = constraints.maxHeight - dotsHeight;
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: pageViewHeight,
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                itemCount: widget.moods.length,
+                itemBuilder: (context, index) {
+                  final mood = widget.moods[index];
+                  final isSelected = widget.selectedMood?.id == mood.id;
+
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    transform: Matrix4.identity()
+                      ..scale(index == _currentIndex ? 1.0 : 0.92)
+                      ..translate(
+                        0.0,
+                        index == _currentIndex ? 0.0 : 10.0,
+                      ),
+                    child: MoodCard(
+                      mood: mood,
+                      isSelected: isSelected,
+                      onTap: () => widget.onMoodSelected(mood),
+                    ),
+                  );
+                },
               ),
             ),
-          ),
-        ),
-      ],
+            const SizedBox(height: 16),
+            Container(
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Mood counter
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: DesertColors.westernSunrise.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: DesertColors.westernSunrise.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Text(
+                      '${_currentIndex + 1} of ${widget.moods.length}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: DesertColors.westernSunrise,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 16),
+
+                  // Dots indicator
+                  Row(
+                    children: List.generate(
+                      widget.moods.length,
+                      (index) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        height: index == _currentIndex ? 10 : 6,
+                        width: index == _currentIndex ? 10 : 6,
+                        decoration: BoxDecoration(
+                          color: index == _currentIndex
+                              ? DesertColors.westernSunrise
+                              : DesertColors.westernSunrise.withValues(alpha: 0.3),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

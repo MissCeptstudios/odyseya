@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants/colors.dart';
 import '../providers/settings_provider.dart';
 import '../providers/notification_provider.dart';
+import '../widgets/common/app_background.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -14,9 +15,12 @@ class SettingsScreen extends ConsumerWidget {
     final isLoading = notificationState.isLoading;
     final hasPermission = notificationState.hasPermission;
 
-    return Scaffold(
-      backgroundColor: DesertColors.background,
-      appBar: AppBar(
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.8,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
@@ -32,9 +36,10 @@ class SettingsScreen extends ConsumerWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
               const SizedBox(height: 20),
               
               _buildSettingsSection(
@@ -138,7 +143,7 @@ class SettingsScreen extends ConsumerWidget {
                 ],
               ),
               
-              const Spacer(),
+              const SizedBox(height: 32),
               
               // App Info
               Center(
@@ -165,9 +170,11 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
             ],
+            ),
           ),
         ),
       ),
+    ),
     );
   }
 

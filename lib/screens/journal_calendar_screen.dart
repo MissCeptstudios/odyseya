@@ -5,6 +5,7 @@ import '../providers/calendar_provider.dart';
 import '../widgets/calendar/calendar_widget.dart';
 import '../widgets/calendar/statistics_bar.dart';
 import '../widgets/calendar/entry_preview_card.dart';
+import '../widgets/common/app_background.dart';
 
 class JournalCalendarScreen extends ConsumerWidget {
   const JournalCalendarScreen({super.key});
@@ -14,9 +15,12 @@ class JournalCalendarScreen extends ConsumerWidget {
     final calendarState = ref.watch(calendarProvider);
     final calendarNotifier = ref.read(calendarProvider.notifier);
 
-    return Scaffold(
-      backgroundColor: DesertColors.background,
-      appBar: AppBar(
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.8,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
         backgroundColor: DesertColors.background,
         elevation: 0,
         leading: IconButton(
@@ -125,6 +129,7 @@ class JournalCalendarScreen extends ConsumerWidget {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -216,8 +221,8 @@ class JournalCalendarScreen extends ConsumerWidget {
 
   bool _isToday(DateTime date) {
     final now = DateTime.now();
-    return date.year == now.year && 
-           date.month == now.month && 
+    return date.year == now.year &&
+           date.month == now.month &&
            date.day == now.day;
   }
 }

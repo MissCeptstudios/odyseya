@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
+import '../widgets/common/app_background.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class FirstDownloadAppScreen extends StatefulWidget {
+  const FirstDownloadAppScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<FirstDownloadAppScreen> createState() => _FirstDownloadAppScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _FirstDownloadAppScreenState extends State<FirstDownloadAppScreen>
     with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late AnimationController _scaleController;
@@ -95,17 +96,16 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Pure white background
-      body: Container(
-        width: double.infinity,
-        // Pure white - no gradient for splash
-        color: Colors.white,
+      body: AppBackground(
+        useOverlay: true,
+        overlayOpacity: 0.2,
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(flex: 2),
-              
+              const Spacer(flex: 1),
+
+              // Maximum size Odyseya Logo PNG
               AnimatedBuilder(
                 animation: _fadeAnimation,
                 builder: (context, child) {
@@ -117,25 +117,13 @@ class _SplashScreenState extends State<SplashScreen>
                         return Transform.scale(
                           scale: _scaleAnimation.value,
                           child: Container(
-                            width: 140,
-                            height: 140,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: DesertColors.terracotta.withValues(alpha: 0.3),
-                                  blurRadius: 20,
-                                  spreadRadius: 5,
-                                ),
-                              ],
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/Odyseya_Icon.png',
-                                width: 140,
-                                height: 140,
-                                fit: BoxFit.cover,
-                              ),
+                            width: MediaQuery.of(context).size.width * 0.9, // 90% of screen width
+                            height: MediaQuery.of(context).size.height * 0.5, // 50% of screen height
+                            child: Image.asset(
+                              'assets/images/Odyseya_logo_noBGR.png',
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         );
@@ -144,48 +132,33 @@ class _SplashScreenState extends State<SplashScreen>
                   );
                 },
               ),
-              
-              const SizedBox(height: 32),
-              
+
+              const SizedBox(height: 24),
+
+              // "Your emotional journey awaits" - sans-serif font, logo color
               AnimatedBuilder(
                 animation: _textFadeAnimation,
                 builder: (context, child) {
                   return FadeTransition(
                     opacity: _textFadeAnimation,
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/Odyseya_word.png',
-                          height: 60,
-                          fit: BoxFit.contain,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Your voice. Your journey.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: DesertColors.treeBranch,
-                            fontStyle: FontStyle.italic,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'Your emotional journey awaits',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: DesertColors.onSurface.withValues(alpha: 0.7),
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'Your greatest adventure is within',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF7A4B2E), // Exact logo color: #7A4B2E
+                        fontFamily: 'Cormorant Garamond',
+                        letterSpacing: 0.8,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   );
                 },
               ),
-              
-              const Spacer(flex: 3),
-              
+
+              const Spacer(flex: 1),
+
+              // Continue button
               AnimatedBuilder(
                 animation: _textFadeAnimation,
                 builder: (context, child) {
@@ -200,18 +173,22 @@ class _SplashScreenState extends State<SplashScreen>
                         child: ElevatedButton(
                           onPressed: _navigateToNext,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: DesertColors.caramelDrizzle,
+                            backgroundColor: DesertColors.westernSunrise,
                             foregroundColor: Colors.white,
-                            elevation: 0,
+                            elevation: 8,
+                            shadowColor: DesertColors.westernSunrise.withValues(alpha: 0.3),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
                           ),
                           child: const Text(
-                            'Continue',
+                            'Begin Your Journey Today',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 19,
                               fontWeight: FontWeight.w600,
+                              letterSpacing: 0.5,
+                              fontFamily: '.SF Pro Text',
+                              color: Colors.white,
                             ),
                           ),
                         ),

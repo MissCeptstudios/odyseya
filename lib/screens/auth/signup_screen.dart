@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/auth_provider.dart';
+import '../../widgets/common/app_background.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -56,9 +57,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.white, // Pure white background
-      appBar: AppBar(
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.05,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
@@ -354,6 +358,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 

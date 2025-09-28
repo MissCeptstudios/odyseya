@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import '../models/ai_analysis.dart';
 import 'ai_service_factory.dart';
-import 'ai_service_interface.dart';
 
 class AIAnalysisService {
   static const String _claudeUrl = 'https://api.anthropic.com/v1/messages';
-  
+
   // Mock API keys - in production, use environment variables or secure storage
   static const String _claudeKey = 'your-claude-api-key';
 
@@ -25,9 +23,11 @@ class AIAnalysisService {
       // Try to use real AI service first
       if (_aiFactory.isCurrentServiceConfigured) {
         if (kDebugMode) {
-          print('Using real AI service: ${_aiFactory.getCurrentService().serviceName}');
+          print(
+            'Using real AI service: ${_aiFactory.getCurrentService().serviceName}',
+          );
         }
-        
+
         try {
           return await _aiFactory.getCurrentService().analyzeEmotionalContent(
             text: text,
@@ -50,7 +50,6 @@ class AIAnalysisService {
 
       // Enhanced mock analysis
       return _generateMockAnalysis(text, mood);
-      
     } catch (e) {
       throw AIAnalysisException('Failed to analyze emotion: $e');
     }
@@ -86,18 +85,44 @@ class AIAnalysisService {
   AIAnalysis _generateMockAnalysis(String text, String? mood) {
     final random = Random();
     final words = text.toLowerCase().split(' ');
-    
+
     // Analyze emotional tone based on keywords and mood
     String emotionalTone;
     Map<String, double> emotionScores = {};
     double confidence;
-    
-    // Detect emotional keywords
-    final positiveWords = ['happy', 'joy', 'good', 'great', 'wonderful', 'excited', 'love', 'amazing', 'peaceful', 'calm'];
-    final negativeWords = ['sad', 'angry', 'frustrated', 'worried', 'anxious', 'stressed', 'overwhelmed', 'hurt', 'upset', 'tired'];
 
-    int positiveCount = words.where((word) => positiveWords.contains(word)).length;
-    int negativeCount = words.where((word) => negativeWords.contains(word)).length;
+    // Detect emotional keywords
+    final positiveWords = [
+      'happy',
+      'joy',
+      'good',
+      'great',
+      'wonderful',
+      'excited',
+      'love',
+      'amazing',
+      'peaceful',
+      'calm',
+    ];
+    final negativeWords = [
+      'sad',
+      'angry',
+      'frustrated',
+      'worried',
+      'anxious',
+      'stressed',
+      'overwhelmed',
+      'hurt',
+      'upset',
+      'tired',
+    ];
+
+    int positiveCount = words
+        .where((word) => positiveWords.contains(word))
+        .length;
+    int negativeCount = words
+        .where((word) => negativeWords.contains(word))
+        .length;
 
     // Consider mood input if provided
     if (mood != null) {
@@ -137,16 +162,24 @@ class AIAnalysisService {
 
     // Generate triggers based on content
     List<String> triggers = [];
-    if (words.any((word) => ['work', 'job', 'deadline', 'meeting', 'boss'].contains(word))) {
+    if (words.any(
+      (word) => ['work', 'job', 'deadline', 'meeting', 'boss'].contains(word),
+    )) {
       triggers.add('Work-related stress');
     }
-    if (words.any((word) => ['relationship', 'family', 'friend', 'partner'].contains(word))) {
+    if (words.any(
+      (word) => ['relationship', 'family', 'friend', 'partner'].contains(word),
+    )) {
       triggers.add('Interpersonal dynamics');
     }
-    if (words.any((word) => ['time', 'busy', 'schedule', 'rushing'].contains(word))) {
+    if (words.any(
+      (word) => ['time', 'busy', 'schedule', 'rushing'].contains(word),
+    )) {
       triggers.add('Time pressure');
     }
-    if (words.any((word) => ['money', 'financial', 'bills', 'budget'].contains(word))) {
+    if (words.any(
+      (word) => ['money', 'financial', 'bills', 'budget'].contains(word),
+    )) {
       triggers.add('Financial concerns');
     }
 
@@ -196,7 +229,9 @@ class AIAnalysisService {
 
     if (triggers.contains('Interpersonal dynamics')) {
       suggestions.add("Reflect on healthy boundaries in your relationships");
-      suggestions.add("Consider having an open conversation with those involved");
+      suggestions.add(
+        "Consider having an open conversation with those involved",
+      );
     }
 
     if (tone.contains('Positive')) {
@@ -273,8 +308,10 @@ Remember to be supportive, non-judgmental, and focus on emotional growth and wel
         insight: data['insight'] ?? '',
         suggestions: List<String>.from(data['suggestions'] ?? []),
         emotionScores: Map<String, double>.from(
-          data['emotionScores']?.map((key, value) => 
-            MapEntry(key, (value ?? 0.0).toDouble())) ?? {}
+          data['emotionScores']?.map(
+                (key, value) => MapEntry(key, (value ?? 0.0).toDouble()),
+              ) ??
+              {},
         ),
         analyzedAt: DateTime.now(),
       );
@@ -287,7 +324,7 @@ Remember to be supportive, non-judgmental, and focus on emotional growth and wel
 class AIAnalysisException implements Exception {
   final String message;
   AIAnalysisException(this.message);
-  
+
   @override
   String toString() => 'AIAnalysisException: $message';
 }

@@ -5,6 +5,7 @@ import '../models/mood.dart';
 import '../constants/colors.dart';
 import '../widgets/swipeable_mood_cards.dart';
 import '../providers/mood_provider.dart';
+import '../widgets/common/app_background.dart';
 
 class MoodSelectionScreen extends ConsumerStatefulWidget {
   const MoodSelectionScreen({super.key});
@@ -43,8 +44,11 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
     final moodState = ref.watch(moodProvider);
     // Building MoodSelectionScreen, hasMood: ${moodState.hasMood}
 
-    return Scaffold(
-      backgroundColor: DesertColors.background, // Reverted to original background
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.8,
+      child: Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -53,19 +57,28 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
           'How are you feeling?',
           style: TextStyle(
             color: DesertColors.onSurface,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
           ),
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () => context.push('/calendar'),
-            icon: const Icon(
-              Icons.calendar_today_rounded,
-              color: DesertColors.primary,
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            decoration: BoxDecoration(
+              color: DesertColors.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
             ),
-            tooltip: 'View Journal Calendar',
+            child: IconButton(
+              onPressed: () => context.push('/calendar'),
+              icon: const Icon(
+                Icons.calendar_today_rounded,
+                color: DesertColors.primary,
+                size: 20,
+              ),
+              tooltip: 'View Journal Calendar',
+            ),
           ),
         ],
       ),
@@ -169,20 +182,49 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                'Take a moment to check in with yourself. Swipe through the cards and select the mood that resonates with you right now.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesertColors.onSurface,
-                  height: 1.5,
+            const SizedBox(height: 16),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: DesertColors.westernSunrise.withValues(alpha: 0.2),
                 ),
               ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.psychology_rounded,
+                    color: DesertColors.westernSunrise,
+                    size: 24,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Take a moment to check in with yourself',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: DesertColors.onSurface,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Swipe through the cards and select the mood that resonates with you right now',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: DesertColors.onSurface.withValues(alpha: 0.8),
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 24),
             Expanded(
               child: SwipeableMoodCards(
                 moods: Mood.defaultMoods,
@@ -190,44 +232,99 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                 selectedMood: moodState.selectedMood,
               ),
             ),
-            Padding(
+            Container(
               padding: const EdgeInsets.all(24),
-              child: SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: moodState.selectedMood != null
-                      ? _onContinue
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: moodState.selectedMood != null
-                        ? DesertColors.caramelDrizzle
-                        : DesertColors.surface,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+              child: Column(
+                children: [
+                  // Selected mood indicator
+                  if (moodState.selectedMood != null) ...[
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: moodState.selectedMood!.color.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: moodState.selectedMood!.color.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            moodState.selectedMood!.emoji,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Feeling ${moodState.selectedMood!.label.toLowerCase()}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: moodState.selectedMood!.color,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    disabledBackgroundColor: DesertColors.surface,
-                    disabledForegroundColor: DesertColors.onSurface.withValues(
-                      alpha: 0.5,
+                  ],
+
+                  // Continue button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: moodState.selectedMood != null
+                          ? _onContinue
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: moodState.selectedMood != null
+                            ? DesertColors.westernSunrise
+                            : DesertColors.surface,
+                        foregroundColor: Colors.white,
+                        elevation: moodState.selectedMood != null ? 8 : 0,
+                        shadowColor: moodState.selectedMood != null
+                            ? DesertColors.westernSunrise.withValues(alpha: 0.3)
+                            : Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        disabledBackgroundColor: DesertColors.surface,
+                        disabledForegroundColor: DesertColors.onSurface.withValues(
+                          alpha: 0.5,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            moodState.selectedMood != null
+                                ? 'Continue to Journal'
+                                : 'Select a mood to continue',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          if (moodState.selectedMood != null) ...[
+                            const SizedBox(width: 8),
+                            const Icon(
+                              Icons.arrow_forward_rounded,
+                              size: 20,
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
-                  child: Text(
-                    moodState.selectedMood != null
-                        ? 'Continue with ${moodState.selectedMood!.label}'
-                        : 'Select a mood to continue',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+                ],
               ),
             ),
           ],
         ),
       ),
+    ),
     );
   }
 }

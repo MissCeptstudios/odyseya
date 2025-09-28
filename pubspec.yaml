@@ -71,6 +71,9 @@ dependencies:
   
   # Settings storage
   shared_preferences: ^2.2.2
+
+  # Environment variables
+  flutter_dotenv: ^5.1.0
   
   # Notifications
   flutter_local_notifications: ^19.4.0
@@ -103,17 +106,20 @@ flutter:
   uses-material-design: true
 
   # Fonts (using system fonts for now)
-  # fonts:
-  #   - family: Cormorant Garamond
-  #     fonts:
-  #       - asset: fonts/CormorantGaramond-Regular.ttf
-  #         weight: 400
+  fonts:
+    - family: Cormorant Garamond
+      fonts:
+        - asset: fonts/CormorantGaramond-Regular.ttf
+          weight: 400
 
   # Assets
   assets:
+    - .env
     - assets/images/
     - assets/images/Odyseya_Icon.png
     - assets/images/Odyseya_word.png
+    - assets/images/background_day.png
+    - assets/images/moods/
     - assets/logos/
   #   - images/a_dot_ham.jpeg
 

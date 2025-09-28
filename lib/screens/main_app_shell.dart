@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../constants/colors.dart';
 import '../widgets/navigation/bottom_navigation_bar.dart';
+import '../widgets/common/app_background.dart';
 import 'mood_selection_screen.dart';
 import 'voice_journal_screen.dart';
 import 'journal_calendar_screen.dart';
@@ -23,8 +23,12 @@ class MainAppShell extends ConsumerWidget {
     final currentScreen = _getScreenFromLocation(location);
     
     return Scaffold(
-      backgroundColor: DesertColors.background,
-      body: currentScreen,
+      backgroundColor: Colors.transparent,
+      body: AppBackground(
+        useOverlay: true,
+        overlayOpacity: 0.05,
+        child: currentScreen,
+      ),
       bottomNavigationBar: OdyseyaBottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {

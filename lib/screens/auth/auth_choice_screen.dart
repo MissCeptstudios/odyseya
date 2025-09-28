@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
+import '../../widgets/common/app_background.dart';
 
 class AuthChoiceScreen extends StatelessWidget {
   const AuthChoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white, // Pure white background
-      body: SafeArea(
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.05,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
@@ -115,6 +119,7 @@ class AuthChoiceScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 } 

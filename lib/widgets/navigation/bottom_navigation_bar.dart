@@ -81,7 +81,7 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: isSelected 
                 ? DesertColors.primary.withValues(alpha: 0.1)
@@ -100,7 +100,7 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  padding: EdgeInsets.all(isSelected ? 4 : 2),
+                  padding: EdgeInsets.all(isSelected ? 3 : 2),
                   decoration: BoxDecoration(
                     color: isSelected 
                       ? DesertColors.primary.withValues(alpha: 0.1)
@@ -115,22 +115,24 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
                       : DesertColors.onSecondary.withValues(alpha: 0.7),
                   ),
                 ),
-                const SizedBox(height: 4),
-                AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  style: TextStyle(
-                    fontSize: isSelected ? 12 : 10,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                    color: isSelected 
-                      ? DesertColors.primary
-                      : DesertColors.onSecondary.withValues(alpha: 0.7),
-                  ),
-                  child: Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                const SizedBox(height: 2),
+                Flexible(
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    style: TextStyle(
+                      fontSize: isSelected ? 11 : 9,
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      color: isSelected
+                        ? DesertColors.primary
+                        : DesertColors.onSecondary.withValues(alpha: 0.7),
+                    ),
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],
