@@ -57,13 +57,17 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
       builder: (context, constraints) {
         // Reserve space for dots and spacing
         final dotsHeight = 50.0; // Height for dots and spacing
-        final pageViewHeight = constraints.maxHeight - dotsHeight;
+        final availableHeight = constraints.maxHeight;
+        // Ensure we have positive height for PageView
+        final pageViewHeight = availableHeight > dotsHeight
+            ? availableHeight - dotsHeight
+            : availableHeight * 0.85;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: pageViewHeight,
+              height: pageViewHeight > 0 ? pageViewHeight : 300,
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (index) {

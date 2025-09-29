@@ -119,6 +119,7 @@ flutter:
     - assets/images/Odyseya_Icon.png
     - assets/images/Odyseya_word.png
     - assets/images/background_day.png
+    - assets/images/background_desert.png
     - assets/images/moods/
     - assets/logos/
   #   - images/a_dot_ham.jpeg

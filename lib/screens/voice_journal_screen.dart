@@ -81,7 +81,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
     return AppBackground(
       useOverlay: true,
-      overlayOpacity: 0.8,
+      overlayOpacity: 0.05,
+      overlayColor: DesertColors.paleDesert,
       child: Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
@@ -119,7 +120,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             },
             icon: Icon(
               Icons.arrow_back,
-              color: DesertColors.onSurface,
+              color: DesertColors.deepBrown,
             ),
           ),
           
@@ -135,14 +136,14 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
+                    color: DesertColors.deepBrown,
                   ),
                 ),
                 Text(
                   _getStepSubtitle(voiceState.currentStep),
                   style: TextStyle(
                     fontSize: 14,
-                    color: DesertColors.onSecondary,
+                    color: DesertColors.taupe,
                   ),
                 ),
               ],
@@ -156,7 +157,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             },
             icon: Icon(
               Icons.help_outline,
-              color: DesertColors.onSecondary,
+              color: DesertColors.taupe,
             ),
           ),
         ],
@@ -177,13 +178,13 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
           Container(
             height: 4,
             decoration: BoxDecoration(
-              color: DesertColors.waterWash.withValues(alpha: 0.3),
+              color: DesertColors.dustyBlue.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2),
             ),
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: Colors.transparent,
-              valueColor: AlwaysStoppedAnimation<Color>(DesertColors.primary),
+              valueColor: AlwaysStoppedAnimation<Color>(DesertColors.roseSand),
             ),
           ),
           
@@ -211,11 +212,11 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       height: 24,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isActive 
-            ? DesertColors.primary 
-            : DesertColors.waterWash.withValues(alpha: 0.3),
-        border: isCurrent 
-            ? Border.all(color: DesertColors.primary, width: 2)
+        color: isActive
+            ? DesertColors.roseSand
+            : DesertColors.dustyBlue.withValues(alpha: 0.3),
+        border: isCurrent
+            ? Border.all(color: DesertColors.roseSand, width: 2)
             : null,
       ),
       child: Center(
@@ -230,7 +231,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  color: DesertColors.onSecondary,
+                  color: DesertColors.taupe,
                 ),
               ),
       ),
@@ -265,10 +266,10 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
           Container(
             margin: const EdgeInsets.only(bottom: 24),
             decoration: BoxDecoration(
-              color: DesertColors.surface,
+              color: DesertColors.offWhite,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: DesertColors.waterWash.withValues(alpha: 0.3),
+                color: DesertColors.dustyBlue.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
@@ -279,8 +280,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       decoration: BoxDecoration(
-                        color: voiceState.inputMethod == 'voice' 
-                            ? DesertColors.primary 
+                        color: voiceState.inputMethod == 'voice'
+                            ? DesertColors.roseSand
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -292,7 +293,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                             size: 18,
                             color: voiceState.inputMethod == 'voice'
                                 ? Colors.white
-                                : DesertColors.onSurface,
+                                : DesertColors.deepBrown,
                           ),
                           const SizedBox(width: 8),
                           Text(
@@ -302,7 +303,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                               fontWeight: FontWeight.w600,
                               color: voiceState.inputMethod == 'voice'
                                   ? Colors.white
-                                  : DesertColors.onSurface,
+                                  : DesertColors.deepBrown,
                             ),
                           ),
                         ],
@@ -316,8 +317,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       decoration: BoxDecoration(
-                        color: voiceState.inputMethod == 'text' 
-                            ? DesertColors.primary 
+                        color: voiceState.inputMethod == 'text'
+                            ? DesertColors.roseSand
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -329,7 +330,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                             size: 18,
                             color: voiceState.inputMethod == 'text'
                                 ? Colors.white
-                                : DesertColors.onSurface,
+                                : DesertColors.deepBrown,
                           ),
                           const SizedBox(width: 8),
                           Text(
@@ -339,7 +340,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                               fontWeight: FontWeight.w600,
                               color: voiceState.inputMethod == 'text'
                                   ? Colors.white
-                                  : DesertColors.onSurface,
+                                  : DesertColors.deepBrown,
                             ),
                           ),
                         ],
@@ -357,42 +358,14 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             const SizedBox(height: 40),
             const RecordButton(),
             const SizedBox(height: 40),
-            
-            // Voice Instructions
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: DesertColors.surface.withValues(alpha: 0.8),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.tips_and_updates,
-                    color: DesertColors.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Speak freely about what\'s on your mind. There\'s no right or wrong way to express yourself.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: DesertColors.onSecondary,
-                      height: 1.4,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
           ] else ...[
             // Text Input Interface
             Container(
               decoration: BoxDecoration(
-                color: DesertColors.surface,
+                color: DesertColors.offWhite,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: DesertColors.waterWash.withValues(alpha: 0.3),
+                  color: DesertColors.dustyBlue.withValues(alpha: 0.3),
                 ),
               ),
               child: Column(
@@ -404,7 +377,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       children: [
                         Icon(
                           Icons.edit_note_rounded,
-                          color: DesertColors.primary,
+                          color: DesertColors.roseSand,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
@@ -413,7 +386,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: DesertColors.onSurface,
+                            color: DesertColors.deepBrown,
                           ),
                         ),
                       ],
@@ -423,10 +396,10 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     height: 200,
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     decoration: BoxDecoration(
-                      color: DesertColors.cardBackground,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: DesertColors.waterWash.withValues(alpha: 0.3),
+                        color: DesertColors.dustyBlue.withValues(alpha: 0.3),
                       ),
                     ),
                     child: TextField(
@@ -436,7 +409,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       decoration: InputDecoration(
                         hintText: 'Share what\'s on your mind...',
                         hintStyle: TextStyle(
-                          color: DesertColors.onSurface.withValues(alpha: 0.5),
+                          color: DesertColors.taupe.withValues(alpha: 0.5),
                           fontSize: 16,
                         ),
                         border: InputBorder.none,
@@ -444,7 +417,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       ),
                       style: TextStyle(
                         fontSize: 16,
-                        color: DesertColors.onSurface,
+                        color: DesertColors.deepBrown,
                         height: 1.5,
                       ),
                       onChanged: (text) {
@@ -462,14 +435,14 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: DesertColors.surface.withValues(alpha: 0.8),
+                color: DesertColors.offWhite.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
                 children: [
                   Icon(
                     Icons.tips_and_updates,
-                    color: DesertColors.primary,
+                    color: DesertColors.roseSand,
                     size: 20,
                   ),
                   const SizedBox(height: 8),
@@ -477,7 +450,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     'Type freely about your thoughts and feelings. Take your time to express yourself fully.',
                     style: TextStyle(
                       fontSize: 14,
-                      color: DesertColors.onSecondary,
+                      color: DesertColors.taupe,
                       height: 1.4,
                     ),
                     textAlign: TextAlign.center,
@@ -513,10 +486,10 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: DesertColors.surface,
+              color: DesertColors.offWhite,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: DesertColors.waterWash.withValues(alpha: 0.3),
+                color: DesertColors.dustyBlue.withValues(alpha: 0.3),
               ),
             ),
             child: Column(
@@ -535,7 +508,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: DesertColors.onSurface,
+                        color: DesertColors.deepBrown,
                       ),
                     ),
                   ],
@@ -545,7 +518,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   'Take a moment to review everything before saving. You can always come back and edit later.',
                   style: TextStyle(
                     fontSize: 14,
-                    color: DesertColors.onSecondary,
+                    color: DesertColors.taupe,
                     height: 1.4,
                   ),
                 ),
@@ -606,18 +579,18 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
-                color: DesertColors.onSurface,
+                color: DesertColors.deepBrown,
               ),
               textAlign: TextAlign.center,
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             Text(
               'Thank you for taking time to connect with your emotions. Your insights are valuable and will help you grow.',
               style: TextStyle(
                 fontSize: 16,
-                color: DesertColors.onSecondary,
+                color: DesertColors.taupe,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
@@ -636,7 +609,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       ref.read(voiceJournalProvider.notifier).startNewEntry();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: DesertColors.primary,
+                      backgroundColor: DesertColors.roseSand,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -662,8 +635,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       context.go('/calendar');
                     },
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: DesertColors.primary,
-                      side: BorderSide(color: DesertColors.primary),
+                      foregroundColor: DesertColors.roseSand,
+                      side: BorderSide(color: DesertColors.roseSand),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -693,10 +666,10 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: DesertColors.surface.withValues(alpha: 0.9),
+        color: DesertColors.offWhite.withValues(alpha: 0.95),
         border: Border(
           top: BorderSide(
-            color: DesertColors.waterWash.withValues(alpha: 0.3),
+            color: DesertColors.dustyBlue.withValues(alpha: 0.3),
           ),
         ),
       ),
@@ -712,8 +685,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                         ref.read(voiceJournalProvider.notifier).goBack();
                       },
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: DesertColors.onSecondary,
-                  side: BorderSide(color: DesertColors.onSecondary),
+                  foregroundColor: DesertColors.taupe,
+                  side: BorderSide(color: DesertColors.taupe),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -732,7 +705,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   ? () => _handlePrimaryAction(voiceState)
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: DesertColors.primary,
+                backgroundColor: DesertColors.roseSand,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -868,21 +841,21 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: DesertColors.surface,
+        backgroundColor: DesertColors.offWhite,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         title: Text(
           'Leave Journal Entry?',
           style: TextStyle(
-            color: DesertColors.onSurface,
+            color: DesertColors.deepBrown,
             fontWeight: FontWeight.w600,
           ),
         ),
         content: Text(
           'Your progress will be lost if you leave now. Are you sure you want to exit?',
           style: TextStyle(
-            color: DesertColors.onSecondary,
+            color: DesertColors.taupe,
             height: 1.4,
           ),
         ),
@@ -891,7 +864,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Stay',
-              style: TextStyle(color: DesertColors.onSecondary),
+              style: TextStyle(color: DesertColors.taupe),
             ),
           ),
           ElevatedButton(
@@ -917,7 +890,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: DesertColors.surface,
+        backgroundColor: DesertColors.offWhite,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -925,13 +898,13 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
           children: [
             Icon(
               Icons.help_outline,
-              color: DesertColors.primary,
+              color: DesertColors.roseSand,
             ),
             const SizedBox(width: 8),
             Text(
               'How it works',
               style: TextStyle(
-                color: DesertColors.onSurface,
+                color: DesertColors.deepBrown,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -940,7 +913,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
         content: Text(
           helpText,
           style: TextStyle(
-            color: DesertColors.onSecondary,
+            color: DesertColors.taupe,
             height: 1.4,
           ),
         ),
@@ -948,7 +921,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: DesertColors.primary,
+              backgroundColor: DesertColors.roseSand,
               foregroundColor: Colors.white,
             ),
             child: const Text('Got it'),

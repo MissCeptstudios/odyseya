@@ -107,10 +107,10 @@ class _RecordButtonState extends ConsumerState<RecordButton>
             margin: const EdgeInsets.only(bottom: 24),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: DesertColors.surface.withValues(alpha: 0.9),
+              color: DesertColors.offWhite.withValues(alpha: 0.95),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: DesertColors.waterWash.withValues(alpha: 0.3),
+                color: DesertColors.dustyBlue.withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -118,7 +118,7 @@ class _RecordButtonState extends ConsumerState<RecordButton>
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: DesertColors.onSurface,
+                color: DesertColors.deepBrown,
                 letterSpacing: 1.0,
               ),
             ),
@@ -203,8 +203,8 @@ class _RecordButtonState extends ConsumerState<RecordButton>
       onPressed = null; // Main button disabled while recording
     } else {
       buttonColor = canStart
-          ? DesertColors.primary
-          : DesertColors.onSecondary.withValues(alpha: 0.3);
+          ? DesertColors.roseSand
+          : DesertColors.taupe.withValues(alpha: 0.3);
       buttonIcon = Icons.mic;
       buttonLabel = voiceState.hasRecording ? 'Record Again' : 'Start Recording';
       onPressed = canStart
@@ -222,8 +222,8 @@ class _RecordButtonState extends ConsumerState<RecordButton>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        width: 140,
-        height: 140,
+        width: 160,
+        height: 160,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: RadialGradient(
@@ -280,39 +280,44 @@ class _RecordButtonState extends ConsumerState<RecordButton>
     required VoidCallback onPressed,
   }) {
     return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onPressed();
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: color,
+              boxShadow: [
+                BoxShadow(
+                  color: color.withValues(alpha: 0.35),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
+            child: Icon(
               icon,
-              size: 24,
+              size: 32,
               color: Colors.white,
             ),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 8,
-                fontWeight: FontWeight.w500,
-              ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(
+              color: DesertColors.deepBrown,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

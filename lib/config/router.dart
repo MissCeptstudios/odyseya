@@ -22,6 +22,51 @@ import '../screens/affirmation_screen.dart';
 import '../screens/marketing_screen.dart';
 import '../screens/main_app_shell.dart';
 
+// Custom page transition builder for smooth animations
+CustomTransitionPage<void> _buildPageWithFadeTransition({
+  required Widget child,
+  required GoRouterState state,
+}) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
+        child: child,
+      );
+    },
+  );
+}
+
+// Custom page transition with slide from right
+CustomTransitionPage<void> _buildPageWithSlideTransition({
+  required Widget child,
+  required GoRouterState state,
+}) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 400),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.easeOutCubic;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
 // Router configuration
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
@@ -39,35 +84,50 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding',
         name: 'onboarding',
-        builder: (context, state) => const OnboardingFlow(),
+        pageBuilder: (context, state) => _buildPageWithFadeTransition(
+          child: const OnboardingFlow(),
+          state: state,
+        ),
       ),
 
       // Onboarding Success
       GoRoute(
         path: '/onboarding-success',
         name: 'onboarding-success',
-        builder: (context, state) => const OnboardingSuccessScreen(),
+        pageBuilder: (context, state) => _buildPageWithSlideTransition(
+          child: const OnboardingSuccessScreen(),
+          state: state,
+        ),
       ),
 
       // GDPR Consent Screen (before signup)
       GoRoute(
         path: '/gdpr-consent',
         name: 'gdpr-consent',
-        builder: (context, state) => const GdprConsentScreen(),
+        pageBuilder: (context, state) => _buildPageWithFadeTransition(
+          child: const GdprConsentScreen(),
+          state: state,
+        ),
       ),
 
       // Permissions Screen (after GDPR)
       GoRoute(
         path: '/permissions',
         name: 'permissions',
-        builder: (context, state) => const PermissionsScreen(),
+        pageBuilder: (context, state) => _buildPageWithSlideTransition(
+          child: const PermissionsScreen(),
+          state: state,
+        ),
       ),
 
       // Welcome Screen (after permissions)
       GoRoute(
         path: '/welcome',
         name: 'welcome',
-        builder: (context, state) => const WelcomeScreen(),
+        pageBuilder: (context, state) => _buildPageWithSlideTransition(
+          child: const WelcomeScreen(),
+          state: state,
+        ),
       ),
 
       // Marketing Screen

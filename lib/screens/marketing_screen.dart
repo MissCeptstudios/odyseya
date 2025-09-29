@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/common/app_background.dart';
 
 class MarketingScreen extends StatelessWidget {
@@ -169,8 +170,8 @@ class MarketingScreen extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () {
-              // Navigate to auth choice screen
-              Navigator.of(context).pushNamed('/auth');
+              // Navigate to signup screen
+              context.go('/signup');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFC6D9ED), // Arctic Rain

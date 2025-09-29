@@ -21,24 +21,26 @@ class JournalCalendarScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-        backgroundColor: DesertColors.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios_new_rounded,
             color: DesertColors.onSurface,
+            size: 22,
           ),
           onPressed: () {
-            // Calendar back arrow pressed - navigating back
             Navigator.pop(context);
           },
+          tooltip: 'Go back',
         ),
         title: Text(
           'Your Journal',
           style: TextStyle(
             color: DesertColors.onBackground,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+            fontSize: 26,
+            fontWeight: FontWeight.w300,
+            letterSpacing: -0.5,
           ),
         ),
         actions: [
@@ -47,15 +49,18 @@ class JournalCalendarScreen extends ConsumerWidget {
             icon: Icon(
               Icons.refresh_rounded,
               color: DesertColors.primary,
+              size: 24,
             ),
+            tooltip: 'Refresh calendar',
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: Column(
         children: [
           // Month/Year Header
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -64,15 +69,17 @@ class JournalCalendarScreen extends ConsumerWidget {
                   icon: Icon(
                     Icons.chevron_left_rounded,
                     color: DesertColors.primary,
-                    size: 32,
+                    size: 36,
                   ),
+                  tooltip: 'Previous month',
                 ),
                 Text(
                   _formatMonthYear(calendarState.currentMonth),
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
                     color: DesertColors.onBackground,
+                    letterSpacing: 0.5,
                   ),
                 ),
                 IconButton(
@@ -80,8 +87,9 @@ class JournalCalendarScreen extends ConsumerWidget {
                   icon: Icon(
                     Icons.chevron_right_rounded,
                     color: DesertColors.primary,
-                    size: 32,
+                    size: 36,
                   ),
+                  tooltip: 'Next month',
                 ),
               ],
             ),

@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
 class DesertColors {
+  // Cool Desert Morning palette
+  static const Color roseSand = Color(0xFFC89B7A); // Primary - Main actions, buttons
+  static const Color dustyBlue = Color(0xFFB0C4DE); // Secondary - Accents
+  static const Color paleDesert = Color(0xFFF2D8C1); // Background - Main backgrounds
+  static const Color offWhite = Color(0xFFFEFCFA); // Surface - Cards, elevated surfaces
+  static const Color deepBrown = Color(0xFF442B0C); // Text Primary - Main text
+  static const Color taupe = Color(0xFF8B7355); // Text Secondary - Secondary text
+
   // New color palette for onboarding
   static const Color arcticRain = Color(0xFFC6D9ED);
   static const Color waterWash = Color(0xFFAAC8E5);

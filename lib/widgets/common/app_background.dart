@@ -6,12 +6,14 @@ class AppBackground extends StatelessWidget {
   final Widget child;
   final bool useOverlay;
   final double overlayOpacity;
+  final Color overlayColor;
 
   const AppBackground({
     super.key,
     required this.child,
     this.useOverlay = false,
     this.overlayOpacity = 0.1,
+    this.overlayColor = Colors.white,
   });
 
   @override
@@ -26,7 +28,7 @@ class AppBackground extends StatelessWidget {
       child: useOverlay
           ? Container(
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: overlayOpacity),
+                color: overlayColor.withValues(alpha: overlayOpacity),
               ),
               child: child,
             )
@@ -37,10 +39,15 @@ class AppBackground extends StatelessWidget {
 
 /// Extension for easy background application to any widget
 extension BackgroundExtension on Widget {
-  Widget withAppBackground({bool useOverlay = false, double overlayOpacity = 0.1}) {
+  Widget withAppBackground({
+    bool useOverlay = false,
+    double overlayOpacity = 0.1,
+    Color overlayColor = Colors.white,
+  }) {
     return AppBackground(
       useOverlay: useOverlay,
       overlayOpacity: overlayOpacity,
+      overlayColor: overlayColor,
       child: this,
     );
   }

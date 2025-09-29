@@ -61,124 +61,142 @@ class _MoodCardState extends State<MoodCard>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _scaleAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: GestureDetector(
-            onTap: () {
-              HapticFeedback.selectionClick();
-              widget.onTap?.call();
-            },
-            onTapDown: _handleTapDown,
-            onTapUp: _handleTapUp,
-            onTapCancel: _handleTapCancel,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: widget.isSelected
-                    ? widget.mood.color.withValues(alpha: 0.1)
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
+    return Semantics(
+      label: '${widget.mood.label} mood card. ${widget.mood.description}',
+      selected: widget.isSelected,
+      button: true,
+      onTap: widget.onTap,
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                widget.onTap?.call();
+              },
+              onTapDown: _handleTapDown,
+              onTapUp: _handleTapUp,
+              onTapCancel: _handleTapCancel,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 350),
+                curve: Curves.easeOutCubic,
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
                   color: widget.isSelected
-                      ? widget.mood.color
-                      : Colors.grey.withValues(alpha: 0.2),
-                  width: widget.isSelected ? 3 : 1,
-                ),
-                boxShadow: [
-                  BoxShadow(
+                      ? widget.mood.color.withValues(alpha: 0.12)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
                     color: widget.isSelected
-                        ? widget.mood.color.withValues(alpha: 0.3)
-                        : Colors.black.withValues(alpha: 0.1),
-                    blurRadius: widget.isSelected ? 16 : 8,
-                    offset: const Offset(0, 4),
-                    spreadRadius: widget.isSelected ? 2 : 0,
+                        ? widget.mood.color
+                        : Colors.grey.withValues(alpha: 0.25),
+                    width: widget.isSelected ? 3 : 1.5,
                   ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Mood Image/Emoji
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: widget.mood.imagePath != null
-                          ? Image.asset(
-                              widget.mood.imagePath!,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Text(
-                                  widget.mood.emoji,
-                                  style: const TextStyle(fontSize: 64),
-                                );
-                              },
-                            )
-                          : Text(
-                              widget.mood.emoji,
-                              style: const TextStyle(fontSize: 64),
-                            ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  // Mood Label
-                  Text(
-                    widget.mood.label,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
+                  boxShadow: [
+                    BoxShadow(
                       color: widget.isSelected
-                          ? widget.mood.color
-                          : DesertColors.onSurface,
-                      letterSpacing: 0.5,
+                          ? widget.mood.color.withValues(alpha: 0.35)
+                          : Colors.black.withValues(alpha: 0.08),
+                      blurRadius: widget.isSelected ? 20 : 10,
+                      offset: const Offset(0, 6),
+                      spreadRadius: widget.isSelected ? 3 : 0,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 6),
-
-                  // Mood Description
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                      widget.mood.description,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: widget.isSelected
-                            ? widget.mood.color.withValues(alpha: 0.8)
-                            : DesertColors.onSurface.withValues(alpha: 0.7),
-                        height: 1.3,
+                    if (widget.isSelected)
+                      BoxShadow(
+                        color: widget.mood.color.withValues(alpha: 0.15),
+                        blurRadius: 30,
+                        offset: const Offset(0, 10),
+                        spreadRadius: 5,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Mood Image/Emoji
+                    Expanded(
+                      flex: 3,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        padding: const EdgeInsets.all(8),
+                        transform: Matrix4.identity()..scale(widget.isSelected ? 1.1 : 1.0),
+                        child: widget.mood.imagePath != null
+                            ? Image.asset(
+                                widget.mood.imagePath!,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Text(
+                                    widget.mood.emoji,
+                                    style: const TextStyle(fontSize: 64),
+                                  );
+                                },
+                              )
+                            : Text(
+                                widget.mood.emoji,
+                                style: const TextStyle(fontSize: 64),
+                              ),
+                      ),
                     ),
-                  ),
 
-                  // Selection Indicator
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    height: 4,
-                    width: widget.isSelected ? 40 : 0,
-                    decoration: BoxDecoration(
-                      color: widget.mood.color,
-                      borderRadius: BorderRadius.circular(2),
+                    const SizedBox(height: 12),
+
+                    // Mood Label
+                    Text(
+                      widget.mood.label,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: widget.isSelected
+                            ? widget.mood.color
+                            : DesertColors.onSurface,
+                        letterSpacing: 0.5,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 6),
+
+                    // Mood Description
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        widget.mood.description,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: widget.isSelected
+                              ? widget.mood.color.withValues(alpha: 0.85)
+                              : DesertColors.onSurface.withValues(alpha: 0.7),
+                          height: 1.4,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+
+                    // Selection Indicator
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeOutCubic,
+                      height: 4,
+                      width: widget.isSelected ? 50 : 0,
+                      margin: const EdgeInsets.only(top: 8),
+                      decoration: BoxDecoration(
+                        color: widget.mood.color,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
