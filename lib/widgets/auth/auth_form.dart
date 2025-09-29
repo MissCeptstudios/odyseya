@@ -55,7 +55,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             validator: (value) {
-              print('DEBUG: Validating email: $value');
+              debugPrint('DEBUG: Validating email: $value');
               if (value == null || value.trim().isEmpty) {
                 return 'Email is required';
               }
@@ -82,7 +82,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                 ? TextInputAction.next
                 : TextInputAction.done,
             validator: (value) {
-              print('DEBUG: Validating password');
+              debugPrint('DEBUG: Validating password');
               if (value == null || value.isEmpty) {
                 return 'Password is required';
               }
@@ -119,7 +119,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             onFieldSubmitted: widget.isSignUp
                 ? null
                 : (_) {
-                    print('DEBUG: Password field submitted');
+                    debugPrint('DEBUG: Password field submitted');
                     _submitForm();
                   },
           ),
@@ -415,26 +415,26 @@ class _AuthFormState extends ConsumerState<AuthForm> {
   }
 
   void _submitForm() {
-    print('DEBUG: ===== Form Submission =====');
+    debugPrint('DEBUG: ===== Form Submission =====');
     if (_formKey.currentState?.validate() ?? false) {
-      print('DEBUG: Form validation successful');
+      debugPrint('DEBUG: Form validation successful');
       final email = _emailController.text.trim();
       final password = _passwordController.text;
 
-      print('DEBUG: Form values:');
-      print('DEBUG: Email: $email');
-      print('DEBUG: Password length: ${password.length}');
-      print(
+      debugPrint('DEBUG: Form values:');
+      debugPrint('DEBUG: Email: $email');
+      debugPrint('DEBUG: Password length: ${password.length}');
+      debugPrint(
         'DEBUG: Password: $password',
       ); // Only for debugging, remove in production
 
       widget.onSubmit(email, password, null);
     } else {
-      print('DEBUG: Form validation failed');
-      print('DEBUG: Current values:');
-      print('DEBUG: Email: ${_emailController.text}');
-      print('DEBUG: Password length: ${_passwordController.text.length}');
+      debugPrint('DEBUG: Form validation failed');
+      debugPrint('DEBUG: Current values:');
+      debugPrint('DEBUG: Email: ${_emailController.text}');
+      debugPrint('DEBUG: Password length: ${_passwordController.text.length}');
     }
-    print('DEBUG: ===== Form Submission Complete =====');
+    debugPrint('DEBUG: ===== Form Submission Complete =====');
   }
 }

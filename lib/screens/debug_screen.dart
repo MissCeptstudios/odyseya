@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
+import '../widgets/common/app_background.dart';
 
 class DebugScreen extends StatelessWidget {
   const DebugScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: DesertColors.background,
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.8,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: const Text('Debug Navigation'),
         backgroundColor: DesertColors.primary,
@@ -80,6 +84,7 @@ class DebugScreen extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/voice_journal_provider.dart';
@@ -194,20 +195,21 @@ class _RecordButtonState extends ConsumerState<RecordButton>
     VoidCallback? onPressed;
 
     if (voiceState.isRecording) {
-      buttonColor = voiceState.isPaused 
-          ? DesertColors.sageGreen 
+      buttonColor = voiceState.isPaused
+          ? DesertColors.sageGreen
           : DesertColors.terracotta;
       buttonIcon = voiceState.isPaused ? Icons.play_arrow : Icons.mic;
       buttonLabel = voiceState.isPaused ? 'Resume' : 'Recording...';
       onPressed = null; // Main button disabled while recording
     } else {
-      buttonColor = canStart 
-          ? DesertColors.primary 
+      buttonColor = canStart
+          ? DesertColors.primary
           : DesertColors.onSecondary.withValues(alpha: 0.3);
       buttonIcon = Icons.mic;
       buttonLabel = voiceState.hasRecording ? 'Record Again' : 'Start Recording';
       onPressed = canStart
           ? () {
+              HapticFeedback.mediumImpact();
               _animatePress();
               widget.onStartRecording?.call();
               ref.read(voiceJournalProvider.notifier).startRecording();
@@ -217,24 +219,33 @@ class _RecordButtonState extends ConsumerState<RecordButton>
 
     return GestureDetector(
       onTap: onPressed,
-      child: Container(
-        width: 120,
-        height: 120,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        width: 140,
+        height: 140,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: RadialGradient(
             colors: [
               buttonColor,
-              buttonColor.withValues(alpha: 0.8),
+              buttonColor.withValues(alpha: 0.85),
             ],
           ),
           boxShadow: [
             BoxShadow(
               color: buttonColor.withValues(alpha: 0.4),
-              blurRadius: 20,
-              spreadRadius: voiceState.isRecording && !voiceState.isPaused ? 8 : 4,
+              blurRadius: 24,
+              spreadRadius: voiceState.isRecording && !voiceState.isPaused ? 10 : 5,
               offset: const Offset(0, 8),
             ),
+            if (voiceState.isRecording && !voiceState.isPaused)
+              BoxShadow(
+                color: buttonColor.withValues(alpha: 0.2),
+                blurRadius: 40,
+                spreadRadius: 20,
+                offset: const Offset(0, 0),
+              ),
           ],
         ),
         child: Column(
@@ -242,16 +253,17 @@ class _RecordButtonState extends ConsumerState<RecordButton>
           children: [
             Icon(
               buttonIcon,
-              size: 40,
+              size: 48,
               color: Colors.white,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             Text(
               buttonLabel,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
               ),
               textAlign: TextAlign.center,
             ),

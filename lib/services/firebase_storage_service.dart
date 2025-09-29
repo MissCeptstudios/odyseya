@@ -27,7 +27,7 @@ class FirebaseStorageService {
       final ref = _storage.ref().child('audio/$userId/$fileName');
 
       if (kDebugMode) {
-        print('Uploading audio file: $fileName');
+        debugPrint('Uploading audio file: $fileName');
       }
 
       // Upload the file
@@ -47,7 +47,7 @@ class FirebaseStorageService {
       uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
         final progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         if (kDebugMode) {
-          print('Upload progress: ${progress.toStringAsFixed(1)}%');
+          debugPrint('Upload progress: ${progress.toStringAsFixed(1)}%');
         }
       });
 
@@ -58,18 +58,18 @@ class FirebaseStorageService {
       final downloadURL = await snapshot.ref.getDownloadURL();
       
       if (kDebugMode) {
-        print('Audio uploaded successfully: $downloadURL');
+        debugPrint('Audio uploaded successfully: $downloadURL');
       }
 
       return downloadURL;
     } on FirebaseException catch (e) {
       if (kDebugMode) {
-        print('Firebase Storage error: ${e.code} - ${e.message}');
+        debugPrint('Firebase Storage error: ${e.code} - ${e.message}');
       }
       throw _handleStorageException(e);
     } catch (e) {
       if (kDebugMode) {
-        print('Audio upload error: $e');
+        debugPrint('Audio upload error: $e');
       }
       throw 'Failed to upload audio file: $e';
     }
@@ -90,7 +90,7 @@ class FirebaseStorageService {
       await localFile.parent.create(recursive: true);
 
       if (kDebugMode) {
-        print('Downloading audio file: $fileName');
+        debugPrint('Downloading audio file: $fileName');
       }
 
       // Download the file
@@ -100,25 +100,25 @@ class FirebaseStorageService {
       downloadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
         final progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         if (kDebugMode) {
-          print('Download progress: ${progress.toStringAsFixed(1)}%');
+          debugPrint('Download progress: ${progress.toStringAsFixed(1)}%');
         }
       });
 
       await downloadTask;
       
       if (kDebugMode) {
-        print('Audio downloaded successfully: ${localFile.path}');
+        debugPrint('Audio downloaded successfully: ${localFile.path}');
       }
 
       return localFile.path;
     } on FirebaseException catch (e) {
       if (kDebugMode) {
-        print('Firebase Storage download error: ${e.code} - ${e.message}');
+        debugPrint('Firebase Storage download error: ${e.code} - ${e.message}');
       }
       throw _handleStorageException(e);
     } catch (e) {
       if (kDebugMode) {
-        print('Audio download error: $e');
+        debugPrint('Audio download error: $e');
       }
       throw 'Failed to download audio file: $e';
     }
@@ -131,16 +131,16 @@ class FirebaseStorageService {
       await ref.delete();
       
       if (kDebugMode) {
-        print('Audio file deleted successfully: $downloadUrl');
+        debugPrint('Audio file deleted successfully: $downloadUrl');
       }
     } on FirebaseException catch (e) {
       if (kDebugMode) {
-        print('Firebase Storage delete error: ${e.code} - ${e.message}');
+        debugPrint('Firebase Storage delete error: ${e.code} - ${e.message}');
       }
       throw _handleStorageException(e);
     } catch (e) {
       if (kDebugMode) {
-        print('Audio delete error: $e');
+        debugPrint('Audio delete error: $e');
       }
       throw 'Failed to delete audio file: $e';
     }
@@ -218,19 +218,19 @@ class FirebaseStorageService {
           if (createdTime != null && createdTime.isBefore(cutoffDate)) {
             await file.delete();
             if (kDebugMode) {
-              print('Deleted old audio file: ${file.name}');
+              debugPrint('Deleted old audio file: ${file.name}');
             }
           }
         } catch (e) {
           // Skip files that can't be processed
           if (kDebugMode) {
-            print('Error processing file ${file.name}: $e');
+            debugPrint('Error processing file ${file.name}: $e');
           }
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Cleanup error: $e');
+        debugPrint('Cleanup error: $e');
       }
       // Don't throw error for cleanup operations
     }
@@ -254,7 +254,7 @@ class FirebaseStorageService {
       return totalSize;
     } catch (e) {
       if (kDebugMode) {
-        print('Storage calculation error: $e');
+        debugPrint('Storage calculation error: $e');
       }
       return 0;
     }
@@ -318,7 +318,7 @@ class FirebaseStorageService {
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print('Audio validation error: $e');
+        debugPrint('Audio validation error: $e');
       }
       rethrow;
     }

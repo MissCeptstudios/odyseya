@@ -80,7 +80,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       );
 
       if (kDebugMode) {
-        print('NotificationProvider initialized - hasPermission: $hasPermission');
+        debugPrint('NotificationProvider initialized - hasPermission: $hasPermission');
       }
     } catch (e) {
       state = state.copyWith(
@@ -88,7 +88,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
         error: 'Failed to initialize notifications: $e',
       );
       if (kDebugMode) {
-        print('Error initializing notifications: $e');
+        debugPrint('Error initializing notifications: $e');
       }
     }
   }
@@ -105,7 +105,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       );
 
       if (kDebugMode) {
-        print('Notification permissions ${granted ? 'granted' : 'denied'}');
+        debugPrint('Notification permissions ${granted ? 'granted' : 'denied'}');
       }
 
       return granted;
@@ -115,7 +115,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
         error: 'Failed to request permissions: $e',
       );
       if (kDebugMode) {
-        print('Error requesting notification permissions: $e');
+        debugPrint('Error requesting notification permissions: $e');
       }
       return false;
     }
@@ -145,7 +145,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       state = state.copyWith(isLoading: false);
 
       if (kDebugMode) {
-        print('Daily reminders ${enabled ? 'enabled' : 'disabled'}');
+        debugPrint('Daily reminders ${enabled ? 'enabled' : 'disabled'}');
       }
     } catch (e) {
       state = state.copyWith(
@@ -154,7 +154,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
         error: 'Failed to ${enabled ? 'enable' : 'disable'} notifications: $e',
       );
       if (kDebugMode) {
-        print('Error toggling notifications: $e');
+        debugPrint('Error toggling notifications: $e');
       }
     }
   }
@@ -178,7 +178,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       state = state.copyWith(isLoading: false);
 
       if (kDebugMode) {
-        print('Reminder time updated to $hour:$minute');
+        debugPrint('Reminder time updated to $hour:$minute');
       }
     } catch (e) {
       state = state.copyWith(
@@ -186,7 +186,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
         error: 'Failed to update reminder time: $e',
       );
       if (kDebugMode) {
-        print('Error updating reminder time: $e');
+        debugPrint('Error updating reminder time: $e');
       }
     }
   }
@@ -210,7 +210,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
       state = state.copyWith(isLoading: false);
 
       if (kDebugMode) {
-        print('Test notification sent');
+        debugPrint('Test notification sent');
       }
     } catch (e) {
       state = state.copyWith(
@@ -218,7 +218,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
         error: 'Failed to show test notification: $e',
       );
       if (kDebugMode) {
-        print('Error showing test notification: $e');
+        debugPrint('Error showing test notification: $e');
       }
     }
   }

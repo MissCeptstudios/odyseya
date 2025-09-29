@@ -26,10 +26,10 @@ class AIConfigService {
       final selectedProvider = prefs.getString(_selectedProviderKey);
 
       if (kDebugMode) {
-        print('Loading AI configuration from storage...');
-        print('Gemini key configured: ${geminiKey?.isNotEmpty ?? false}');
-        print('Groq key configured: ${groqKey?.isNotEmpty ?? false}');
-        print('Selected provider: $selectedProvider');
+        debugPrint('Loading AI configuration from storage...');
+        debugPrint('Gemini key configured: ${geminiKey?.isNotEmpty ?? false}');
+        debugPrint('Groq key configured: ${groqKey?.isNotEmpty ?? false}');
+        debugPrint('Selected provider: $selectedProvider');
       }
 
       // Configure services with stored keys
@@ -51,12 +51,12 @@ class AIConfigService {
       }
 
       if (kDebugMode) {
-        print('AI configuration initialized');
-        print(_aiFactory.getServiceStatus());
+        debugPrint('AI configuration initialized');
+        debugPrint(_aiFactory.getServiceStatus().toString());
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error initializing AI configuration: $e');
+        debugPrint('Error initializing AI configuration: $e');
       }
     }
   }
@@ -70,7 +70,7 @@ class AIConfigService {
         await prefs.remove(_geminiApiKeyKey);
         _aiFactory.getGeminiService().setApiKey('');
         if (kDebugMode) {
-          print('Gemini API key removed');
+          debugPrint('Gemini API key removed');
         }
         return true;
       }
@@ -79,7 +79,7 @@ class AIConfigService {
       _aiFactory.getGeminiService().setApiKey(apiKey.trim());
       
       if (kDebugMode) {
-        print('Gemini API key configured and stored');
+        debugPrint('Gemini API key configured and stored');
       }
       
       // Auto-switch to Gemini if it's now configured
@@ -91,7 +91,7 @@ class AIConfigService {
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print('Error setting Gemini API key: $e');
+        debugPrint('Error setting Gemini API key: $e');
       }
       return false;
     }
@@ -106,7 +106,7 @@ class AIConfigService {
         await prefs.remove(_groqApiKeyKey);
         _aiFactory.getGroqService().setApiKey('');
         if (kDebugMode) {
-          print('Groq API key removed');
+          debugPrint('Groq API key removed');
         }
         return true;
       }
@@ -115,7 +115,7 @@ class AIConfigService {
       _aiFactory.getGroqService().setApiKey(apiKey.trim());
       
       if (kDebugMode) {
-        print('Groq API key configured and stored');
+        debugPrint('Groq API key configured and stored');
       }
       
       // Auto-switch to Groq if no other service is configured
@@ -127,7 +127,7 @@ class AIConfigService {
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print('Error setting Groq API key: $e');
+        debugPrint('Error setting Groq API key: $e');
       }
       return false;
     }
@@ -140,13 +140,13 @@ class AIConfigService {
       await _setSelectedProvider(provider);
       
       if (kDebugMode) {
-        print('Switched to ${provider.displayName}');
+        debugPrint('Switched to ${provider.displayName}');
       }
       
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print('Error switching provider: $e');
+        debugPrint('Error switching provider: $e');
       }
       return false;
     }
@@ -159,7 +159,7 @@ class AIConfigService {
       await prefs.setString(_selectedProviderKey, provider.name);
     } catch (e) {
       if (kDebugMode) {
-        print('Error storing selected provider: $e');
+        debugPrint('Error storing selected provider: $e');
       }
     }
   }
@@ -174,7 +174,7 @@ class AIConfigService {
       };
     } catch (e) {
       if (kDebugMode) {
-        print('Error getting stored API keys: $e');
+        debugPrint('Error getting stored API keys: $e');
       }
       return {'gemini': null, 'groq': null};
     }
@@ -227,11 +227,11 @@ class AIConfigService {
       _aiFactory.resetConfiguration();
       
       if (kDebugMode) {
-        print('All AI configuration cleared');
+        debugPrint('All AI configuration cleared');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error clearing configuration: $e');
+        debugPrint('Error clearing configuration: $e');
       }
     }
   }
@@ -259,14 +259,14 @@ class AIConfigService {
       }
       
       if (kDebugMode) {
-        print('Quick setup completed');
-        print(getConfigurationStatus());
+        debugPrint('Quick setup completed');
+        debugPrint(getConfigurationStatus().toString());
       }
       
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print('Error in quick setup: $e');
+        debugPrint('Error in quick setup: $e');
       }
       return false;
     }

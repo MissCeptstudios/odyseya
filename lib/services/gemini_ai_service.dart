@@ -42,7 +42,7 @@ class GeminiAIService implements AIServiceInterface {
 
     try {
       if (kDebugMode) {
-        print('Analyzing with Gemini Pro: ${text.length} characters');
+        debugPrint('Analyzing with Gemini Pro: ${text.length} characters');
       }
 
       final prompt = _buildEmotionalAnalysisPrompt(text, mood, previousContext);
@@ -80,7 +80,7 @@ class GeminiAIService implements AIServiceInterface {
         final analysisText = data['candidates']?[0]?['content']?['parts']?[0]?['text'] ?? '';
         
         if (kDebugMode) {
-          print('Gemini analysis completed successfully');
+          debugPrint('Gemini analysis completed successfully');
         }
         
         return _parseGeminiResponse(analysisText);
@@ -89,14 +89,14 @@ class GeminiAIService implements AIServiceInterface {
         final errorMessage = errorData['error']?['message'] ?? 'Unknown error';
         
         if (kDebugMode) {
-          print('Gemini API error (${response.statusCode}): $errorMessage');
+          debugPrint('Gemini API error (${response.statusCode}): $errorMessage');
         }
         
         throw Exception('Gemini API error: $errorMessage');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Gemini analysis error: $e');
+        debugPrint('Gemini analysis error: $e');
       }
       
       // Return fallback analysis instead of crashing
@@ -202,8 +202,8 @@ Respond with ONLY the JSON object, no other text.
       );
     } catch (e) {
       if (kDebugMode) {
-        print('Error parsing Gemini response: $e');
-        print('Raw response: $responseText');
+        debugPrint('Error parsing Gemini response: $e');
+        debugPrint('Raw response: $responseText');
       }
       
       // Return intelligent fallback instead of crashing

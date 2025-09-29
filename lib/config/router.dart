@@ -19,6 +19,7 @@ import '../screens/onboarding/questionnaire_q2_screen.dart';
 import '../screens/onboarding/questionnaire_q3_screen.dart';
 import '../screens/onboarding/questionnaire_q4_screen.dart';
 import '../screens/affirmation_screen.dart';
+import '../screens/marketing_screen.dart';
 import '../screens/main_app_shell.dart';
 
 // Router configuration
@@ -67,6 +68,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/welcome',
         name: 'welcome',
         builder: (context, state) => const WelcomeScreen(),
+      ),
+
+      // Marketing Screen
+      GoRoute(
+        path: '/marketing',
+        name: 'marketing',
+        builder: (context, state) => const MarketingScreen(),
       ),
 
       // Questionnaire Routes
@@ -246,11 +254,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isOnGdpr = state.matchedLocation == '/gdpr-consent';
       final isOnPermissions = state.matchedLocation == '/permissions';
       final isOnWelcome = state.matchedLocation == '/welcome';
+      final isOnMarketing = state.matchedLocation == '/marketing';
       final isOnMoodSelection = state.matchedLocation == '/mood-selection';
       final isOnQuestionnaire = state.matchedLocation.startsWith('/onboarding/questionnaire');
       final isOnMain = state.matchedLocation == '/main';
-      
-      if (isOnAuth || isOnLogin || isOnSignup || isOnGdpr || isOnPermissions || isOnWelcome || isOnCalendar || isOnQuestionnaire || isOnMoodSelection || isOnJournal || isOnMain) {
+
+      if (isOnAuth || isOnLogin || isOnSignup || isOnGdpr || isOnPermissions || isOnWelcome || isOnMarketing || isOnCalendar || isOnQuestionnaire || isOnMoodSelection || isOnJournal || isOnMain) {
         // Unauthenticated user on allowed route
         return null;
       }

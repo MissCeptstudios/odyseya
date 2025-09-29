@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -162,7 +163,7 @@ class VoiceRecordingService {
       }
     } catch (e) {
       // Log error but don't throw - file might already be deleted
-      print('Error deleting recording: $e');
+      debugPrint('Error deleting recording: $e');
     }
   }
 

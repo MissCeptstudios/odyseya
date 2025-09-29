@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import '../models/ai_analysis.dart';
 import 'ai_service_factory.dart';
 
 class AIAnalysisService {
-  static const String _claudeUrl = 'https://api.anthropic.com/v1/messages';
-
-  // Mock API keys - in production, use environment variables or secure storage
-  static const String _claudeKey = 'your-claude-api-key';
+  // Note: Claude integration is commented out - using AI service factory instead
+  // static const String _claudeUrl = 'https://api.anthropic.com/v1/messages';
+  // static const String _claudeKey = 'your-claude-api-key';
 
   // Use new AI service factory for real analysis
   final AIServiceFactory _aiFactory = AIServiceFactory();
@@ -23,7 +21,7 @@ class AIAnalysisService {
       // Try to use real AI service first
       if (_aiFactory.isCurrentServiceConfigured) {
         if (kDebugMode) {
-          print(
+          debugPrint(
             'Using real AI service: ${_aiFactory.getCurrentService().serviceName}',
           );
         }
@@ -35,14 +33,14 @@ class AIAnalysisService {
           );
         } catch (e) {
           if (kDebugMode) {
-            print('Real AI service failed, falling back to mock: $e');
+            debugPrint('Real AI service failed, falling back to mock: $e');
           }
           // Fall back to mock if real service fails
         }
       }
 
       if (kDebugMode) {
-        print('Using mock AI analysis (no API configured)');
+        debugPrint('Using mock AI analysis (no API configured)');
       }
 
       // Simulate API delay for mock
@@ -278,6 +276,8 @@ class AIAnalysisService {
   }
   */
 
+  // Commented out unused Claude methods - using AI service factory instead
+  /*
   String _buildEmotionalAnalysisPrompt(String text) {
     return '''
 Please analyze the emotional content of this journal entry with warmth and understanding. Provide:
@@ -319,6 +319,7 @@ Remember to be supportive, non-judgmental, and focus on emotional growth and wel
       throw AIAnalysisException('Failed to parse AI response: $e');
     }
   }
+  */
 }
 
 class AIAnalysisException implements Exception {

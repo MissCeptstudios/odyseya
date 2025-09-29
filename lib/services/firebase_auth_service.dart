@@ -116,7 +116,7 @@ class FirebaseAuthService {
       throw _handleAuthException(e);
     } catch (e) {
       if (kDebugMode) {
-        print('Google sign-in error: $e');
+        debugPrint('Google sign-in error: $e');
       }
       throw 'Google sign-in failed. Please try again.';
     }
@@ -159,7 +159,7 @@ class FirebaseAuthService {
       throw _handleAuthException(e);
     } catch (e) {
       if (kDebugMode) {
-        print('Apple sign-in error: $e');
+        debugPrint('Apple sign-in error: $e');
       }
       throw 'Apple sign-in failed. Please try again.';
     }
@@ -174,7 +174,7 @@ class FirebaseAuthService {
       ]);
     } catch (e) {
       if (kDebugMode) {
-        print('Sign out error: $e');
+        debugPrint('Sign out error: $e');
       }
       throw 'Failed to sign out. Please try again.';
     }
@@ -279,7 +279,7 @@ class FirebaseAuthService {
         return 'Please sign in again to complete this action.';
       default:
         if (kDebugMode) {
-          print('Firebase Auth Error: ${e.code} - ${e.message}');
+          debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
         }
         return e.message ?? 'An error occurred. Please try again.';
     }

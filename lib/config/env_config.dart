@@ -13,12 +13,12 @@ class EnvConfig {
       _isInitialized = true;
 
       if (kDebugMode) {
-        print('Environment configuration loaded successfully');
+        debugPrint('Environment configuration loaded successfully');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Failed to load .env file: $e');
-        print('Using fallback configuration');
+        debugPrint('Failed to load .env file: $e');
+        debugPrint('Using fallback configuration');
       }
       _isInitialized = true; // Mark as initialized even if .env fails
     }

@@ -81,7 +81,7 @@ class _FirstDownloadAppScreenState extends State<FirstDownloadAppScreen>
 
   void _navigateToNext() {
     if (mounted) {
-      context.go('/auth');
+      context.go('/marketing');
     }
   }
 
@@ -116,7 +116,7 @@ class _FirstDownloadAppScreenState extends State<FirstDownloadAppScreen>
                       builder: (context, child) {
                         return Transform.scale(
                           scale: _scaleAnimation.value,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.9, // 90% of screen width
                             height: MediaQuery.of(context).size.height * 0.5, // 50% of screen height
                             child: Image.asset(

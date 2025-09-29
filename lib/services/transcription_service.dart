@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 class TranscriptionService {
-  static const String _baseUrl = 'https://api.openai.com/v1/audio/transcriptions';
-  
-  // Mock API key - in production, use environment variables or secure storage
-  static const String _apiKey = 'your-openai-api-key';
+  // Note: OpenAI integration is commented out - using mock service for MVP
+  // static const String _baseUrl = 'https://api.openai.com/v1/audio/transcriptions';
+  // static const String _apiKey = 'your-openai-api-key';
 
   Future<String> transcribeAudio(String audioPath) async {
     try {
@@ -87,7 +87,7 @@ class TranscriptionService {
     try {
       // In production, save to Firebase Firestore
       // For now, this is a placeholder
-      print('Saving transcription for entry $entryId: $transcription');
+      debugPrint('Saving transcription for entry $entryId: $transcription');
     } catch (e) {
       throw TranscriptionException('Failed to save transcription: $e');
     }

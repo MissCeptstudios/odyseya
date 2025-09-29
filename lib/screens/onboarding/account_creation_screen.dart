@@ -284,21 +284,21 @@ class AccountCreationScreen extends ConsumerWidget {
 
   void _signUpWithGoogle() {
     // TODO: Implement Google sign-in
-    print('Google sign-in');
+    debugPrint('Google sign-in');
   }
 
   void _signUpWithApple() {
     // TODO: Implement Apple sign-in
-    print('Apple sign-in');
+    debugPrint('Apple sign-in');
   }
 
   void _showTerms() {
     // TODO: Show terms of service
-    print('Show terms');
+    debugPrint('Show terms');
   }
 
   void _showPrivacyPolicy() {
     // TODO: Show privacy policy
-    print('Show privacy policy');
+    debugPrint('Show privacy policy');
   }
 }

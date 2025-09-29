@@ -40,13 +40,13 @@ class NotificationService {
     );
 
     if (kDebugMode) {
-      print('NotificationService: Initialized successfully');
+      debugPrint('NotificationService: Initialized successfully');
     }
   }
 
   void _onNotificationTap(NotificationResponse notificationResponse) {
     if (kDebugMode) {
-      print('Notification tapped: ${notificationResponse.payload}');
+      debugPrint('Notification tapped: ${notificationResponse.payload}');
     }
     // Handle notification tap - could navigate to mood selection screen
     // This would typically use a navigation service or router
@@ -123,14 +123,14 @@ class NotificationService {
     );
 
     if (kDebugMode) {
-      print('Daily mood reminder scheduled for ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}');
+      debugPrint('Daily mood reminder scheduled for ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}');
     }
   }
 
   Future<void> cancelDailyMoodReminder() async {
     await _flutterLocalNotificationsPlugin.cancel(_dailyReminderNotificationId);
     if (kDebugMode) {
-      print('Daily mood reminder cancelled');
+      debugPrint('Daily mood reminder cancelled');
     }
   }
 
@@ -189,7 +189,7 @@ class NotificationService {
   Future<void> cancelAllNotifications() async {
     await _flutterLocalNotificationsPlugin.cancelAll();
     if (kDebugMode) {
-      print('All notifications cancelled');
+      debugPrint('All notifications cancelled');
     }
   }
 
@@ -273,7 +273,7 @@ class NotificationService {
     );
 
     if (kDebugMode) {
-      print('Daily mood reminder with motivational message scheduled for ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}');
+      debugPrint('Daily mood reminder with motivational message scheduled for ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}');
     }
   }
 }

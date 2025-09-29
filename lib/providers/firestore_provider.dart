@@ -10,7 +10,7 @@ class FirestoreService {
   
   FirestoreService() {
     if (kDebugMode) {
-      print('Firestore service initialized');
+      debugPrint('Firestore service initialized');
     }
   }
 

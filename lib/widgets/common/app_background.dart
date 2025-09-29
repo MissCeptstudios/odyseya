@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../services/background_service.dart';
 
 /// Unified background widget for consistent app background across all screens
 class AppBackground extends StatelessWidget {
@@ -16,9 +17,9 @@ class AppBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/background_day.png'),
+          image: AssetImage(BackgroundService.getCurrentBackground()),
           fit: BoxFit.cover,
         ),
       ),

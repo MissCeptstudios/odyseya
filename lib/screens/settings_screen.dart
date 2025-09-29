@@ -756,26 +756,28 @@ class SettingsScreen extends ConsumerWidget {
 
   Future<void> _requestNotificationPermission(BuildContext context, WidgetRef ref) async {
     final granted = await ref.read(notificationProvider.notifier).requestPermissions();
-    
-    if (!granted) {
+
+    if (!granted && context.mounted) {
       _showPermissionDeniedDialog(context);
     }
   }
 
   Future<void> _sendTestNotification(BuildContext context, WidgetRef ref) async {
     await ref.read(notificationProvider.notifier).showTestNotification();
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Test notification sent! Check your notification center.'),
-        backgroundColor: DesertColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Test notification sent! Check your notification center.'),
+          backgroundColor: DesertColors.primary,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          margin: const EdgeInsets.all(16),
         ),
-        margin: const EdgeInsets.all(16),
-      ),
-    );
+      );
+    }
   }
 
   void _showPermissionDeniedDialog(BuildContext context) {

@@ -23,7 +23,6 @@ class _MoodCardState extends State<MoodCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -48,24 +47,15 @@ class _MoodCardState extends State<MoodCard>
   }
 
   void _handleTapDown(TapDownDetails details) {
-    setState(() {
-      _isPressed = true;
-    });
     _controller.forward();
     HapticFeedback.lightImpact();
   }
 
   void _handleTapUp(TapUpDetails details) {
-    setState(() {
-      _isPressed = false;
-    });
     _controller.reverse();
   }
 
   void _handleTapCancel() {
-    setState(() {
-      _isPressed = false;
-    });
     _controller.reverse();
   }
 

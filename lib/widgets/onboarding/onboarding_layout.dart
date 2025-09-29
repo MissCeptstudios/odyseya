@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
+import '../common/app_background.dart';
 
-class OnboardingLayout extends ConsumerWidget {
+class OnboardingLayout extends ConsumerStatefulWidget {
   final Widget child;
   final String? title;
   final String? subtitle;
@@ -26,30 +27,76 @@ class OnboardingLayout extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OnboardingLayout> createState() => _OnboardingLayoutState();
+}
+
+class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.1),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final onboardingData = ref.watch(onboardingProvider);
     final onboardingNotifier = ref.read(onboardingProvider.notifier);
 
-    return Scaffold(
-      backgroundColor: DesertColors.background,
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.9,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: showBackButton && onboardingData.currentStep > 0
+        leading: widget.showBackButton && onboardingData.currentStep > 0
             ? IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: DesertColors.onSurface),
+                icon: Icon(Icons.arrow_back_ios_new_rounded, color: DesertColors.onSurface, size: 22),
                 onPressed: () => onboardingNotifier.previousStep(),
+                tooltip: 'Go back',
               )
             : null,
         actions: [
-          if (onSkip != null)
+          if (widget.onSkip != null)
             TextButton(
-              onPressed: onSkip,
-              child: Text(
+              onPressed: widget.onSkip,
+              style: TextButton.styleFrom(
+                foregroundColor: DesertColors.onSecondary,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+              ),
+              child: const Text(
                 'Skip',
                 style: TextStyle(
-                  color: DesertColors.onSecondary,
                   fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -58,57 +105,78 @@ class OnboardingLayout extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            if (showProgress) ...[
+            if (widget.showProgress) ...[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: LinearProgressIndicator(
-                  value: onboardingNotifier.progress,
-                  backgroundColor: DesertColors.waterWash.withValues(alpha: 0.3),
-                  valueColor: AlwaysStoppedAnimation<Color>(DesertColors.primary),
-                  minHeight: 4,
+                child: TweenAnimationBuilder<double>(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                  tween: Tween<double>(
+                    begin: 0.0,
+                    end: onboardingNotifier.progress,
+                  ),
+                  builder: (context, value, child) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: LinearProgressIndicator(
+                        value: value,
+                        backgroundColor: DesertColors.waterWash.withValues(alpha: 0.2),
+                        valueColor: AlwaysStoppedAnimation<Color>(DesertColors.primary),
+                        minHeight: 6,
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 24),
             ],
-            
+
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (title != null) ...[
-                      Text(
-                        title!,
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w300,
-                          color: DesertColors.onSurface,
-                          height: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                    
-                    if (subtitle != null) ...[
-                      Text(
-                        subtitle!,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: DesertColors.onSecondary,
-                          height: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                    ],
-                    
-                    child,
-                  ],
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (widget.title != null) ...[
+                          Text(
+                            widget.title!,
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w300,
+                              color: DesertColors.onSurface,
+                              height: 1.2,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+
+                        if (widget.subtitle != null) ...[
+                          Text(
+                            widget.subtitle!,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: DesertColors.onSecondary,
+                              height: 1.5,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                        ],
+
+                        widget.child,
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
-            
-            if (onNext != null) ...[
+
+            if (widget.onNext != null) ...[
               Padding(
                 padding: const EdgeInsets.all(24),
                 child: SizedBox(
@@ -116,23 +184,25 @@ class OnboardingLayout extends ConsumerWidget {
                   height: 56,
                   child: ElevatedButton(
                     onPressed: onboardingNotifier.canProceedFromCurrentStep
-                        ? onNext
+                        ? widget.onNext
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: DesertColors.primary,
                       foregroundColor: Colors.white,
-                      elevation: 0,
+                      elevation: 2,
+                      shadowColor: DesertColors.primary.withValues(alpha: 0.4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      disabledBackgroundColor: DesertColors.waterWash.withValues(alpha: 0.5),
-                      disabledForegroundColor: DesertColors.onSecondary,
+                      disabledBackgroundColor: DesertColors.waterWash.withValues(alpha: 0.3),
+                      disabledForegroundColor: DesertColors.onSecondary.withValues(alpha: 0.5),
                     ),
                     child: Text(
-                      nextButtonText,
+                      widget.nextButtonText,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -142,6 +212,7 @@ class OnboardingLayout extends ConsumerWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

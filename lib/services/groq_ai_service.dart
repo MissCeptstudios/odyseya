@@ -42,7 +42,7 @@ class GroqAIService implements AIServiceInterface {
 
     try {
       if (kDebugMode) {
-        print('Analyzing with Groq Llama 3: ${text.length} characters');
+        debugPrint('Analyzing with Groq Llama 3: ${text.length} characters');
       }
 
       final prompt = _buildEmotionalAnalysisPrompt(text, mood, previousContext);
@@ -77,7 +77,7 @@ class GroqAIService implements AIServiceInterface {
         final analysisText = data['choices']?[0]?['message']?['content'] ?? '';
         
         if (kDebugMode) {
-          print('Groq analysis completed successfully');
+          debugPrint('Groq analysis completed successfully');
         }
         
         return _parseGroqResponse(analysisText);
@@ -86,14 +86,14 @@ class GroqAIService implements AIServiceInterface {
         final errorMessage = errorData['error']?['message'] ?? 'Unknown error';
         
         if (kDebugMode) {
-          print('Groq API error (${response.statusCode}): $errorMessage');
+          debugPrint('Groq API error (${response.statusCode}): $errorMessage');
         }
         
         throw Exception('Groq API error: $errorMessage');
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Groq analysis error: $e');
+        debugPrint('Groq analysis error: $e');
       }
       
       // Return fallback analysis instead of crashing
@@ -210,8 +210,8 @@ Respond with JSON only, no markdown or extra text.
       );
     } catch (e) {
       if (kDebugMode) {
-        print('Error parsing Groq response: $e');
-        print('Raw response: $responseText');
+        debugPrint('Error parsing Groq response: $e');
+        debugPrint('Raw response: $responseText');
       }
       
       return _createFallbackAnalysis(responseText, null);

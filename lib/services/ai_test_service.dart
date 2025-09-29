@@ -17,7 +17,7 @@ class AITestService {
     final results = AITestResults();
     
     if (kDebugMode) {
-      print('Starting AI services comprehensive test...');
+      debugPrint('Starting AI services comprehensive test...');
     }
 
     // Test configuration system
@@ -51,8 +51,8 @@ class AITestService {
     await _testFallbackAnalysis(results);
     
     if (kDebugMode) {
-      print('AI services test completed');
-      print(results.summary);
+      debugPrint('AI services test completed');
+      debugPrint(results.summary);
     }
     
     return results;
@@ -62,7 +62,7 @@ class AITestService {
   Future<void> _testConfigurationSystem(AITestResults results) async {
     try {
       if (kDebugMode) {
-        print('Testing configuration system...');
+        debugPrint('Testing configuration system...');
       }
       
       // Test configuration status
@@ -95,7 +95,7 @@ class AITestService {
   Future<void> _testGeminiService(AITestResults results) async {
     try {
       if (kDebugMode) {
-        print('Testing Gemini AI service...');
+        debugPrint('Testing Gemini AI service...');
       }
       
       final service = _factory.getGeminiService();
@@ -140,7 +140,7 @@ class AITestService {
   Future<void> _testGroqService(AITestResults results) async {
     try {
       if (kDebugMode) {
-        print('Testing Groq AI service...');
+        debugPrint('Testing Groq AI service...');
       }
       
       final service = _factory.getGroqService();
@@ -185,7 +185,7 @@ class AITestService {
   Future<void> _testFallbackAnalysis(AITestResults results) async {
     try {
       if (kDebugMode) {
-        print('Testing fallback analysis...');
+        debugPrint('Testing fallback analysis...');
       }
       
       // Temporarily disable real services to test fallback
@@ -227,7 +227,7 @@ class AITestService {
         // Restore original configuration (this is a simplified restoration)
         // In a real app, you'd restore the actual API keys from storage
         if (kDebugMode) {
-          print('Restoring original service configuration...');
+          debugPrint('Restoring original service configuration...');
         }
       }
     } catch (e) {
@@ -255,13 +255,13 @@ class AITestService {
   Future<bool> quickTest() async {
     try {
       if (kDebugMode) {
-        print('Running quick AI service test...');
+        debugPrint('Running quick AI service test...');
       }
       
       return await _factory.testCurrentService();
     } catch (e) {
       if (kDebugMode) {
-        print('Quick test failed: $e');
+        debugPrint('Quick test failed: $e');
       }
       return false;
     }

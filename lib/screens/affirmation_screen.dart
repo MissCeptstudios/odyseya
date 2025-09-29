@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
 import '../providers/affirmation_provider.dart';
+import '../widgets/common/app_background.dart';
 
 class AffirmationScreen extends ConsumerStatefulWidget {
   const AffirmationScreen({super.key});
@@ -101,20 +102,12 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
       _onAffirmationLoaded();
     }
 
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFFF9F5F0),
-              const Color(0xFFE6DAD1),
-              DesertColors.warmBeige.withValues(alpha: 0.3),
-            ],
-          ),
-        ),
-        child: SafeArea(
+    return AppBackground(
+      useOverlay: true,
+      overlayOpacity: 0.7,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             child: Column(

@@ -44,7 +44,7 @@ class AIServiceFactory {
   /// Switch to a different AI provider
   void switchProvider(AIProvider provider) {
     if (kDebugMode) {
-      print('Switching AI provider from ${_currentProvider.displayName} to ${provider.displayName}');
+      debugPrint('Switching AI provider from ${_currentProvider.displayName} to ${provider.displayName}');
     }
     _currentProvider = provider;
   }
@@ -62,27 +62,27 @@ class AIServiceFactory {
     if (geminiApiKey != null && geminiApiKey.isNotEmpty) {
       getGeminiService().setApiKey(geminiApiKey);
       if (kDebugMode) {
-        print('Gemini API key configured');
+        debugPrint('Gemini API key configured');
       }
     }
 
     if (groqApiKey != null && groqApiKey.isNotEmpty) {
       getGroqService().setApiKey(groqApiKey);
       if (kDebugMode) {
-        print('Groq API key configured');
+        debugPrint('Groq API key configured');
       }
     }
 
     // Future: OpenAI and Claude configuration
     if (openaiApiKey != null && openaiApiKey.isNotEmpty) {
       if (kDebugMode) {
-        print('OpenAI API key received (service not yet implemented)');
+        debugPrint('OpenAI API key received (service not yet implemented)');
       }
     }
 
     if (claudeApiKey != null && claudeApiKey.isNotEmpty) {
       if (kDebugMode) {
-        print('Claude API key received (service not yet implemented)');
+        debugPrint('Claude API key received (service not yet implemented)');
       }
     }
   }
@@ -154,7 +154,7 @@ class AIServiceFactory {
       
       if (!service.isConfigured) {
         if (kDebugMode) {
-          print('Service ${service.serviceName} is not configured');
+          debugPrint('Service ${service.serviceName} is not configured');
         }
         return false;
       }
@@ -166,14 +166,14 @@ class AIServiceFactory {
       );
 
       if (kDebugMode) {
-        print('Service test successful: ${service.serviceName}');
-        print('Test result: ${testAnalysis.emotionalTone} (confidence: ${testAnalysis.confidence})');
+        debugPrint('Service test successful: ${service.serviceName}');
+        debugPrint('Test result: ${testAnalysis.emotionalTone} (confidence: ${testAnalysis.confidence})');
       }
 
       return testAnalysis.emotionalTone.isNotEmpty;
     } catch (e) {
       if (kDebugMode) {
-        print('Service test failed: $e');
+        debugPrint('Service test failed: $e');
       }
       return false;
     }
@@ -201,7 +201,7 @@ class AIServiceFactory {
     _groqService = null;
     
     if (kDebugMode) {
-      print('AI service configuration reset');
+      debugPrint('AI service configuration reset');
     }
   }
 }
@@ -252,8 +252,8 @@ class AIServiceManager {
     }
 
     if (kDebugMode) {
-      print('AI Service Manager initialized');
-      print(_factory.getServiceStatus());
+      debugPrint('AI Service Manager initialized');
+      debugPrint(_factory.getServiceStatus().toString());
     }
   }
 
