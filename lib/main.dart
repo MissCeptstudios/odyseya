@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'config/router.dart';
 import 'config/env_config.dart';
 import 'constants/colors.dart';
+import 'constants/typography.dart';
 import 'services/notification_service.dart';
 import 'services/ai_config_service.dart';
 import 'services/ai_quick_test.dart';
@@ -73,8 +74,29 @@ class OdyseyaApp extends ConsumerWidget {
           seedColor: DesertColors.primary,
           brightness: Brightness.light,
         ),
-        fontFamily: 'Inter',
+        fontFamily: OdyseyaTypography.inter,
         scaffoldBackgroundColor: DesertColors.background,
+        textTheme: TextTheme(
+          // Headlines - Cormorant Garamond
+          displayLarge: OdyseyaTypography.h1Large,
+          displayMedium: OdyseyaTypography.h1,
+          headlineLarge: OdyseyaTypography.h2Large,
+          headlineMedium: OdyseyaTypography.h2,
+
+          // Body - Nunito Sans
+          bodyLarge: OdyseyaTypography.bodyLarge,
+          bodyMedium: OdyseyaTypography.body,
+
+          // Labels - Inter
+          labelLarge: OdyseyaTypography.buttonLarge,
+          labelMedium: OdyseyaTypography.button,
+          labelSmall: OdyseyaTypography.navInactive,
+
+          // Titles - Inter
+          titleLarge: OdyseyaTypography.uiLarge,
+          titleMedium: OdyseyaTypography.ui,
+          titleSmall: OdyseyaTypography.captionSmall,
+        ),
       ),
       routerConfig: router,
     );

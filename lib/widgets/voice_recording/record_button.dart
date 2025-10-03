@@ -101,36 +101,13 @@ class _RecordButtonState extends ConsumerState<RecordButton>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Recording Duration
-        if (voiceState.isRecording || voiceState.hasRecording)
-          Container(
-            margin: const EdgeInsets.only(bottom: 24),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: DesertColors.offWhite.withValues(alpha: 0.95),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: DesertColors.dustyBlue.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Text(
-              ref.watch(recordingProgressProvider),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: DesertColors.deepBrown,
-                letterSpacing: 1.0,
-              ),
-            ),
-          ),
-
         // Main Record Button
         AnimatedBuilder(
           animation: _pulseAnimation,
           builder: (context, child) {
             return Transform.scale(
-              scale: voiceState.isRecording && !voiceState.isPaused 
-                  ? _pulseAnimation.value 
+              scale: voiceState.isRecording && !voiceState.isPaused
+                  ? _pulseAnimation.value
                   : 1.0,
               child: AnimatedBuilder(
                 animation: _scaleAnimation,
@@ -144,6 +121,31 @@ class _RecordButtonState extends ConsumerState<RecordButton>
             );
           },
         ),
+
+        // White Timer Below Button (inspired by reference image)
+        if (voiceState.isRecording)
+          Container(
+            margin: const EdgeInsets.only(top: 24),
+            child: Text(
+              ref.watch(recordingProgressProvider),
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+                letterSpacing: 2.0,
+                fontFeatures: [
+                  FontFeature.tabularFigures(),
+                ],
+                shadows: [
+                  Shadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
 
         // Control Buttons (when recording)
         if (voiceState.isRecording)
@@ -196,14 +198,14 @@ class _RecordButtonState extends ConsumerState<RecordButton>
 
     if (voiceState.isRecording) {
       buttonColor = voiceState.isPaused
-          ? DesertColors.sageGreen
-          : DesertColors.terracotta;
+          ? DesertColors.dustyBlue
+          : DesertColors.waterWash;
       buttonIcon = voiceState.isPaused ? Icons.play_arrow : Icons.mic;
       buttonLabel = voiceState.isPaused ? 'Resume' : 'Recording...';
       onPressed = null; // Main button disabled while recording
     } else {
       buttonColor = canStart
-          ? DesertColors.roseSand
+          ? DesertColors.dustyBlue
           : DesertColors.taupe.withValues(alpha: 0.3);
       buttonIcon = Icons.mic;
       buttonLabel = voiceState.hasRecording ? 'Record Again' : 'Start Recording';

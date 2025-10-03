@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 
 class OdyseyaBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -14,20 +14,21 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity, // Full width
       decoration: BoxDecoration(
-        color: DesertColors.background,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: DesertColors.waterWash.withValues(alpha: 0.15),
-            blurRadius: 20,
-            offset: const Offset(0, -8),
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
       child: SafeArea(
         child: Container(
           height: 80,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10), // Remove horizontal padding
           child: Row(
             children: [
               _buildNavItem(
@@ -82,50 +83,25 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: isSelected 
-                ? DesertColors.primary.withValues(alpha: 0.1)
-                : Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-              border: isSelected 
-                ? Border.all(
-                    color: DesertColors.primary.withValues(alpha: 0.2),
-                    width: 1,
-                  )
-                : null,
-            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  padding: EdgeInsets.all(isSelected ? 3 : 2),
-                  decoration: BoxDecoration(
-                    color: isSelected 
-                      ? DesertColors.primary.withValues(alpha: 0.1)
-                      : Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    size: isSelected ? 26 : 22,
-                    color: isSelected 
-                      ? DesertColors.primary
-                      : DesertColors.onSecondary.withValues(alpha: 0.7),
-                  ),
+                Icon(
+                  icon,
+                  size: isSelected ? 26 : 22,
+                  color: isSelected
+                    ? const Color(0xFF442B0C)
+                    : const Color(0xFF442B0C).withValues(alpha: 0.7),
                 ),
                 const SizedBox(height: 2),
                 Flexible(
                   child: AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    style: TextStyle(
-                      fontSize: isSelected ? 11 : 9,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    style: (isSelected ? OdyseyaTypography.navActive : OdyseyaTypography.navInactive).copyWith(
                       color: isSelected
-                        ? DesertColors.primary
-                        : DesertColors.onSecondary.withValues(alpha: 0.7),
+                        ? const Color(0xFF442B0C)
+                        : const Color(0xFF442B0C).withValues(alpha: 0.7),
                     ),
                     child: Text(
                       label,

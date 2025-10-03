@@ -21,6 +21,7 @@ import '../screens/onboarding/questionnaire_q4_screen.dart';
 import '../screens/affirmation_screen.dart';
 import '../screens/marketing_screen.dart';
 import '../screens/main_app_shell.dart';
+import '../screens/voice_journal_screen.dart';
 
 // Custom page transition builder for smooth animations
 CustomTransitionPage<void> _buildPageWithFadeTransition({
@@ -70,7 +71,7 @@ CustomTransitionPage<void> _buildPageWithSlideTransition({
 // Router configuration
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/journal', // Changed to show voice journal with bottom navigation
     debugLogDiagnostics: true,
     routes: [
       // Splash Screen
@@ -228,6 +229,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'affirmation',
         builder: (context, state) => const AffirmationScreen(),
       ),
+
+      // Debug route for voice recording screen testing
+      GoRoute(
+        path: '/test-voice',
+        name: 'test-voice',
+        builder: (context, state) => const VoiceJournalScreen(),
+      ),
     ],
 
     // Redirect logic for authentication and mood selection
@@ -318,8 +326,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isOnMoodSelection = state.matchedLocation == '/mood-selection';
       final isOnQuestionnaire = state.matchedLocation.startsWith('/onboarding/questionnaire');
       final isOnMain = state.matchedLocation == '/main';
+      final isOnTestVoice = state.matchedLocation == '/test-voice';
 
-      if (isOnAuth || isOnLogin || isOnSignup || isOnGdpr || isOnPermissions || isOnWelcome || isOnMarketing || isOnCalendar || isOnQuestionnaire || isOnMoodSelection || isOnJournal || isOnMain) {
+      if (isOnAuth || isOnLogin || isOnSignup || isOnGdpr || isOnPermissions || isOnWelcome || isOnMarketing || isOnCalendar || isOnQuestionnaire || isOnMoodSelection || isOnJournal || isOnMain || isOnTestVoice) {
         // Unauthenticated user on allowed route
         return null;
       }

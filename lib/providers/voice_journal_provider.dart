@@ -12,6 +12,20 @@ final voiceRecordingServiceProvider = Provider<VoiceRecordingService>((ref) {
   return VoiceRecordingService();
 });
 
+// Amplitude stream provider for waveform visualization
+final amplitudeStreamProvider = StreamProvider<double>((ref) async* {
+  final recordingService = ref.watch(voiceRecordingServiceProvider);
+  await for (final levels in recordingService.audioLevels) {
+    // Get the average amplitude from the levels
+    if (levels.isNotEmpty) {
+      final average = levels.reduce((a, b) => a + b) / levels.length;
+      yield average;
+    } else {
+      yield 0.0;
+    }
+  }
+});
+
 final transcriptionServiceProvider = Provider<TranscriptionService>((ref) {
   return TranscriptionService();
 });
@@ -50,7 +64,7 @@ class VoiceJournalState {
     this.error,
     this.currentEntry,
     this.isSaving = false,
-    this.currentStep = VoiceJournalStep.recording,
+    this.currentStep = VoiceJournalStep.moodSelection,
     this.selectedMood = '',
     this.inputMethod = 'voice',
     this.shouldNavigateToCalendar = false,
@@ -103,9 +117,8 @@ class VoiceJournalState {
 }
 
 enum VoiceJournalStep {
-  recording,
-  transcription,
-  analysis,
+  moodSelection,
+  journaling,
   review,
   completed,
 }
@@ -122,7 +135,7 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
     this._transcriptionService,
     this._aiService,
     this._ref,
-  ) : super(const VoiceJournalState()) {
+  ) : super(const VoiceJournalState(currentStep: VoiceJournalStep.moodSelection)) {
     _setupListeners();
   }
 
@@ -150,6 +163,10 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
       selectedMood: mood,
       clearError: true,
     );
+    // Automatically move to journaling step after mood selection
+    if (state.currentStep == VoiceJournalStep.moodSelection) {
+      state = state.copyWith(currentStep: VoiceJournalStep.journaling);
+    }
   }
 
   // Recording Methods
@@ -158,7 +175,6 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
       state = state.copyWith(clearError: true);
       await _recordingService.startRecording();
       state = state.copyWith(
-        currentStep: VoiceJournalStep.recording,
         isRecording: true,
       );
     } catch (e) {
@@ -173,11 +189,10 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
     try {
       await _recordingService.stopRecording();
       final recordingPath = await _recordingService.getRecordingPath();
-      
+
       state = state.copyWith(
         isRecording: false,
         currentRecordingPath: recordingPath,
-        currentStep: VoiceJournalStep.transcription,
       );
 
       // Start transcription automatically
@@ -216,7 +231,6 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
       state = state.copyWith(
         currentRecordingPath: null,
         transcription: '',
-        currentStep: VoiceJournalStep.recording,
         clearAnalysis: true,
         clearError: true,
       );
@@ -229,18 +243,14 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
   Future<void> _startTranscription(String audioPath) async {
     try {
       state = state.copyWith(isTranscribing: true, clearError: true);
-      
+
       final transcription = await _transcriptionService.transcribeAudio(audioPath);
-      
+
       state = state.copyWith(
         transcription: transcription,
         isTranscribing: false,
-        currentStep: VoiceJournalStep.analysis,
       );
 
-      // Start AI analysis automatically
-      await _startAIAnalysis(transcription);
-      
     } catch (e) {
       state = state.copyWith(
         error: _getErrorMessage(e),
@@ -277,17 +287,16 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
   Future<void> _startAIAnalysis(String text) async {
     try {
       state = state.copyWith(isAnalyzing: true, clearError: true);
-      
+
       // Pass selected mood to AI analysis for better context
       final analysis = await _aiService.analyzeEmotion(
-        text, 
+        text,
         mood: state.selectedMood.isNotEmpty ? state.selectedMood : null,
       );
-      
+
       state = state.copyWith(
         aiAnalysis: analysis,
         isAnalyzing: false,
-        currentStep: VoiceJournalStep.review,
       );
     } catch (e) {
       state = state.copyWith(
@@ -376,7 +385,7 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
       _recordingService.deleteRecording();
     }
 
-    state = const VoiceJournalState();
+    state = const VoiceJournalState(currentStep: VoiceJournalStep.moodSelection);
   }
 
   void clearError() {

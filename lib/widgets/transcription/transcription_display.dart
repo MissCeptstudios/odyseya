@@ -86,7 +86,7 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
           // Content
           if (voiceState.isTranscribing)
             _buildLoadingState()
-          else if (voiceState.hasTranscription || voiceState.currentStep.index >= VoiceJournalStep.transcription.index)
+          else if (voiceState.hasTranscription)
             _buildTextEditor(voiceState)
           else
             _buildEmptyState(),

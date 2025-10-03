@@ -105,8 +105,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # Fonts (using system fonts for now)
+  # Fonts
   fonts:
+    # Serif font for quotes, affirmations, welcome screens
     - family: Cormorant Garamond
       fonts:
         - asset: fonts/CormorantGaramond-Regular.ttf
@@ -120,6 +121,7 @@ flutter:
     - assets/images/Odyseya_word.png
     - assets/images/background_day.png
     - assets/images/background_desert.png
+    - assets/images/Dessert.png
     - assets/images/moods/
     - assets/logos/
   #   - images/a_dot_ham.jpeg

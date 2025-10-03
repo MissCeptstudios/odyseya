@@ -110,7 +110,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
             _buildLoadingState()
           else if (voiceState.hasAnalysis)
             _buildAnalysisContent(voiceState.aiAnalysis!)
-          else if (voiceState.currentStep.index >= VoiceJournalStep.analysis.index)
+          else if (voiceState.currentStep.index >= VoiceJournalStep.review.index)
             _buildErrorState()
           else
             _buildEmptyState(),

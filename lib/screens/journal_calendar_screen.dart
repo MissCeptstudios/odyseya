@@ -23,73 +23,47 @@ class JournalCalendarScreen extends ConsumerWidget {
         appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: DesertColors.onSurface,
-            size: 22,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          tooltip: 'Go back',
-        ),
-        title: Text(
+        title: const Text(
           'Your Journal',
           style: TextStyle(
             color: DesertColors.onBackground,
-            fontSize: 26,
-            fontWeight: FontWeight.w300,
-            letterSpacing: -0.5,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () => calendarNotifier.refreshCurrentMonth(),
-            icon: Icon(
-              Icons.refresh_rounded,
-              color: DesertColors.primary,
-              size: 24,
-            ),
-            tooltip: 'Refresh calendar',
-          ),
-          const SizedBox(width: 8),
-        ],
+        centerTitle: true,
       ),
       body: Column(
         children: [
           // Month/Year Header
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
                   onPressed: calendarNotifier.previousMonth,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.chevron_left_rounded,
                     color: DesertColors.primary,
-                    size: 36,
+                    size: 28,
                   ),
-                  tooltip: 'Previous month',
                 ),
                 Text(
                   _formatMonthYear(calendarState.currentMonth),
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                     color: DesertColors.onBackground,
-                    letterSpacing: 0.5,
                   ),
                 ),
                 IconButton(
                   onPressed: calendarNotifier.nextMonth,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.chevron_right_rounded,
                     color: DesertColors.primary,
-                    size: 36,
+                    size: 28,
                   ),
-                  tooltip: 'Next month',
                 ),
               ],
             ),

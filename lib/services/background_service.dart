@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class BackgroundService {
-  static const String _dayBackground = 'assets/images/background_desert.png';
-  static const String _eveningBackground = 'assets/images/background_desert.png';
+  static const String _dayBackground = 'assets/images/Dessert.png';
+  static const String _eveningBackground = 'assets/images/Dessert.png';
 
   /// Returns the appropriate background image path based on current time
   /// Day: 6AM - 6PM -> background_day.png

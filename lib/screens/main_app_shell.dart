@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../widgets/navigation/bottom_navigation_bar.dart';
 import '../widgets/common/app_background.dart';
 import 'mood_selection_screen.dart';
-import 'voice_journal_screen.dart';
+import 'recording_screen.dart';
 import 'journal_calendar_screen.dart';
 import 'settings_screen.dart';
 
@@ -62,7 +62,7 @@ class MainAppShell extends ConsumerWidget {
       case '/main':
         return const MoodSelectionScreen();
       case '/journal':
-        return const VoiceJournalScreen();
+        return const RecordingScreen();
       case '/calendar':
         return const JournalCalendarScreen();
       case '/settings':
