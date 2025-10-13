@@ -21,7 +21,7 @@ class DesertBackground extends StatelessWidget {
         ),
       ),
       child: Container(
-        color: Colors.white.withOpacity(1 - opacity),
+        color: Colors.white.withValues(alpha: 1 - opacity),
         child: child,
       ),
     );

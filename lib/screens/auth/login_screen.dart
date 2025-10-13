@@ -80,45 +80,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logo with Tagline
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 32),
-                      child: Column(
-                        children: [
-                          // Logo
-                          Container(
-                            width: 80,
-                            height: 80,
-                            margin: const EdgeInsets.only(bottom: 16),
-                            child: Image.asset(
-                              'assets/images/Odyseya_Icon.png',
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          // Brand Name
-                          Image.asset(
-                            'assets/images/Odyseya_word.png',
-                            height: 48,
-                            fit: BoxFit.contain,
-                          ),
-                          const SizedBox(height: 4),
-                          // Tagline
-                          Text(
-                            'Your voice. Your journey.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: DesertColors.treeBranch,
-                              fontStyle: FontStyle.italic,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   Text(
                     'Sign In',
                     style: TextStyle(
@@ -177,6 +138,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       labelText: 'Email',
+                      filled: true,
+                      fillColor: DesertColors.creamBeige,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -197,6 +160,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      filled: true,
+                      fillColor: DesertColors.creamBeige,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

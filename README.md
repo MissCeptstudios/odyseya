@@ -1,5 +1,7 @@
 # 🌿 Odyseya — Emotional Voice Journaling App
 
+**Inner peace**
+
 **Odyseya** is a cross-platform Flutter app that helps users reflect on their emotions through voice journaling, mood tracking, and personalized AI insights. It creates a calm, private, and intelligent space for emotional self-awareness and healing.
 
 ---

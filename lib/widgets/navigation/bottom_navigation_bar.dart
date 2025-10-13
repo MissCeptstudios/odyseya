@@ -27,8 +27,8 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
       ),
       child: SafeArea(
         child: Container(
-          height: 80,
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10), // Remove horizontal padding
+          height: 72,
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8), // Remove horizontal padding
           child: Row(
             children: [
               _buildNavItem(
@@ -88,12 +88,12 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  size: isSelected ? 26 : 22,
+                  size: 24,
                   color: isSelected
                     ? const Color(0xFF442B0C)
-                    : const Color(0xFF442B0C).withValues(alpha: 0.7),
+                    : const Color(0xFF442B0C).withValues(alpha: 0.6),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Flexible(
                   child: AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),

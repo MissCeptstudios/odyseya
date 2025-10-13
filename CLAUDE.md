@@ -2,6 +2,8 @@
 
 ## App Name: Odyseya — Emotional Voice Journaling App
 
+**Inner peace**
+
 ### Mission:
 Create a safe, calm, and emotionally intelligent space where **anyone** can journal using their voice, understand their feelings through AI insights, and build healthier emotional habits over time.
 

@@ -104,7 +104,7 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
 
     return AppBackground(
       useOverlay: true,
-      overlayOpacity: 0.7,
+      overlayOpacity: 0.05,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(

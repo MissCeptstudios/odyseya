@@ -119,8 +119,12 @@ flutter:
     - assets/images/
     - assets/images/Odyseya_Icon.png
     - assets/images/Odyseya_word.png
+    - assets/images/OpenApp.png
+    - assets/images/just_compass.png
+    - assets/images/inside_compass.png
     - assets/images/background_day.png
     - assets/images/background_desert.png
+    - assets/images/Background_F.png
     - assets/images/Dessert.png
     - assets/images/moods/
     - assets/logos/

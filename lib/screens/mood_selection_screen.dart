@@ -46,7 +46,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
 
     return AppBackground(
       useOverlay: true,
-      overlayOpacity: 0.8,
+      overlayOpacity: 0.05,
       child: Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(

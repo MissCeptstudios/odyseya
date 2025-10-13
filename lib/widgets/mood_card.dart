@@ -80,36 +80,32 @@ class _MoodCardState extends State<MoodCard>
               onTapUp: _handleTapUp,
               onTapCancel: _handleTapCancel,
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 350),
+                duration: const Duration(milliseconds: 400),
                 curve: Curves.easeOutCubic,
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: widget.isSelected
-                      ? widget.mood.color.withValues(alpha: 0.12)
-                      : Colors.white,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: widget.isSelected
-                        ? widget.mood.color
-                        : Colors.grey.withValues(alpha: 0.25),
-                    width: widget.isSelected ? 3 : 1.5,
+                        ? DesertColors.buttonSelectedBorder
+                        : DesertColors.buttonUnselectedBorder,
+                    width: 2,
                   ),
                   boxShadow: [
+                    // Soft ambient shadow
                     BoxShadow(
-                      color: widget.isSelected
-                          ? widget.mood.color.withValues(alpha: 0.35)
-                          : Colors.black.withValues(alpha: 0.08),
-                      blurRadius: widget.isSelected ? 20 : 10,
-                      offset: const Offset(0, 6),
-                      spreadRadius: widget.isSelected ? 3 : 0,
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
+                    // Premium elevation shadow when selected
                     if (widget.isSelected)
                       BoxShadow(
-                        color: widget.mood.color.withValues(alpha: 0.15),
-                        blurRadius: 30,
-                        offset: const Offset(0, 10),
-                        spreadRadius: 5,
+                        color: Colors.black.withValues(alpha: 0.08),
+                        blurRadius: 24,
+                        offset: const Offset(0, 8),
                       ),
                   ],
                 ),
@@ -120,9 +116,10 @@ class _MoodCardState extends State<MoodCard>
                     Expanded(
                       flex: 3,
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeOutCubic,
                         padding: const EdgeInsets.all(8),
-                        transform: Matrix4.identity()..scale(widget.isSelected ? 1.1 : 1.0),
+                        transform: Matrix4.identity()..scale(widget.isSelected ? 1.05 : 1.0),
                         child: widget.mood.imagePath != null
                             ? Image.asset(
                                 widget.mood.imagePath!,
@@ -141,53 +138,18 @@ class _MoodCardState extends State<MoodCard>
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
 
-                    // Mood Label
-                    Text(
-                      widget.mood.label,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: widget.isSelected
-                            ? widget.mood.color
-                            : DesertColors.onSurface,
-                        letterSpacing: 0.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    const SizedBox(height: 6),
-
-                    // Mood Description
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        widget.mood.description,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: widget.isSelected
-                              ? widget.mood.color.withValues(alpha: 0.85)
-                              : DesertColors.onSurface.withValues(alpha: 0.7),
-                          height: 1.4,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-
-                    // Selection Indicator
+                    // Subtle selection indicator - minimal dot
                     AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeOutCubic,
-                      height: 4,
-                      width: widget.isSelected ? 50 : 0,
+                      height: widget.isSelected ? 6 : 0,
+                      width: widget.isSelected ? 6 : 0,
                       margin: const EdgeInsets.only(top: 8),
                       decoration: BoxDecoration(
-                        color: widget.mood.color,
-                        borderRadius: BorderRadius.circular(2),
+                        color: DesertColors.buttonSelectedText,
+                        shape: BoxShape.circle,
                       ),
                     ),
                   ],

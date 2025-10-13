@@ -17,7 +17,15 @@ class DesertColors {
   static const Color treeBranch = Color(0xFF8B7362);
   static const Color brownBramble = Color(0xFF57351E);
   static const Color creamBeige = Color(0xFFF9F6F0); // New cream beige for branding backgrounds
-  
+
+  // Button state colors
+  static const Color buttonUnselectedBg = Color(0xFFF9F6F0); // Cream beige for unselected
+  static const Color buttonUnselectedBorder = Color(0xFFD0C4B8); // Muted beige border
+  static const Color buttonUnselectedText = Color(0xFF8B7362); // Tree branch for text
+  static const Color buttonSelectedBg = Color(0xFFDBAC80); // Caramel drizzle for selected
+  static const Color buttonSelectedBorder = Color(0xFFD8A36C); // Western sunrise accent
+  static const Color buttonSelectedText = Color(0xFF57351E); // Brown bramble for text
+
   // Gradient colors for smooth transitions
   static const Color gradientBlue = Color(0xFF6BB6FF); // Soft blue for gradients
   static const Color gradientLightBlue = Color(0xFFB8D4E3); // Light blue

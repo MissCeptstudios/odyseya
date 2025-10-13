@@ -81,7 +81,7 @@ class _FirstDownloadAppScreenState extends State<FirstDownloadAppScreen>
 
   void _navigateToNext() {
     if (mounted) {
-      context.go('/marketing');
+      context.go('/auth');
     }
   }
 

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 import '../providers/mood_provider.dart';
 import '../models/auth_user.dart';
-import '../screens/first_downloadapp_screen.dart';
+import '../screens/splash_screen.dart';
 import '../screens/auth/auth_choice_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/signup_screen.dart';
@@ -19,9 +19,9 @@ import '../screens/onboarding/questionnaire_q2_screen.dart';
 import '../screens/onboarding/questionnaire_q3_screen.dart';
 import '../screens/onboarding/questionnaire_q4_screen.dart';
 import '../screens/affirmation_screen.dart';
-import '../screens/marketing_screen.dart';
 import '../screens/main_app_shell.dart';
 import '../screens/voice_journal_screen.dart';
+import '../screens/review_submit_screen.dart';
 
 // Custom page transition builder for smooth animations
 CustomTransitionPage<void> _buildPageWithFadeTransition({
@@ -59,10 +59,7 @@ CustomTransitionPage<void> _buildPageWithSlideTransition({
 
       return SlideTransition(
         position: offsetAnimation,
-        child: FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
+        child: FadeTransition(opacity: animation, child: child),
       );
     },
   );
@@ -71,14 +68,14 @@ CustomTransitionPage<void> _buildPageWithSlideTransition({
 // Router configuration
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    initialLocation: '/journal', // Changed to show voice journal with bottom navigation
+    initialLocation: '/splash', // Show splash screen first
     debugLogDiagnostics: true,
     routes: [
       // Splash Screen
       GoRoute(
         path: '/splash',
         name: 'splash',
-        builder: (context, state) => const FirstDownloadAppScreen(),
+        builder: (context, state) => const SplashScreen(),
       ),
 
       // Onboarding Flow
@@ -129,13 +126,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const WelcomeScreen(),
           state: state,
         ),
-      ),
-
-      // Marketing Screen
-      GoRoute(
-        path: '/marketing',
-        name: 'marketing',
-        builder: (context, state) => const MarketingScreen(),
       ),
 
       // Questionnaire Routes
@@ -236,6 +226,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'test-voice',
         builder: (context, state) => const VoiceJournalScreen(),
       ),
+
+      // Review & Submit Screen
+      GoRoute(
+        path: '/review',
+        name: 'review',
+        pageBuilder: (context, state) => _buildPageWithSlideTransition(
+          child: const ReviewSubmitScreen(),
+          state: state,
+        ),
+      ),
     ],
 
     // Redirect logic for authentication and mood selection
@@ -261,14 +261,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isOnLogin = state.matchedLocation == '/login';
       final isOnSignup = state.matchedLocation == '/signup';
       final isOnOnboarding = state.matchedLocation == '/onboarding';
-      final isOnOnboardingSuccess = state.matchedLocation == '/onboarding-success';
+      final isOnOnboardingSuccess =
+          state.matchedLocation == '/onboarding-success';
       // final isOnMoodSelection = state.matchedLocation == '/home';
       final isOnJournal = state.matchedLocation == '/journal';
       final isOnCalendar = state.matchedLocation == '/calendar';
 
-      // Allow users to see splash screen
+      // Allow everyone to see splash screen (it auto-navigates after 3 seconds)
       if (isOnSplash) {
-        // Let users stay on splash screen and use Continue button
         return null;
       }
 
@@ -276,7 +276,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (isAuthenticated) {
         // User is authenticated
         final lastAction = authState.lastAction;
-        
+
         // Handle different post-authentication flows
         if (isOnSplash || isOnAuth || isOnLogin || isOnSignup) {
           // New signup goes to onboarding success
@@ -293,15 +293,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           // Redirecting authenticated user to main app
           return '/home';
         }
-        
+
         // Allow onboarding success for new users
         if (isOnOnboardingSuccess && lastAction == AuthAction.signUp) {
           // New user on onboarding success page
           return null;
         }
-        
+
         // Don't allow returning users on onboarding
-        if (isOnOnboarding || (isOnOnboardingSuccess && lastAction != AuthAction.signUp)) {
+        if (isOnOnboarding ||
+            (isOnOnboardingSuccess && lastAction != AuthAction.signUp)) {
           // Redirecting authenticated user away from onboarding
           return '/affirmation';
         }
@@ -322,13 +323,25 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isOnGdpr = state.matchedLocation == '/gdpr-consent';
       final isOnPermissions = state.matchedLocation == '/permissions';
       final isOnWelcome = state.matchedLocation == '/welcome';
-      final isOnMarketing = state.matchedLocation == '/marketing';
       final isOnMoodSelection = state.matchedLocation == '/mood-selection';
-      final isOnQuestionnaire = state.matchedLocation.startsWith('/onboarding/questionnaire');
+      final isOnQuestionnaire = state.matchedLocation.startsWith(
+        '/onboarding/questionnaire',
+      );
       final isOnMain = state.matchedLocation == '/main';
       final isOnTestVoice = state.matchedLocation == '/test-voice';
 
-      if (isOnAuth || isOnLogin || isOnSignup || isOnGdpr || isOnPermissions || isOnWelcome || isOnMarketing || isOnCalendar || isOnQuestionnaire || isOnMoodSelection || isOnJournal || isOnMain || isOnTestVoice) {
+      if (isOnAuth ||
+          isOnLogin ||
+          isOnSignup ||
+          isOnGdpr ||
+          isOnPermissions ||
+          isOnWelcome ||
+          isOnCalendar ||
+          isOnQuestionnaire ||
+          isOnMoodSelection ||
+          isOnJournal ||
+          isOnMain ||
+          isOnTestVoice) {
         // Unauthenticated user on allowed route
         return null;
       }
@@ -365,16 +378,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ),
   );
-  
+
   // Listen to auth state changes and refresh router
   ref.listen(authStateProvider, (_, _) {
     router.refresh();
   });
-  
+
   // Listen to mood provider changes for proper routing
   ref.listen(moodProvider, (_, _) {
     router.refresh();
   });
-  
+
   return router;
 });

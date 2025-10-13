@@ -19,52 +19,7 @@ class AuthChoiceScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo with Tagline
-              Column(
-                children: [
-                  // Logo
-                  Container(
-                    width: 120,
-                    height: 120,
-                    margin: const EdgeInsets.only(bottom: 24),
-                    child: Image.asset(
-                      'assets/images/Odyseya_Icon.png',
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  // Brand Name
-                  Image.asset(
-                    'assets/images/Odyseya_word.png',
-                    height: 56,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 8),
-                  // Tagline
-                  Text(
-                    'Your voice. Your journey.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: DesertColors.treeBranch,
-                      fontStyle: FontStyle.italic,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Description
-                  Text(
-                    'Your safe space for emotional exploration',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: DesertColors.onSecondary,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 48),
+              const Spacer(),
 
               // Sign In Button
               SizedBox(

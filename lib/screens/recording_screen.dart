@@ -13,6 +13,13 @@ class RecordingScreen extends ConsumerStatefulWidget {
 
 class _RecordingScreenState extends ConsumerState<RecordingScreen> {
   bool isRecordMode = true; // true = Record, false = Type
+  final TextEditingController _textController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +28,9 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFF5E6D3), // Light beige top
-              Color(0xFFE8CDA5), // Medium tan
-              Color(0xFFD4A574), // Darker tan bottom
-            ],
+          image: DecorationImage(
+            image: AssetImage('assets/images/Background_F.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(
@@ -60,8 +62,9 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
 
               const Spacer(),
 
-              // Audio Waveform
-              if (voiceState.isRecording)
+              // Content Area - Record or Type
+              if (isRecordMode)
+                // Audio Waveform
                 Container(
                   height: 200,
                   padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -78,12 +81,46 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                     height: 200,
                     barCount: 50,
                   ),
+                )
+              else
+                // Text Input Area
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _textController,
+                    maxLines: 8,
+                    decoration: const InputDecoration(
+                      hintText: 'Share your thoughts...',
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color(0xFF8B7355),
+                        fontSize: 16,
+                      ),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF2B7A9E),
+                      height: 1.5,
+                    ),
+                  ),
                 ),
 
-              const Spacer(),
+              const SizedBox(height: 40),
 
-              // Timer Display
-              if (voiceState.isRecording)
+              // Timer Display (only in record mode)
+              if (isRecordMode && voiceState.isRecording)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Row(
@@ -115,11 +152,11 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                   ),
                 ),
 
-              // Record Button
+              // Action Button (Record or Submit)
               Padding(
                 padding: const EdgeInsets.only(bottom: 40),
                 child: GestureDetector(
-                  onTap: _handleRecordButtonPress,
+                  onTap: isRecordMode ? _handleRecordButtonPress : _handleSubmit,
                   child: Container(
                     width: 100,
                     height: 100,
@@ -128,60 +165,20 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                       color: const Color(0xFF2B8AB8),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withValues(alpha: 0.2),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
                       ],
                     ),
                     child: Icon(
-                      voiceState.isRecording ? Icons.stop : Icons.mic,
+                      isRecordMode
+                          ? (voiceState.isRecording ? Icons.stop : Icons.mic)
+                          : Icons.arrow_forward,
                       color: Colors.white,
                       size: 45,
                     ),
                   ),
-                ),
-              ),
-
-              // Bottom Buttons
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF5BA3C5), Color(0xFF3D8AB5)],
-                  ),
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _buildBottomButton(
-                        icon: Icons.folder_outlined,
-                        label: 'Library',
-                        onTap: () => context.go('/calendar'),
-                      ),
-                    ),
-                    Container(
-                      width: 1,
-                      height: 40,
-                      color: Colors.white.withOpacity(0.3),
-                    ),
-                    Expanded(
-                      child: _buildBottomButton(
-                        icon: Icons.settings_outlined,
-                        label: 'Settings',
-                        onTap: () => context.go('/settings'),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],
@@ -201,12 +198,12 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.white.withOpacity(0.5),
+          color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(20),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -229,40 +226,34 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
     );
   }
 
-  Widget _buildBottomButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Colors.white, size: 28),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _handleRecordButtonPress() {
     final notifier = ref.read(voiceJournalProvider.notifier);
     final voiceState = ref.read(voiceJournalProvider);
 
     if (voiceState.isRecording) {
       notifier.stopRecording();
+      // Navigate to review screen after stopping
+      _navigateToReview();
     } else {
       notifier.startRecording();
     }
+  }
+
+  void _handleSubmit() {
+    if (_textController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please write something before submitting'),
+          backgroundColor: Color(0xFF2B8AB8),
+        ),
+      );
+      return;
+    }
+    _navigateToReview();
+  }
+
+  void _navigateToReview() {
+    context.push('/review');
   }
 
   String _formatDuration(Duration duration) {
