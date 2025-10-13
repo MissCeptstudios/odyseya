@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/mood.dart';
-import '../constants/colors.dart';
 import 'mood_card.dart';
 
 class SwipeableMoodCards extends StatefulWidget {
@@ -109,18 +108,18 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: DesertColors.westernSunrise.withValues(alpha: 0.1),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: DesertColors.westernSunrise.withValues(alpha: 0.3),
+                        color: Colors.white.withValues(alpha: 0.4),
                       ),
                     ),
                     child: Text(
                       '${_currentIndex + 1} of ${widget.moods.length}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: DesertColors.westernSunrise,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -138,8 +137,8 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
                         width: index == _currentIndex ? 10 : 6,
                         decoration: BoxDecoration(
                           color: index == _currentIndex
-                              ? DesertColors.westernSunrise
-                              : DesertColors.westernSunrise.withValues(alpha: 0.3),
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),

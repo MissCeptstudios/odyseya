@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import '../providers/mood_provider.dart';
 import '../models/auth_user.dart';
 import '../screens/splash_screen.dart';
+import '../screens/first_downloadapp_screen.dart';
 import '../screens/auth/auth_choice_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/signup_screen.dart';
@@ -68,9 +69,16 @@ CustomTransitionPage<void> _buildPageWithSlideTransition({
 // Router configuration
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    initialLocation: '/splash', // Show splash screen first
+    initialLocation: '/first-download', // Show first download screen
     debugLogDiagnostics: true,
     routes: [
+      // First Download Screen
+      GoRoute(
+        path: '/first-download',
+        name: 'first-download',
+        builder: (context, state) => const FirstDownloadAppScreen(),
+      ),
+
       // Splash Screen
       GoRoute(
         path: '/splash',

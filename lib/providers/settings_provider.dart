@@ -46,14 +46,22 @@ class UserSettings {
   }
 
   factory UserSettings.fromJson(Map<String, dynamic> json) {
+    // Helper to safely parse int values that might be stored as strings
+    int parseInt(dynamic value, int defaultValue) {
+      if (value == null) return defaultValue;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value) ?? defaultValue;
+      return defaultValue;
+    }
+
     return UserSettings(
       dailyRemindersEnabled: json['dailyRemindersEnabled'] ?? true,
       reminderTime: TimeOfDay(
-        hour: json['reminderTimeHour'] ?? 19,
-        minute: json['reminderTimeMinute'] ?? 0,
+        hour: parseInt(json['reminderTimeHour'], 19),
+        minute: parseInt(json['reminderTimeMinute'], 0),
       ),
-      summaryFrequency: SummaryFrequency.values[json['summaryFrequency'] ?? 0],
-      aiAnalysisLevel: AIAnalysisLevel.values[json['aiAnalysisLevel'] ?? 2],
+      summaryFrequency: SummaryFrequency.values[parseInt(json['summaryFrequency'], 0)],
+      aiAnalysisLevel: AIAnalysisLevel.values[parseInt(json['aiAnalysisLevel'], 2)],
     );
   }
 }

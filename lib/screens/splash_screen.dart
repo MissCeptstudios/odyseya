@@ -96,6 +96,16 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ],
                 ),
+
+                const SizedBox(height: 40),
+
+                // Odyseya Logo below compass
+                Image.asset(
+                  'assets/images/Odyseya_logo_noBGR.png',
+                  width: 200,
+                  height: 80,
+                  fit: BoxFit.contain,
+                ),
               ],
             ),
           ),
