@@ -10,6 +10,7 @@ import 'constants/typography.dart';
 import 'services/notification_service.dart';
 import 'services/ai_config_service.dart';
 import 'services/ai_quick_test.dart';
+import 'services/revenue_cat_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,9 @@ void main() async {
 
   // Initialize notification service
   await NotificationService().initialize();
+
+  // Initialize RevenueCat for subscriptions
+  await RevenueCatService().initialize();
 
   // Initialize AI services with environment-based API keys
   final aiConfig = AIConfigService();

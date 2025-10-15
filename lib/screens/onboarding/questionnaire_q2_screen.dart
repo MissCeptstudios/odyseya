@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
-import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../widgets/common/odyseya_screen_layout.dart';
 
 class QuestionnaireQ2Screen extends ConsumerWidget {
   const QuestionnaireQ2Screen({super.key});
@@ -13,41 +13,20 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
     final onboarding = ref.watch(onboardingProvider);
     final selectedOption = onboarding.q2Frequency;
 
-    return OnboardingLayout(
-      showProgress: true,
-      showBackButton: true,
-      onNext: selectedOption != null 
+    return OdyseyaScreenLayout(
+      totalSteps: 4,
+      currentStep: 2,
+      title: 'How often would you like to check in with yourself?',
+      subtitle: 'Set your intention — we\'ll gently remind you',
+      primaryButtonText: 'Continue',
+      onPrimaryPressed: selectedOption != null
         ? () => context.go('/onboarding/questionnaire/q3')
         : null,
-      nextButtonText: 'Continue',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
-          
-          Text(
-            'How often would you like to check in with yourself?',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-              height: 1.2,
-            ),
-          ),
-          
-          const SizedBox(height: 12),
-          
-          Text(
-            'Set your intention — we\'ll gently remind you',
-            style: TextStyle(
-              fontSize: 16,
-              color: DesertColors.onSecondary,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          
-          const SizedBox(height: 32),
-          
+          const SizedBox(height: 16),
+
           ..._buildOptions().map((option) => _buildOptionCard(
             context,
             ref,
@@ -56,8 +35,8 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
             option['description'] as String,
             selectedOption == option['value'],
           )),
-          
-          const SizedBox(height: 32),
+
+          const SizedBox(height: 24),
         ],
       ),
     );

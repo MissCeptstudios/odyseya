@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
-import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../widgets/common/odyseya_screen_layout.dart';
 
 class QuestionnaireQ4Screen extends ConsumerWidget {
   const QuestionnaireQ4Screen({super.key});
@@ -13,38 +13,17 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
     final onboarding = ref.watch(onboardingProvider);
     final selectedOption = onboarding.q4HardestEmotion;
 
-    return OnboardingLayout(
-      showProgress: true,
-      showBackButton: true,
-      onNext: () => context.go('/mood-selection'), // Continue to main app flow
-      nextButtonText: selectedOption != null ? 'Continue' : 'Skip for now',
+    return OdyseyaScreenLayout(
+      totalSteps: 4,
+      currentStep: 4,
+      title: 'What\'s one emotion or thought you find hardest to express in words?',
+      subtitle: 'We\'ll help you gently unpack it over time',
+      primaryButtonText: selectedOption != null ? 'Continue' : 'Skip for now',
+      onPrimaryPressed: () => context.go('/mood-selection'), // Continue to main app flow
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
-          
-          Text(
-            'What\'s one emotion or thought you find hardest to express in words?',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-              height: 1.2,
-            ),
-          ),
-          
-          const SizedBox(height: 12),
-          
-          Text(
-            'We\'ll help you gently unpack it over time',
-            style: TextStyle(
-              fontSize: 16,
-              color: DesertColors.onSecondary,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
           
           // Optional text input
           Container(
@@ -105,8 +84,8 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
             option['label'] as String,
             selectedOption == option['value'],
           )),
-          
-          const SizedBox(height: 32),
+
+          const SizedBox(height: 24),
         ],
       ),
     );

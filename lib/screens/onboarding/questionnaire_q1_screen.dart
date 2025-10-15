@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
-import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../widgets/common/odyseya_screen_layout.dart';
 
 class QuestionnaireQ1Screen extends ConsumerWidget {
   const QuestionnaireQ1Screen({super.key});
@@ -13,41 +13,20 @@ class QuestionnaireQ1Screen extends ConsumerWidget {
     final onboarding = ref.watch(onboardingProvider);
     final selectedOptions = onboarding.q1Goals;
 
-    return OnboardingLayout(
-      showProgress: true,
-      showBackButton: true,
-      onNext: selectedOptions.isNotEmpty 
+    return OdyseyaScreenLayout(
+      totalSteps: 4,
+      currentStep: 1,
+      title: 'What do you hope Odyseya will help you with?',
+      subtitle: 'Choose one or more',
+      primaryButtonText: 'Continue',
+      onPrimaryPressed: selectedOptions.isNotEmpty
         ? () => context.go('/onboarding/questionnaire/q2')
         : null,
-      nextButtonText: 'Continue',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
-          
-          Text(
-            'What do you hope Odyseya will help you with?',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-              height: 1.2,
-            ),
-          ),
-          
-          const SizedBox(height: 12),
-          
-          Text(
-            'Choose one or more',
-            style: TextStyle(
-              fontSize: 16,
-              color: DesertColors.onSecondary,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          
-          const SizedBox(height: 32),
-          
+          const SizedBox(height: 16),
+
           ..._buildOptions().map((option) => _buildOptionCard(
             context,
             ref,
@@ -55,8 +34,8 @@ class QuestionnaireQ1Screen extends ConsumerWidget {
             option['label'] as String,
             selectedOptions.contains(option['value']),
           )),
-          
-          const SizedBox(height: 32),
+
+          const SizedBox(height: 24),
         ],
       ),
     );

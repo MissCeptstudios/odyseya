@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
-import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../widgets/common/odyseya_screen_layout.dart';
 
 class QuestionnaireQ3Screen extends ConsumerWidget {
   const QuestionnaireQ3Screen({super.key});
@@ -13,41 +13,20 @@ class QuestionnaireQ3Screen extends ConsumerWidget {
     final onboarding = ref.watch(onboardingProvider);
     final selectedOptions = onboarding.q3Feelings;
 
-    return OnboardingLayout(
-      showProgress: true,
-      showBackButton: true,
-      onNext: selectedOptions.isNotEmpty 
+    return OdyseyaScreenLayout(
+      totalSteps: 4,
+      currentStep: 3,
+      title: 'Which of these describes how you\'ve been feeling lately?',
+      subtitle: 'Pick up to 2',
+      primaryButtonText: 'Continue',
+      onPrimaryPressed: selectedOptions.isNotEmpty
         ? () => context.go('/onboarding/questionnaire/q4')
         : null,
-      nextButtonText: 'Continue',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
-          
-          Text(
-            'Which of these describes how you\'ve been feeling lately?',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-              height: 1.2,
-            ),
-          ),
-          
-          const SizedBox(height: 12),
-          
-          Text(
-            'Pick up to 2',
-            style: TextStyle(
-              fontSize: 16,
-              color: DesertColors.onSecondary,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          
-          const SizedBox(height: 32),
-          
+          const SizedBox(height: 16),
+
           ..._buildOptions().map((option) => _buildOptionCard(
             context,
             ref,
@@ -56,8 +35,8 @@ class QuestionnaireQ3Screen extends ConsumerWidget {
             selectedOptions.contains(option['value']),
             selectedOptions.length >= 2 && !selectedOptions.contains(option['value']),
           )),
-          
-          const SizedBox(height: 32),
+
+          const SizedBox(height: 24),
         ],
       ),
     );

@@ -23,6 +23,7 @@ import '../screens/affirmation_screen.dart';
 import '../screens/main_app_shell.dart';
 import '../screens/voice_journal_screen.dart';
 import '../screens/review_submit_screen.dart';
+import '../screens/paywall_screen.dart';
 
 // Custom page transition builder for smooth animations
 CustomTransitionPage<void> _buildPageWithFadeTransition({
@@ -241,6 +242,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'review',
         pageBuilder: (context, state) => _buildPageWithSlideTransition(
           child: const ReviewSubmitScreen(),
+          state: state,
+        ),
+      ),
+
+      // Paywall / Premium Subscription Screen
+      GoRoute(
+        path: '/paywall',
+        name: 'paywall',
+        pageBuilder: (context, state) => _buildPageWithSlideTransition(
+          child: const PaywallScreen(),
           state: state,
         ),
       ),

@@ -30,11 +30,7 @@ class RevenueCatService {
       }
 
       // Configure RevenueCat
-      final configuration = PurchasesConfiguration(apiKey)
-        ..appUserID = null // Let RevenueCat generate anonymous ID
-        ..observerMode = false;
-
-      await Purchases.configure(configuration);
+      await Purchases.configure(PurchasesConfiguration(apiKey));
 
       // Enable debug logs if in debug mode
       if (kDebugMode) {
@@ -228,7 +224,12 @@ class RevenueCatService {
     if (_customerInfo == null) return null;
 
     final entitlement = _customerInfo!.entitlements.all['premium'];
-    return entitlement?.expirationDate;
+    final expirationDateString = entitlement?.expirationDate;
+
+    if (expirationDateString == null) return null;
+
+    // Parse the date string to DateTime
+    return DateTime.tryParse(expirationDateString);
   }
 
   /// Check if subscription will renew

@@ -50,7 +50,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
       child: Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: DesertColors.offWhite.withValues(alpha: 0.95),
         elevation: 0,
         iconTheme: const IconThemeData(color: DesertColors.onSurface),
         title: const Text(
@@ -62,6 +62,13 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
           ),
         ),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            height: 1,
+            color: DesertColors.dustyBlue.withValues(alpha: 0.3),
+          ),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -74,20 +81,22 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                 selectedMood: moodState.selectedMood,
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: DesertColors.offWhite.withValues(alpha: 0.95),
-                border: Border(
-                  top: BorderSide(
-                    color: DesertColors.dustyBlue.withValues(alpha: 0.3),
+            SafeArea(
+              top: false,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: DesertColors.offWhite.withValues(alpha: 0.95),
+                  border: Border(
+                    top: BorderSide(
+                      color: DesertColors.dustyBlue.withValues(alpha: 0.3),
+                    ),
                   ),
                 ),
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
                   onPressed: moodState.selectedMood != null
                       ? _onContinue
                       : null,
@@ -117,6 +126,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                 ),
               ),
             ),
+          ),
           ],
         ),
       ),

@@ -317,103 +317,65 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
   Widget _buildJournalingContent() {
     final voiceState = ref.watch(voiceJournalProvider);
-    
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
-          // Input Method Toggle
-          Container(
-            margin: const EdgeInsets.only(bottom: 24),
-            decoration: BoxDecoration(
-              color: DesertColors.offWhite,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: DesertColors.dustyBlue.withValues(alpha: 0.3),
+          const SizedBox(height: 16),
+
+          // Input Method Toggle - Voice / Type
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () => ref.read(voiceJournalProvider.notifier).setInputMethod('voice'),
+                child: Text(
+                  'Voice',
+                  style: OdyseyaTypography.h2.copyWith(
+                    color: voiceState.inputMethod == 'voice'
+                        ? DesertColors.deepBrown
+                        : DesertColors.taupe.withValues(alpha: 0.5),
+                    fontWeight: voiceState.inputMethod == 'voice'
+                        ? FontWeight.w600
+                        : FontWeight.w400,
+                  ),
+                ),
               ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => ref.read(voiceJournalProvider.notifier).setInputMethod('voice'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: voiceState.inputMethod == 'voice'
-                            ? DesertColors.roseSand
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.mic_rounded,
-                            size: 18,
-                            color: voiceState.inputMethod == 'voice'
-                                ? Colors.white
-                                : DesertColors.deepBrown,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Voice',
-                            style: OdyseyaTypography.buttonSmall.copyWith(
-                              color: voiceState.inputMethod == 'voice'
-                                  ? Colors.white
-                                  : DesertColors.deepBrown,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  '/',
+                  style: OdyseyaTypography.h2.copyWith(
+                    color: DesertColors.taupe.withValues(alpha: 0.3),
                   ),
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => ref.read(voiceJournalProvider.notifier).setInputMethod('text'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: voiceState.inputMethod == 'text'
-                            ? DesertColors.roseSand
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.edit_rounded,
-                            size: 18,
-                            color: voiceState.inputMethod == 'text'
-                                ? Colors.white
-                                : DesertColors.deepBrown,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Type',
-                            style: OdyseyaTypography.buttonSmall.copyWith(
-                              color: voiceState.inputMethod == 'text'
-                                  ? Colors.white
-                                  : DesertColors.deepBrown,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              ),
+              GestureDetector(
+                onTap: () => ref.read(voiceJournalProvider.notifier).setInputMethod('text'),
+                child: Text(
+                  'Type',
+                  style: OdyseyaTypography.h2.copyWith(
+                    color: voiceState.inputMethod == 'text'
+                        ? DesertColors.deepBrown
+                        : DesertColors.taupe.withValues(alpha: 0.5),
+                    fontWeight: voiceState.inputMethod == 'text'
+                        ? FontWeight.w600
+                        : FontWeight.w400,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          
+
+          const SizedBox(height: 48),
+
           // Input Interface
           if (voiceState.inputMethod == 'voice') ...[
-            // Interactive Audio Waveform (inspired by reference image)
+            // Audio Waveform
             if (voiceState.isRecording)
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: AudioWaveformWidget(
                   amplitudeStream: ref.watch(amplitudeStreamProvider).asData?.value != null
                       ? Stream.value(ref.watch(amplitudeStreamProvider).asData!.value)
@@ -421,14 +383,49 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   isRecording: voiceState.isRecording,
                   isPaused: voiceState.isPaused,
                   waveColor: DesertColors.dustyBlue,
-                  height: 120,
+                  height: 150,
                   barCount: 50,
+                ),
+              )
+            else
+              const SizedBox(height: 150), // Placeholder space when not recording
+
+            const SizedBox(height: 32),
+
+            // Timer Display - Minutes on left, Seconds on right
+            if (voiceState.isRecording || voiceState.recordingDuration > Duration.zero)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Minutes
+                    Text(
+                      voiceState.recordingDuration.inMinutes.toString().padLeft(2, '0'),
+                      style: OdyseyaTypography.h1Large.copyWith(
+                        color: DesertColors.deepBrown,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    // Seconds
+                    Text(
+                      (voiceState.recordingDuration.inSeconds % 60).toString().padLeft(2, '0'),
+                      style: OdyseyaTypography.h1Large.copyWith(
+                        color: DesertColors.deepBrown,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
-            // Voice Recording Interface
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
+
+            // Start Recording Button
             const RecordButton(),
+
             const SizedBox(height: 40),
           ] else ...[
             // Text Input Interface
@@ -827,7 +824,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       case VoiceJournalStep.moodSelection:
         return 'How are you feeling?';
       case VoiceJournalStep.journaling:
-        return 'Share Your Thoughts';
+        return 'What\'s on your mind today?';
       case VoiceJournalStep.review:
         return 'Review Entry';
       case VoiceJournalStep.completed:
@@ -840,7 +837,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       case VoiceJournalStep.moodSelection:
         return 'Select a mood to begin';
       case VoiceJournalStep.journaling:
-        return 'Voice or type your journal';
+        return ''; // No subtitle for journaling screen
       case VoiceJournalStep.review:
         return 'Check before saving';
       case VoiceJournalStep.completed:

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
+import '../constants/typography.dart';
 import '../providers/settings_provider.dart';
 import '../providers/notification_provider.dart';
+import '../providers/subscription_provider.dart';
 import '../widgets/common/app_background.dart';
+import '../widgets/common/premium_badge.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -12,8 +16,10 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
     final notificationState = ref.watch(notificationProvider);
+    final subscriptionState = ref.watch(subscriptionProvider);
     final isLoading = notificationState.isLoading;
     final hasPermission = notificationState.hasPermission;
+    final isPremium = subscriptionState.isPremium;
 
     return AppBackground(
       useOverlay: true,
@@ -41,6 +47,11 @@ class SettingsScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
               const SizedBox(height: 20),
+
+              // Premium Subscription Section
+              _buildPremiumSection(context, ref, isPremium, subscriptionState),
+
+              const SizedBox(height: 32),
               
               _buildSettingsSection(
                 title: 'Notifications',
@@ -836,5 +847,287 @@ class SettingsScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildPremiumSection(
+    BuildContext context,
+    WidgetRef ref,
+    bool isPremium,
+    SubscriptionState subscriptionState,
+  ) {
+    if (isPremium) {
+      // Show premium status card
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              DesertColors.roseSand,
+              DesertColors.dustyBlue,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: DesertColors.roseSand.withValues(alpha: 0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const PremiumBadge(),
+                const Spacer(),
+                Icon(
+                  Icons.verified,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Premium Active',
+              style: OdyseyaTypography.h2.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (subscriptionState.expirationDate != null)
+              Text(
+                subscriptionState.willRenew
+                    ? 'Renews on ${_formatDate(subscriptionState.expirationDate!)}'
+                    : 'Expires on ${_formatDate(subscriptionState.expirationDate!)}',
+                style: OdyseyaTypography.body.copyWith(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  fontSize: 14,
+                ),
+              ),
+            const SizedBox(height: 16),
+            Text(
+              'You have access to all premium features:',
+              style: OdyseyaTypography.body.copyWith(
+                color: Colors.white.withValues(alpha: 0.9),
+                fontSize: 13,
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildPremiumFeatureItem('Unlimited journal entries'),
+            _buildPremiumFeatureItem('Advanced AI insights'),
+            _buildPremiumFeatureItem('Voice transcription'),
+            _buildPremiumFeatureItem('Export & backup'),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () {
+                  // TODO: Add link to manage subscription in App Store/Play Store
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Manage your subscription in your device settings'),
+                      backgroundColor: DesertColors.deepBrown,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: const BorderSide(color: Colors.white, width: 2),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Manage Subscription',
+                  style: OdyseyaTypography.button.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Show upgrade to premium card
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: DesertColors.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: DesertColors.roseSand.withValues(alpha: 0.3),
+            width: 2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: DesertColors.waterWash.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        DesertColors.roseSand,
+                        DesertColors.dustyBlue,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.workspace_premium,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'PREMIUM',
+                        style: OdyseyaTypography.ui.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Unlock Your Full Journey',
+              style: OdyseyaTypography.h2.copyWith(
+                color: DesertColors.deepBrown,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Get unlimited access to all features and deeper emotional insights',
+              style: OdyseyaTypography.body.copyWith(
+                color: DesertColors.taupe,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildUpgradeFeatureItem(Icons.edit_note, 'Unlimited journal entries'),
+            _buildUpgradeFeatureItem(Icons.psychology, 'Advanced AI insights'),
+            _buildUpgradeFeatureItem(Icons.mic, 'Voice transcription'),
+            _buildUpgradeFeatureItem(Icons.analytics, 'Advanced analytics'),
+            _buildUpgradeFeatureItem(Icons.download, 'Export & backup'),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.push('/paywall');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: DesertColors.roseSand,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 4,
+                ),
+                child: Text(
+                  'Upgrade to Premium',
+                  style: OdyseyaTypography.button.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget _buildPremiumFeatureItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 18,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: OdyseyaTypography.body.copyWith(
+              color: Colors.white.withValues(alpha: 0.95),
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUpgradeFeatureItem(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: DesertColors.roseSand.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(
+              icon,
+              color: DesertColors.roseSand,
+              size: 18,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            text,
+            style: OdyseyaTypography.body.copyWith(
+              color: DesertColors.deepBrown,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }
