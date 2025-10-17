@@ -245,6 +245,6 @@ class RevenueCatService {
     if (_customerInfo == null) return null;
 
     final entitlement = _customerInfo!.entitlements.all['premium'];
-    return entitlement?.periodType?.name;
+    return entitlement?.periodType.name;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../constants/typography.dart';
+import '../../constants/spacing.dart';
+import '../../constants/animations.dart';
 
 /// Unified button component matching the reference design
 /// Provides consistent button styling across the entire app
@@ -24,7 +26,7 @@ class OdyseyaButton extends StatelessWidget {
     this.height = 56,
   });
 
-  /// Primary button - Blue background, white text
+  /// Primary button - Western Sunrise background, white text (emotional peak)
   const OdyseyaButton.primary({
     super.key,
     required this.text,
@@ -69,8 +71,8 @@ class OdyseyaButton extends StatelessWidget {
     switch (buttonStyle) {
       case OdyseyaButtonStyle.primary:
         backgroundColor = isDisabled
-            ? DesertColors.dustyBlue.withValues(alpha: 0.5)
-            : DesertColors.dustyBlue;
+            ? DesertColors.westernSunrise.withValues(alpha: 0.5)
+            : DesertColors.westernSunrise;
         textColor = Colors.white;
         borderColor = null;
         break;
@@ -103,17 +105,21 @@ class OdyseyaButton extends StatelessWidget {
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28), // Fully rounded ends
+            borderRadius: BorderRadius.circular(OdyseyaSpacing.radiusPill),
             side: borderColor != null
                 ? BorderSide(color: borderColor, width: 1.5)
                 : BorderSide.none,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          padding: EdgeInsets.symmetric(
+            horizontal: OdyseyaSpacing.buttonHorizontalPadding,
+            vertical: OdyseyaSpacing.lg,
+          ),
+          animationDuration: OdyseyaAnimations.buttonTap,
         ),
         child: isLoading
             ? SizedBox(
-                width: 20,
-                height: 20,
+                width: OdyseyaSpacing.iconMedium,
+                height: OdyseyaSpacing.iconMedium,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
@@ -124,8 +130,8 @@ class OdyseyaButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: 20),
-                    const SizedBox(width: 8),
+                    Icon(icon, size: OdyseyaSpacing.iconMedium),
+                    SizedBox(width: OdyseyaSpacing.sm),
                   ],
                   Text(
                     text,
@@ -143,7 +149,7 @@ class OdyseyaButton extends StatelessWidget {
 
 /// Button style variants
 enum OdyseyaButtonStyle {
-  primary,   // Blue background (like "Voice" button)
-  secondary, // Beige background (like "Continue" button)
-  tertiary,  // Outline style
+  primary,   // Western Sunrise background - Bold emotional peak CTA
+  secondary, // Beige background - Calm secondary actions
+  tertiary,  // Outline style - Minimal tertiary actions
 }

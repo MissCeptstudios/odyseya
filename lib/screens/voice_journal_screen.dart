@@ -9,6 +9,7 @@ import '../widgets/voice_recording/audio_waveform_widget.dart';
 import '../widgets/transcription/transcription_display.dart';
 import '../widgets/ai_insights/insight_preview.dart';
 import '../widgets/common/app_background.dart';
+import '../widgets/navigation/top_navigation_bar.dart';
 
 // Clean, minimal UX voice journal screen
 class VoiceJournalScreen extends ConsumerStatefulWidget {
@@ -72,32 +73,38 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       }
     });
 
-    return AppBackground(
-      useOverlay: true,
-      overlayOpacity: 0.05,
-      overlayColor: DesertColors.paleDesert,
-      child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
-            // Header
-            _buildHeader(voiceState),
-
-            // Progress Indicator
-            _buildProgressIndicator(voiceState),
-
-            // Main Content
+            const OdyseyaTopNavigationBar(),
             Expanded(
-              child: _buildMainContent(voiceState),
-            ),
+              child: AppBackground(
+                useOverlay: true,
+                overlayOpacity: 0.05,
+                overlayColor: DesertColors.paleDesert,
+                child: Column(
+                  children: [
 
-            // Bottom Actions
-            _buildBottomActions(voiceState, canSave),
+                    // Progress Indicator
+                    _buildProgressIndicator(voiceState),
+
+                    // Main Content
+                    Expanded(
+                      child: _buildMainContent(voiceState),
+                    ),
+
+                    // Bottom Actions
+                    _buildBottomActions(voiceState, canSave),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
-    ),
     );
   }
 

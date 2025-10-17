@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/navigation/bottom_navigation_bar.dart';
+import '../widgets/navigation/top_navigation_bar.dart';
 import '../widgets/common/app_background.dart';
+import 'dashboard_screen.dart';
 import 'mood_selection_screen.dart';
 import 'recording_screen.dart';
 import 'journal_calendar_screen.dart';
@@ -24,10 +26,20 @@ class MainAppShell extends ConsumerWidget {
     
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: AppBackground(
-        useOverlay: true,
-        overlayOpacity: 0.05,
-        child: currentScreen,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            const OdyseyaTopNavigationBar(),
+            Expanded(
+              child: AppBackground(
+                useOverlay: true,
+                overlayOpacity: 0.05,
+                child: currentScreen,
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: OdyseyaBottomNavigationBar(
         currentIndex: currentIndex,
@@ -41,23 +53,27 @@ class MainAppShell extends ConsumerWidget {
   /// Maps route location to bottom navigation index
   int _getIndexFromLocation(String location) {
     switch (location) {
+      case '/dashboard':
+        return 0;
       case '/home':
       case '/main':
-        return 0;
-      case '/journal':
         return 1;
-      case '/calendar':
+      case '/journal':
         return 2;
-      case '/settings':
+      case '/calendar':
         return 3;
+      case '/settings':
+        return 4;
       default:
-        return 0; // Default to Home
+        return 0; // Default to Dashboard
     }
   }
 
   /// Gets the appropriate screen widget based on current location
   Widget _getScreenFromLocation(String location) {
     switch (location) {
+      case '/dashboard':
+        return const DashboardScreen();
       case '/home':
       case '/main':
         return const MoodSelectionScreen();
@@ -68,7 +84,7 @@ class MainAppShell extends ConsumerWidget {
       case '/settings':
         return const SettingsScreen();
       default:
-        return const MoodSelectionScreen(); // Default to Home
+        return const DashboardScreen(); // Default to Dashboard
     }
   }
 
@@ -76,15 +92,18 @@ class MainAppShell extends ConsumerWidget {
   void _navigateToTab(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go('/home');
+        context.go('/dashboard');
         break;
       case 1:
-        context.go('/journal');
+        context.go('/home');
         break;
       case 2:
-        context.go('/calendar');
+        context.go('/journal');
         break;
       case 3:
+        context.go('/calendar');
+        break;
+      case 4:
         context.go('/settings');
         break;
     }

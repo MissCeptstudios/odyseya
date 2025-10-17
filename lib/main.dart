@@ -34,10 +34,6 @@ void main() async {
   await aiConfig.initializeFromStorage(); // Load any stored configuration first
 
   // Set API keys from environment variables
-  if (EnvConfig.hasGeminiKey) {
-    await aiConfig.setGeminiApiKey(EnvConfig.geminiApiKey!);
-  }
-
   if (EnvConfig.hasGroqKey) {
     await aiConfig.setGroqApiKey(EnvConfig.groqApiKey!);
   }

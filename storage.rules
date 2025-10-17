@@ -1,0 +1,161 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ============================================================================
+    // HELPER FUNCTIONS
+    // ============================================================================
+
+    // Check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Check if user owns the resource
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Validate file size (in bytes)
+    function isValidSize(maxSize) {
+      return request.resource.size <= maxSize;
+    }
+
+    // Validate file type (MIME type)
+    function isValidType(allowedTypes) {
+      return request.resource.contentType in allowedTypes;
+    }
+
+    // ============================================================================
+    // AUDIO FILES
+    // Path: audio/{userId}/{entryId}.m4a
+    // ============================================================================
+
+    match /audio/{userId}/{fileName} {
+      // Users can read their own audio files
+      allow read: if isOwner(userId);
+
+      // Users can upload audio files
+      allow create: if isOwner(userId) &&
+                       // Max 50MB per audio file
+                       isValidSize(50 * 1024 * 1024) &&
+                       // Only audio MIME types
+                       isValidType([
+                         'audio/mp4',
+                         'audio/m4a',
+                         'audio/mpeg',
+                         'audio/mp3',
+                         'audio/wav',
+                         'audio/aac',
+                         'audio/webm',
+                         'audio/ogg'
+                       ]);
+
+      // Users can update/overwrite their audio files
+      allow update: if isOwner(userId) &&
+                       isValidSize(50 * 1024 * 1024) &&
+                       isValidType([
+                         'audio/mp4',
+                         'audio/m4a',
+                         'audio/mpeg',
+                         'audio/mp3',
+                         'audio/wav',
+                         'audio/aac',
+                         'audio/webm',
+                         'audio/ogg'
+                       ]);
+
+      // Users can delete their audio files
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================================================
+    // PHOTO FILES
+    // Path: photos/{userId}/{entryId}_{index}.jpg
+    // ============================================================================
+
+    match /photos/{userId}/{fileName} {
+      // Users can read their own photos
+      allow read: if isOwner(userId);
+
+      // Users can upload photos
+      allow create: if isOwner(userId) &&
+                       // Max 10MB per photo
+                       isValidSize(10 * 1024 * 1024) &&
+                       // Only image MIME types
+                       isValidType([
+                         'image/jpeg',
+                         'image/jpg',
+                         'image/png',
+                         'image/webp',
+                         'image/heic',
+                         'image/heif'
+                       ]);
+
+      // Users can update their photos
+      allow update: if isOwner(userId) &&
+                       isValidSize(10 * 1024 * 1024) &&
+                       isValidType([
+                         'image/jpeg',
+                         'image/jpg',
+                         'image/png',
+                         'image/webp',
+                         'image/heic',
+                         'image/heif'
+                       ]);
+
+      // Users can delete their photos
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================================================
+    // DATA EXPORT BACKUPS
+    // Path: backups/{userId}/export_{date}.json
+    // ============================================================================
+
+    match /backups/{userId}/{fileName} {
+      // Users can read their own backups
+      allow read: if isOwner(userId);
+
+      // Only server-side (Cloud Functions) can create backups
+      allow create: if false;
+
+      // Users can delete their backups
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================================================
+    // PROFILE PICTURES
+    // Path: profiles/{userId}/avatar.jpg
+    // ============================================================================
+
+    match /profiles/{userId}/{fileName} {
+      // Anyone can read profile pictures (if public profiles feature)
+      // For now, only the owner can read
+      allow read: if isOwner(userId);
+
+      // Users can upload/update their profile picture
+      allow create, update: if isOwner(userId) &&
+                               // Max 5MB for profile pictures
+                               isValidSize(5 * 1024 * 1024) &&
+                               isValidType([
+                                 'image/jpeg',
+                                 'image/jpg',
+                                 'image/png',
+                                 'image/webp'
+                               ]);
+
+      // Users can delete their profile picture
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================================================
+    // DENY ALL OTHER ACCESS
+    // ============================================================================
+
+    // Deny access to any other paths not explicitly allowed
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -28,38 +28,45 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
       ),
       child: SafeArea(
         child: Container(
-          height: 80,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          height: 72,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(
                 context,
-                icon: Icons.sentiment_satisfied_alt_outlined,
-                label: 'Home',
+                icon: Icons.dashboard_outlined,
+                label: 'Dashboard',
                 index: 0,
                 isSelected: currentIndex == 0,
               ),
               _buildNavItem(
                 context,
-                icon: Icons.mic_none,
-                label: 'Journal',
+                icon: Icons.sentiment_satisfied_alt_outlined,
+                label: 'Home',
                 index: 1,
                 isSelected: currentIndex == 1,
               ),
               _buildNavItem(
                 context,
-                icon: Icons.calendar_today_outlined,
-                label: 'Calendar',
+                icon: Icons.mic_none,
+                label: 'Journal',
                 index: 2,
                 isSelected: currentIndex == 2,
               ),
               _buildNavItem(
                 context,
-                icon: Icons.settings_outlined,
-                label: 'Settings',
+                icon: Icons.calendar_today_outlined,
+                label: 'Calendar',
                 index: 3,
                 isSelected: currentIndex == 3,
+              ),
+              _buildNavItem(
+                context,
+                icon: Icons.settings_outlined,
+                label: 'Settings',
+                index: 4,
+                isSelected: currentIndex == 4,
               ),
             ],
           ),
@@ -89,7 +96,7 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: isSelected
                 ? DesertColors.creamBeige
@@ -102,10 +109,9 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 28,
+                size: 22,
                 color: iconColor,
               ),
-              const SizedBox(height: 4),
               Text(
                 label,
                 style: (isSelected
@@ -113,6 +119,7 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
                     : OdyseyaTypography.navInactive
                 ).copyWith(
                   color: textColor,
+                  height: 1.0,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 1,

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/journal_entry.dart';
 import '../models/ai_analysis.dart';
@@ -329,9 +330,14 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
 
       state = state.copyWith(isSaving: true, clearError: true);
 
-      final entry = JournalEntry(
-        id: '', // Will be set by Firestore
-        userId: authState.user!.id,
+      // Get Firestore service
+      final firestoreService = _ref.read(firestoreServiceProvider);
+      final userId = authState.user!.id;
+
+      // Create entry with temporary ID
+      final tempEntry = JournalEntry(
+        id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
+        userId: userId,
         mood: state.selectedMood,
         localAudioPath: state.currentRecordingPath,
         transcription: state.transcription,
@@ -342,15 +348,46 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
         isSynced: false,
       );
 
-      // Save to Firestore
-      final journalOperations = _ref.read(journalOperationsProvider.notifier);
-      final entryId = await journalOperations.saveEntry(entry);
+      // Save entry to Firestore first (gets back entryId)
+      final entryId = await firestoreService.saveJournalEntry(tempEntry);
 
-      // Create the saved entry with the Firestore ID
-      final savedEntry = entry.copyWith(
+      // Upload audio to Firebase Storage if recording exists
+      String? cloudAudioPath;
+      if (state.currentRecordingPath != null) {
+        try {
+          cloudAudioPath = await firestoreService.uploadAudioFile(
+            state.currentRecordingPath!,
+            userId,
+            entryId,
+          );
+
+          // Update Firestore entry with cloud audio path
+          final updatedEntry = tempEntry.copyWith(
+            id: entryId,
+            audioPath: cloudAudioPath,
+            isSynced: true,
+          );
+
+          await firestoreService.saveJournalEntry(updatedEntry);
+        } catch (uploadError) {
+          // Audio upload failed, but entry is still saved
+          if (kDebugMode) {
+            debugPrint('⚠️ Audio upload failed: $uploadError');
+          }
+          // Continue without audio - entry is still saved
+        }
+      }
+
+      // Create the final saved entry
+      final savedEntry = tempEntry.copyWith(
         id: entryId,
-        isSynced: true,
+        audioPath: cloudAudioPath,
+        isSynced: cloudAudioPath != null,
       );
+
+      // Reload calendar data to show new entry
+      final journalOperations = _ref.read(journalOperationsProvider.notifier);
+      await journalOperations.loadEntries(userId);
 
       state = state.copyWith(
         currentEntry: savedEntry,
@@ -359,6 +396,9 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
         shouldNavigateToCalendar: true,
       );
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('❌ Save entry error: $e');
+      }
       state = state.copyWith(
         error: _getErrorMessage(e),
         isSaving: false,

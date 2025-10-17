@@ -1,0 +1,198 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================================================
+    // HELPER FUNCTIONS
+    // ============================================================================
+
+    // Check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Check if user owns the resource
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Check if data has required fields
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    // Validate string field length
+    function isValidStringLength(field, minLen, maxLen) {
+      return field is string &&
+             field.size() >= minLen &&
+             field.size() <= maxLen;
+    }
+
+    // Validate timestamp is recent (prevent backdating)
+    function isRecentTimestamp(timestamp) {
+      return timestamp > request.time - duration.value(1, 'd') &&
+             timestamp < request.time + duration.value(1, 'h');
+    }
+
+    // Check rate limiting (max N entries per time period)
+    function isUnderRateLimit(userId, collection, limit) {
+      // This is a simplified check - in production use Cloud Functions
+      return true;
+    }
+
+    // ============================================================================
+    // ROOT COLLECTION: users
+    // Each document represents one authenticated user
+    // ============================================================================
+
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if isOwner(userId);
+
+      // Users can create their profile on first sign-up
+      allow create: if isOwner(userId) &&
+                       hasRequiredFields(['email', 'displayName', 'createdAt',
+                                         'gdprConsent', 'subscriptionStatus',
+                                         'settings', 'metadata']) &&
+                       request.resource.data.gdprConsent.accepted == true;
+
+      // Users can update their profile
+      allow update: if isOwner(userId) &&
+                       // Cannot change uid or email
+                       request.resource.data.email == resource.data.email;
+
+      // Users can delete their profile (GDPR right to erasure)
+      allow delete: if isOwner(userId);
+
+      // ========================================================================
+      // SUBCOLLECTION: moods
+      // Daily mood tracking entries
+      // ========================================================================
+
+      match /moods/{moodId} {
+        // Users can read their own moods
+        allow read: if isOwner(userId);
+
+        // Users can create mood entries
+        allow create: if isOwner(userId) &&
+                         hasRequiredFields(['moodValue', 'intensity', 'createdAt', 'source']) &&
+                         request.resource.data.intensity >= 1 &&
+                         request.resource.data.intensity <= 10 &&
+                         request.resource.data.source in ['manual', 'ai'] &&
+                         isRecentTimestamp(request.resource.data.createdAt);
+
+        // Users can update their mood entries
+        allow update: if isOwner(userId) &&
+                         request.resource.data.createdAt == resource.data.createdAt;
+
+        // Users can delete mood entries
+        allow delete: if isOwner(userId);
+      }
+
+      // ========================================================================
+      // SUBCOLLECTION: journals
+      // Voice journal entries with transcription, audio, and photos
+      // ========================================================================
+
+      match /journals/{entryId} {
+        // Users can read their own journal entries
+        allow read: if isOwner(userId);
+
+        // Users can create journal entries
+        allow create: if isOwner(userId) &&
+                         hasRequiredFields(['transcription', 'moodSnapshot',
+                                          'createdAt', 'isPrivate']) &&
+                         isValidStringLength(request.resource.data.transcription, 1, 10000) &&
+                         (request.resource.data.title == null ||
+                          isValidStringLength(request.resource.data.title, 1, 200)) &&
+                         isRecentTimestamp(request.resource.data.createdAt) &&
+                         request.resource.data.isPrivate == true &&
+                         // Max 50 tags per entry
+                         request.resource.data.tags.size() <= 50 &&
+                         // Max 20 photos per entry
+                         request.resource.data.photoPaths.size() <= 20;
+
+        // Users can update their journal entries
+        allow update: if isOwner(userId) &&
+                         // Cannot change creation date
+                         request.resource.data.createdAt == resource.data.createdAt &&
+                         request.resource.data.isPrivate == true;
+
+        // Users can delete journal entries
+        allow delete: if isOwner(userId);
+      }
+
+      // ========================================================================
+      // SUBCOLLECTION: affirmations
+      // System or AI-generated affirmations shown to the user
+      // ========================================================================
+
+      match /affirmations/{affirmationId} {
+        // Users can read their affirmations
+        allow read: if isOwner(userId);
+
+        // Only system (Cloud Functions) can create affirmations
+        // Users can only update to mark as liked/skipped
+        allow create: if false; // Only server-side
+
+        allow update: if isOwner(userId) &&
+                         // Can only update 'liked' field
+                         request.resource.data.diff(resource.data).affectedKeys()
+                           .hasOnly(['liked']);
+
+        // Users can delete affirmations
+        allow delete: if isOwner(userId);
+      }
+
+      // ========================================================================
+      // SUBCOLLECTION: analysis
+      // AI-generated bi-monthly or monthly analysis reports
+      // ========================================================================
+
+      match /analysis/{analysisId} {
+        // Users can read their analysis reports
+        allow read: if isOwner(userId);
+
+        // Only system (Cloud Functions) can create analysis
+        allow create: if false; // Only server-side
+
+        // No updates to analysis (immutable once generated)
+        allow update: if false;
+
+        // Users can delete analysis reports
+        allow delete: if isOwner(userId);
+      }
+
+      // ========================================================================
+      // SUBCOLLECTION: recommendations
+      // Book, podcast, and course recommendations
+      // ========================================================================
+
+      match /recommendations/{recommendationId} {
+        // Users can read their recommendations
+        allow read: if isOwner(userId);
+
+        // Only system (Cloud Functions) can create recommendations
+        allow create: if false; // Only server-side
+
+        // Users can update to mark as viewed/favorited
+        allow update: if isOwner(userId) &&
+                         // Can only update 'isViewed' and 'isFavorited' fields
+                         request.resource.data.diff(resource.data).affectedKeys()
+                           .hasOnly(['isViewed', 'isFavorited']);
+
+        // Users can delete recommendations
+        allow delete: if isOwner(userId);
+      }
+    }
+
+    // ============================================================================
+    // DENY ALL OTHER ACCESS
+    // ============================================================================
+
+    // Deny access to any other documents not explicitly allowed
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

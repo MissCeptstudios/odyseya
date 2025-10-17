@@ -6,6 +6,7 @@ import '../constants/colors.dart';
 import '../constants/typography.dart';
 import '../providers/subscription_provider.dart';
 import '../widgets/common/app_background.dart';
+import '../widgets/navigation/top_navigation_bar.dart';
 
 /// Paywall screen showing premium features and subscription options
 class PaywallScreen extends ConsumerStatefulWidget {
@@ -33,17 +34,25 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       });
     }
 
-    return AppBackground(
-      useOverlay: true,
-      overlayOpacity: 0.03,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: subscriptionState.isLoading && offerings == null
-              ? _buildLoadingState()
-              : offerings?.current == null
-                  ? _buildErrorState()
-                  : _buildContent(offerings!.current!),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            const OdyseyaTopNavigationBar(),
+            Expanded(
+              child: AppBackground(
+                useOverlay: true,
+                overlayOpacity: 0.03,
+                child: subscriptionState.isLoading && offerings == null
+                    ? _buildLoadingState()
+                    : offerings?.current == null
+                        ? _buildErrorState()
+                        : _buildContent(offerings!.current!),
+              ),
+            ),
+          ],
         ),
       ),
     );

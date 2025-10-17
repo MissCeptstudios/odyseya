@@ -37,9 +37,6 @@ class EnvConfig {
     return value;
   }
 
-  /// Gemini API Configuration
-  static String? get geminiApiKey => _getEnv('GEMINI_API_KEY');
-
   /// OpenAI API Configuration
   static String? get openaiApiKey => _getEnv('OPENAI_API_KEY');
 
@@ -62,7 +59,6 @@ class EnvConfig {
   static String get annualProductId => _getEnv('ANNUAL_PRODUCT_ID', fallback: 'odyseya_annual_premium')!;
 
   /// Validation helpers
-  static bool get hasGeminiKey => geminiApiKey != null && geminiApiKey!.isNotEmpty;
   static bool get hasOpenaiKey => openaiApiKey != null && openaiApiKey!.isNotEmpty;
   static bool get hasGroqKey => groqApiKey != null && groqApiKey!.isNotEmpty;
   static bool get hasClaudeKey => claudeApiKey != null && claudeApiKey!.isNotEmpty;
@@ -73,7 +69,6 @@ class EnvConfig {
 
     return {
       'initialized': _isInitialized,
-      'hasGeminiKey': hasGeminiKey,
       'hasOpenaiKey': hasOpenaiKey,
       'hasGroqKey': hasGroqKey,
       'hasClaudeKey': hasClaudeKey,

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'ai_service_interface.dart';
-import 'gemini_ai_service.dart';
 import 'groq_ai_service.dart';
 
 class AIServiceFactory {
@@ -9,30 +8,23 @@ class AIServiceFactory {
   AIServiceFactory._internal();
 
   // Current AI provider configuration
-  AIProvider _currentProvider = AIProvider.gemini; // Default to Gemini (free)
-  
+  AIProvider _currentProvider = AIProvider.groq; // Default to Groq (free)
+
   // Service instances (lazy loaded)
-  GeminiAIService? _geminiService;
   GroqAIService? _groqService;
 
   /// Get the current AI service based on configuration
   AIServiceInterface getCurrentService() {
     switch (_currentProvider) {
-      case AIProvider.gemini:
-        return getGeminiService();
       case AIProvider.groq:
         return getGroqService();
       case AIProvider.openai:
         throw UnimplementedError('OpenAI service not yet implemented');
       case AIProvider.claude:
         throw UnimplementedError('Claude service not yet implemented');
+      case AIProvider.gemini:
+        throw UnimplementedError('Gemini service has been removed. Please use Groq.');
     }
-  }
-
-  /// Get Gemini service instance
-  GeminiAIService getGeminiService() {
-    _geminiService ??= GeminiAIService();
-    return _geminiService!;
   }
 
   /// Get Groq service instance
@@ -54,18 +46,10 @@ class AIServiceFactory {
 
   /// Configure API keys for all services
   void configureServices({
-    String? geminiApiKey,
     String? groqApiKey,
     String? openaiApiKey,
     String? claudeApiKey,
   }) {
-    if (geminiApiKey != null && geminiApiKey.isNotEmpty) {
-      getGeminiService().setApiKey(geminiApiKey);
-      if (kDebugMode) {
-        debugPrint('Gemini API key configured');
-      }
-    }
-
     if (groqApiKey != null && groqApiKey.isNotEmpty) {
       getGroqService().setApiKey(groqApiKey);
       if (kDebugMode) {
@@ -93,35 +77,29 @@ class AIServiceFactory {
   /// Get available (configured) services
   List<AIProvider> getAvailableServices() {
     final available = <AIProvider>[];
-    
-    if (getGeminiService().isConfigured) {
-      available.add(AIProvider.gemini);
-    }
-    
+
     if (getGroqService().isConfigured) {
       available.add(AIProvider.groq);
     }
-    
+
     // Future: Add OpenAI and Claude when implemented
-    
+
     return available;
   }
 
   /// Get the best available service (configured and free)
   AIProvider getBestAvailableService() {
     final available = getAvailableServices();
-    
+
     if (available.isEmpty) {
-      return AIProvider.gemini; // Default fallback
+      return AIProvider.groq; // Default fallback
     }
 
-    // Prefer free services
-    for (final provider in [AIProvider.gemini, AIProvider.groq]) {
-      if (available.contains(provider)) {
-        return provider;
-      }
+    // Prefer Groq as the primary free service
+    if (available.contains(AIProvider.groq)) {
+      return AIProvider.groq;
     }
-    
+
     return available.first;
   }
 
@@ -196,10 +174,9 @@ class AIServiceFactory {
 
   /// Reset all configurations (for testing or troubleshooting)
   void resetConfiguration() {
-    _currentProvider = AIProvider.gemini;
-    _geminiService = null;
+    _currentProvider = AIProvider.groq;
     _groqService = null;
-    
+
     if (kDebugMode) {
       debugPrint('AI service configuration reset');
     }
@@ -234,13 +211,11 @@ class AIServiceManager {
 
   /// Initialize AI services with configuration
   static Future<void> initialize({
-    String? geminiApiKey,
     String? groqApiKey,
     AIProvider? preferredProvider,
   }) async {
     // Configure services
     _factory.configureServices(
-      geminiApiKey: geminiApiKey,
       groqApiKey: groqApiKey,
     );
 

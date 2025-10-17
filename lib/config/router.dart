@@ -178,6 +178,12 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Individual tab routes (accessible via bottom navigation)
       GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) => const MainAppShell(),
+      ),
+
+      GoRoute(
         path: '/home',
         name: 'home',
         builder: (context, state) => const MainAppShell(),
@@ -283,6 +289,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isOnOnboardingSuccess =
           state.matchedLocation == '/onboarding-success';
       // final isOnMoodSelection = state.matchedLocation == '/home';
+      final isOnDashboard = state.matchedLocation == '/dashboard';
       final isOnJournal = state.matchedLocation == '/journal';
       final isOnCalendar = state.matchedLocation == '/calendar';
 
@@ -355,6 +362,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           isOnGdpr ||
           isOnPermissions ||
           isOnWelcome ||
+          isOnDashboard ||
           isOnCalendar ||
           isOnQuestionnaire ||
           isOnMoodSelection ||

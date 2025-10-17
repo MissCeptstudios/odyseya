@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
 import '../providers/affirmation_provider.dart';
 import '../widgets/common/app_background.dart';
+import '../widgets/navigation/top_navigation_bar.dart';
 
 class AffirmationScreen extends ConsumerStatefulWidget {
   const AffirmationScreen({super.key});
@@ -102,16 +103,21 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
       _onAffirmationLoaded();
     }
 
-    return AppBackground(
-      useOverlay: true,
-      overlayOpacity: 0.05,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-            child: Column(
-              children: [
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            const OdyseyaTopNavigationBar(),
+            Expanded(
+              child: AppBackground(
+                useOverlay: true,
+                overlayOpacity: 0.05,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                  child: Column(
+                    children: [
                 // Header
                 FadeTransition(
                   opacity: _fadeAnimation,
@@ -310,24 +316,27 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
 
                 const SizedBox(height: 16),
 
-                // Skip option
-                FadeTransition(
-                  opacity: _buttonAnimation,
-                  child: TextButton(
-                    onPressed: affirmationState.isLoading ? null : _onContinuePressed,
-                    child: Text(
-                      'Skip for now',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: DesertColors.onSurface.withValues(alpha: 0.6),
-                        fontWeight: FontWeight.w500,
+                      // Skip option
+                      FadeTransition(
+                        opacity: _buttonAnimation,
+                        child: TextButton(
+                          onPressed: affirmationState.isLoading ? null : _onContinuePressed,
+                          child: Text(
+                            'Skip for now',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: DesertColors.onSurface.withValues(alpha: 0.6),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

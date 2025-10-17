@@ -22,46 +22,46 @@ abstract class AIServiceInterface {
 
 /// Supported AI providers
 enum AIProvider {
-  gemini,
   groq,
   openai,  // For future use
   claude,  // For future use
+  gemini,  // DEPRECATED - Removed from app
 }
 
 extension AIProviderExtension on AIProvider {
   String get displayName {
     switch (this) {
-      case AIProvider.gemini:
-        return 'Google Gemini';
       case AIProvider.groq:
         return 'Groq';
       case AIProvider.openai:
         return 'OpenAI';
       case AIProvider.claude:
         return 'Claude';
+      case AIProvider.gemini:
+        return 'Gemini (Removed)';
     }
   }
 
   String get description {
     switch (this) {
-      case AIProvider.gemini:
-        return 'FREE - Google Gemini Pro (1M tokens/month)';
       case AIProvider.groq:
         return 'FREE - Groq Llama Models (Very Fast)';
       case AIProvider.openai:
         return 'PAID - OpenAI GPT-4 (High Quality)';
       case AIProvider.claude:
         return 'PAID - Anthropic Claude (Excellent Analysis)';
+      case AIProvider.gemini:
+        return 'DEPRECATED - Service removed';
     }
   }
 
   bool get isFree {
     switch (this) {
-      case AIProvider.gemini:
       case AIProvider.groq:
         return true;
       case AIProvider.openai:
       case AIProvider.claude:
+      case AIProvider.gemini:
         return false;
     }
   }

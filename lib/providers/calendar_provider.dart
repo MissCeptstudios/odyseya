@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/journal_entry.dart';
 import 'firestore_provider.dart';
+import 'auth_provider.dart';
 
 class CalendarState {
   final DateTime selectedDate;
@@ -74,8 +76,9 @@ class CalendarState {
 
 class CalendarNotifier extends StateNotifier<CalendarState> {
   final FirestoreService _firestoreService;
+  final Ref _ref;
 
-  CalendarNotifier(this._firestoreService) : super(CalendarState(
+  CalendarNotifier(this._firestoreService, this._ref) : super(CalendarState(
     selectedDate: DateTime.now(),
     currentMonth: DateTime.now(),
     entriesByDate: {},
@@ -106,18 +109,49 @@ class CalendarNotifier extends StateNotifier<CalendarState> {
     try {
       state = state.copyWith(isLoading: true, clearError: true);
 
+      // Get authenticated user ID
+      final userId = _ref.read(userIdProvider);
+
+      // If no user is authenticated, clear entries and return
+      if (userId == null) {
+        if (kDebugMode) {
+          debugPrint('📅 No authenticated user - calendar empty');
+        }
+        state = state.copyWith(
+          entriesByDate: {},
+          isLoading: false,
+          currentStreak: 0,
+          monthlyCompletionRate: 0.0,
+          mostFrequentMood: null,
+          totalEntriesThisMonth: 0,
+        );
+        return;
+      }
+
       // Get start and end dates for the month
       final startDate = DateTime(month.year, month.month, 1);
       final endDate = DateTime(month.year, month.month + 1, 0);
 
+      if (kDebugMode) {
+        debugPrint('📅 Loading calendar entries for user: $userId');
+      }
+
       // Load entries from Firestore
-      final allEntries = await _firestoreService.getJournalEntries('current_user'); // TODO: Get actual user ID
-      
+      final allEntries = await _firestoreService.getJournalEntries(userId);
+
+      if (kDebugMode) {
+        debugPrint('   Loaded ${allEntries.length} total entries');
+      }
+
       // Filter entries for the current month
       final monthEntries = allEntries.where((entry) {
         return entry.createdAt.isAfter(startDate.subtract(const Duration(days: 1))) &&
                entry.createdAt.isBefore(endDate.add(const Duration(days: 1)));
       }).toList();
+
+      if (kDebugMode) {
+        debugPrint('   ${monthEntries.length} entries in current month');
+      }
 
       // Group entries by date
       final entriesByDate = _groupEntriesByDate(monthEntries);
@@ -133,7 +167,14 @@ class CalendarNotifier extends StateNotifier<CalendarState> {
         mostFrequentMood: stats.mostFrequentMood,
         totalEntriesThisMonth: stats.totalEntries,
       );
+
+      if (kDebugMode) {
+        debugPrint('   ✅ Calendar loaded - ${entriesByDate.length} days with entries');
+      }
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('   ❌ Failed to load calendar: $e');
+      }
       state = state.copyWith(
         isLoading: false,
         error: 'Failed to load entries: $e',
@@ -242,5 +283,5 @@ class CalendarStatistics {
 
 final calendarProvider = StateNotifierProvider<CalendarNotifier, CalendarState>((ref) {
   final firestoreService = ref.watch(firestoreServiceProvider);
-  return CalendarNotifier(firestoreService);
+  return CalendarNotifier(firestoreService, ref);
 });

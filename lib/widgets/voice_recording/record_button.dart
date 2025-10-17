@@ -197,15 +197,17 @@ class _RecordButtonState extends ConsumerState<RecordButton>
     VoidCallback? onPressed;
 
     if (voiceState.isRecording) {
+      // Active recording: Western Sunrise glow
       buttonColor = voiceState.isPaused
           ? DesertColors.dustyBlue
-          : DesertColors.waterWash;
+          : DesertColors.westernSunrise; // Changed to golden glow
       buttonIcon = voiceState.isPaused ? Icons.play_arrow : Icons.mic;
       buttonLabel = voiceState.isPaused ? 'Resume' : 'Recording...';
       onPressed = null; // Main button disabled while recording
     } else {
+      // Ready to record: Western Sunrise for CTA
       buttonColor = canStart
-          ? DesertColors.dustyBlue
+          ? DesertColors.westernSunrise // Changed to Western Sunrise
           : DesertColors.taupe.withValues(alpha: 0.3);
       buttonIcon = Icons.mic;
       buttonLabel = voiceState.hasRecording ? 'Record Again' : 'Start Recording';

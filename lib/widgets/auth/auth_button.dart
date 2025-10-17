@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../constants/spacing.dart';
+import '../../constants/typography.dart';
+import '../../constants/animations.dart';
 
 class AuthButton extends StatelessWidget {
   final IconData icon;
@@ -22,27 +25,35 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDisabled = onPressed == null || isLoading;
+
     return SizedBox(
       width: double.infinity,
-      height: 56,
+      height: OdyseyaSpacing.buttonHeight,
       child: ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
+        onPressed: isDisabled ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: textColor,
           elevation: 0,
-          side: borderColor != null 
-              ? BorderSide(color: borderColor!)
+          side: borderColor != null
+              ? BorderSide(color: borderColor!, width: 1.5)
               : null,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(OdyseyaSpacing.radiusMedium),
           ),
-          disabledBackgroundColor: backgroundColor.withValues(alpha: 0.6),
+          disabledBackgroundColor: backgroundColor.withValues(alpha: 0.5),
+          disabledForegroundColor: textColor.withValues(alpha: 0.5),
+          padding: EdgeInsets.symmetric(
+            horizontal: OdyseyaSpacing.buttonHorizontalPadding,
+            vertical: OdyseyaSpacing.lg,
+          ),
+          animationDuration: OdyseyaAnimations.buttonTap,
         ),
         child: isLoading
             ? SizedBox(
-                width: 20,
-                height: 20,
+                width: OdyseyaSpacing.iconMedium,
+                height: OdyseyaSpacing.iconMedium,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
@@ -53,15 +64,13 @@ class AuthButton extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    size: 20,
+                    size: OdyseyaSpacing.iconMedium,
                     color: textColor,
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: OdyseyaSpacing.md),
                   Text(
                     text,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                    style: OdyseyaTypography.buttonLarge.copyWith(
                       color: textColor,
                     ),
                   ),

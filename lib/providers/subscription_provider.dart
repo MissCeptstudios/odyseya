@@ -204,6 +204,6 @@ final annualPackageProvider = Provider<Package?>((ref) {
   final offerings = ref.watch(subscriptionProvider).offerings;
   return offerings?.current?.availablePackages.firstWhere(
     (package) => package.identifier.contains('annual') || package.identifier.contains('yearly'),
-    orElse: () => offerings!.current!.availablePackages.last,
+    orElse: () => offerings.current!.availablePackages.last,
   );
 });

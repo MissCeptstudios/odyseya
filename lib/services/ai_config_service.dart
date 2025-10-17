@@ -9,7 +9,6 @@ class AIConfigService {
   AIConfigService._internal();
 
   // API key storage keys
-  static const String _geminiApiKeyKey = 'gemini_api_key';
   static const String _groqApiKeyKey = 'groq_api_key';
   static const String _selectedProviderKey = 'selected_ai_provider';
 
@@ -19,22 +18,19 @@ class AIConfigService {
   Future<void> initializeFromStorage() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Load stored API keys
-      final geminiKey = prefs.getString(_geminiApiKeyKey);
       final groqKey = prefs.getString(_groqApiKeyKey);
       final selectedProvider = prefs.getString(_selectedProviderKey);
 
       if (kDebugMode) {
         debugPrint('Loading AI configuration from storage...');
-        debugPrint('Gemini key configured: ${geminiKey?.isNotEmpty ?? false}');
         debugPrint('Groq key configured: ${groqKey?.isNotEmpty ?? false}');
         debugPrint('Selected provider: $selectedProvider');
       }
 
       // Configure services with stored keys
       _aiFactory.configureServices(
-        geminiApiKey: geminiKey,
         groqApiKey: groqKey,
       );
 
@@ -42,7 +38,7 @@ class AIConfigService {
       if (selectedProvider != null) {
         final provider = AIProvider.values.firstWhere(
           (p) => p.name == selectedProvider,
-          orElse: () => AIProvider.gemini,
+          orElse: () => AIProvider.groq,
         );
         _aiFactory.switchProvider(provider);
       } else {
@@ -61,47 +57,11 @@ class AIConfigService {
     }
   }
 
-  /// Set and store Gemini API key
-  Future<bool> setGeminiApiKey(String apiKey) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      
-      if (apiKey.trim().isEmpty) {
-        await prefs.remove(_geminiApiKeyKey);
-        _aiFactory.getGeminiService().setApiKey('');
-        if (kDebugMode) {
-          debugPrint('Gemini API key removed');
-        }
-        return true;
-      }
-
-      await prefs.setString(_geminiApiKeyKey, apiKey.trim());
-      _aiFactory.getGeminiService().setApiKey(apiKey.trim());
-      
-      if (kDebugMode) {
-        debugPrint('Gemini API key configured and stored');
-      }
-      
-      // Auto-switch to Gemini if it's now configured
-      if (_aiFactory.currentProvider != AIProvider.gemini) {
-        _aiFactory.switchProvider(AIProvider.gemini);
-        await _setSelectedProvider(AIProvider.gemini);
-      }
-      
-      return true;
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('Error setting Gemini API key: $e');
-      }
-      return false;
-    }
-  }
-
   /// Set and store Groq API key
   Future<bool> setGroqApiKey(String apiKey) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       if (apiKey.trim().isEmpty) {
         await prefs.remove(_groqApiKeyKey);
         _aiFactory.getGroqService().setApiKey('');
@@ -113,17 +73,17 @@ class AIConfigService {
 
       await prefs.setString(_groqApiKeyKey, apiKey.trim());
       _aiFactory.getGroqService().setApiKey(apiKey.trim());
-      
+
       if (kDebugMode) {
         debugPrint('Groq API key configured and stored');
       }
-      
-      // Auto-switch to Groq if no other service is configured
-      if (!_aiFactory.isCurrentServiceConfigured) {
+
+      // Auto-switch to Groq if it's now configured
+      if (_aiFactory.currentProvider != AIProvider.groq) {
         _aiFactory.switchProvider(AIProvider.groq);
         await _setSelectedProvider(AIProvider.groq);
       }
-      
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -138,11 +98,11 @@ class AIConfigService {
     try {
       _aiFactory.switchProvider(provider);
       await _setSelectedProvider(provider);
-      
+
       if (kDebugMode) {
         debugPrint('Switched to ${provider.displayName}');
       }
-      
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -169,14 +129,13 @@ class AIConfigService {
     try {
       final prefs = await SharedPreferences.getInstance();
       return {
-        'gemini': prefs.getString(_geminiApiKeyKey),
         'groq': prefs.getString(_groqApiKeyKey),
       };
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error getting stored API keys: $e');
       }
-      return {'gemini': null, 'groq': null};
+      return {'groq': null};
     }
   }
 
@@ -187,7 +146,7 @@ class AIConfigService {
       if (key == null || key.isEmpty) {
         return MapEntry(service, null);
       }
-      
+
       // Show first 8 and last 4 characters
       if (key.length > 12) {
         return MapEntry(service, '${key.substring(0, 8)}...${key.substring(key.length - 4)}');
@@ -206,7 +165,7 @@ class AIConfigService {
   AIConfigStatus getConfigurationStatus() {
     final factory = _aiFactory;
     final status = factory.getServiceStatus();
-    
+
     return AIConfigStatus(
       currentProvider: status.currentProvider,
       isConfigured: status.isConfigured,
@@ -220,12 +179,11 @@ class AIConfigService {
   Future<void> clearAllConfiguration() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(_geminiApiKeyKey);
       await prefs.remove(_groqApiKeyKey);
       await prefs.remove(_selectedProviderKey);
-      
+
       _aiFactory.resetConfiguration();
-      
+
       if (kDebugMode) {
         debugPrint('All AI configuration cleared');
       }
@@ -238,31 +196,26 @@ class AIConfigService {
 
   /// Quick setup with API keys
   Future<bool> quickSetup({
-    String? geminiApiKey,
     String? groqApiKey,
     AIProvider? preferredProvider,
   }) async {
     try {
-      if (geminiApiKey != null && geminiApiKey.isNotEmpty) {
-        await setGeminiApiKey(geminiApiKey);
-      }
-      
       if (groqApiKey != null && groqApiKey.isNotEmpty) {
         await setGroqApiKey(groqApiKey);
       }
-      
+
       if (preferredProvider != null) {
         await switchProvider(preferredProvider);
       } else {
         _aiFactory.autoConfigureBestService();
         await _setSelectedProvider(_aiFactory.currentProvider);
       }
-      
+
       if (kDebugMode) {
         debugPrint('Quick setup completed');
         debugPrint(getConfigurationStatus().toString());
       }
-      
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -275,21 +228,15 @@ class AIConfigService {
   /// Get setup instructions for users
   String getSetupInstructions() {
     return '''
-To enable AI analysis, configure at least one free API service:
+To enable AI analysis, configure the Groq API (FREE):
 
-📱 GOOGLE GEMINI (Recommended - FREE):
-1. Visit https://makersuite.google.com/app/apikey
-2. Sign in with your Google account
-3. Click "Create API key"
-4. Copy the key and paste it in the app
-
-⚡ GROQ (Alternative - FREE):
+⚡ GROQ (FREE):
 1. Visit https://console.groq.com/keys
 2. Sign up for a free account
 3. Create a new API key
 4. Copy the key and paste it in the app
 
-Both services are completely FREE with generous limits!
+Groq is completely FREE with generous limits!
     ''';
   }
 }
