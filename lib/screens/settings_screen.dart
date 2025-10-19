@@ -215,7 +215,7 @@ class SettingsScreen extends ConsumerWidget {
         Container(
           decoration: BoxDecoration(
             color: DesertColors.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
                 color: DesertColors.waterWash.withValues(alpha: 0.1),
@@ -242,7 +242,7 @@ class SettingsScreen extends ConsumerWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
@@ -323,7 +323,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
         ),
         title: Row(
           children: [
@@ -353,11 +353,11 @@ class SettingsScreen extends ConsumerWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () => Navigator.of(context).pop(level),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(24),
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       border: Border.all(
                         color: isSelected 
                             ? DesertColors.primary 
@@ -430,7 +430,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
         ),
         title: Row(
           children: [
@@ -470,11 +470,11 @@ class SettingsScreen extends ConsumerWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () => Navigator.of(context).pop(frequency),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(24),
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(24),
                         border: Border.all(
                           color: isSelected 
                               ? DesertColors.primary 
@@ -550,7 +550,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (dialogContext) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
         ),
         title: Row(
           children: [
@@ -741,7 +741,7 @@ class SettingsScreen extends ConsumerWidget {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
         ),
         margin: const EdgeInsets.all(16),
       ),
@@ -765,7 +765,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.onSecondary,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -787,7 +787,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.sageGreen,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -801,7 +801,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.terracotta,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -834,7 +834,7 @@ class SettingsScreen extends ConsumerWidget {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
         ),
         margin: const EdgeInsets.all(16),
       ),
@@ -858,7 +858,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.onSecondary,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -876,7 +876,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.sageGreen,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -890,7 +890,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.terracotta,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -923,7 +923,7 @@ class SettingsScreen extends ConsumerWidget {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
         ),
         margin: const EdgeInsets.all(16),
       ),
@@ -947,7 +947,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.onSecondary,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -965,7 +965,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.sageGreen,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -979,7 +979,7 @@ class SettingsScreen extends ConsumerWidget {
             backgroundColor: DesertColors.terracotta,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
           ),
@@ -1006,7 +1006,7 @@ class SettingsScreen extends ConsumerWidget {
           backgroundColor: DesertColors.primary,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(24),
           ),
           margin: const EdgeInsets.all(16),
         ),
@@ -1020,7 +1020,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
         ),
         title: Row(
           children: [
@@ -1178,7 +1178,7 @@ class SettingsScreen extends ConsumerWidget {
                           backgroundColor: DesertColors.brownBramble,
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(24),
                           ),
                         ),
                       );
@@ -1190,7 +1190,7 @@ class SettingsScreen extends ConsumerWidget {
                   side: const BorderSide(color: Colors.white, width: 2),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                 ),
                 child: Text(
@@ -1238,7 +1238,7 @@ class SettingsScreen extends ConsumerWidget {
                         DesertColors.dustyBlue,
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -1296,7 +1296,7 @@ class SettingsScreen extends ConsumerWidget {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                   elevation: 4,
                 ),

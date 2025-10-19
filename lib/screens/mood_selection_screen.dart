@@ -96,19 +96,19 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                 ),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 56,
                   child: ElevatedButton(
                   onPressed: moodState.selectedMood != null
                       ? _onContinue
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: moodState.selectedMood != null
-                        ? DesertColors.caramelDrizzle
+                        ? DesertColors.westernSunrise
                         : DesertColors.surface,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                     ),
                     disabledBackgroundColor: DesertColors.surface,
                     disabledForegroundColor: DesertColors.onSurface.withValues(

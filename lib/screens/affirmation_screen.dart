@@ -227,7 +227,7 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
                                   'Welcome back to your journey of reflection and growth.',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontFamily: 'serif',
+                                    fontFamily: 'Inter',
                                     fontSize: 24,
                                     height: 1.4,
                                     color: DesertColors.onSurface,
@@ -241,7 +241,7 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
                               affirmationState.affirmation!,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: 'serif',
+                                fontFamily: 'Inter',
                                 fontSize: 24,
                                 height: 1.4,
                                 color: DesertColors.onSurface,

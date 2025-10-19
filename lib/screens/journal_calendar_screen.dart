@@ -133,7 +133,7 @@ class JournalCalendarScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: DesertColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: DesertColors.surfaceVariant,
           width: 1,
@@ -192,7 +192,7 @@ class JournalCalendarScreen extends ConsumerWidget {
                 foregroundColor: DesertColors.onPrimary,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(24),
                 ),
               ),
             ),

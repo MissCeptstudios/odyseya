@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
 import '../../models/auth_user.dart';
 import '../../constants/typography.dart';
+import '../../constants/colors.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -99,11 +100,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           const SizedBox(height: 8),
 
                           // Subtitle
-                          const Text(
+                          Text(
                             'Welcome back to your journey',
                             style: TextStyle(
                               fontSize: 16,
-                              color: Color(0xFF8B6F47),
+                              color: DesertColors.treeBranch,
                             ),
                           ),
 
@@ -113,10 +114,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -126,18 +127,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF6B4423),
+                                color: DesertColors.brownBramble,
                               ),
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'Email',
                                 hintStyle: TextStyle(
-                                  color: Color(0xFF6B4423),
+                                  color: DesertColors.brownBramble,
                                   fontSize: 18,
                                 ),
                                 border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(
+                                contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                   vertical: 20,
                                 ),
@@ -157,10 +158,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -170,14 +171,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF6B4423),
+                                color: DesertColors.brownBramble,
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Password',
-                                hintStyle: const TextStyle(
-                                  color: Color(0xFF6B4423),
+                                hintStyle: TextStyle(
+                                  color: DesertColors.brownBramble,
                                   fontSize: 18,
                                 ),
                                 border: InputBorder.none,
@@ -188,7 +189,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                                    color: const Color(0xFF6B4423),
+                                    color: DesertColors.brownBramble,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -240,12 +241,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: ElevatedButton(
                               onPressed: authState.isLoading ? null : _submitForm,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFC9A882),
+                                backgroundColor: DesertColors.westernSunrise,
                                 foregroundColor: Colors.white,
-                                elevation: 4,
-                                shadowColor: Colors.black.withValues(alpha: 0.25),
+                                elevation: 0,
+                                shadowColor: Colors.black.withValues(alpha: 0.08),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(24),
                                 ),
                               ),
                               child: authState.isLoading
@@ -260,7 +261,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   : const Text(
                                       'SIGN IN',
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                         letterSpacing: 1.0,

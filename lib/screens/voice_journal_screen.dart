@@ -58,7 +58,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             backgroundColor: DesertColors.sageGreen,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
             ),
             margin: const EdgeInsets.all(16),
             duration: const Duration(seconds: 2),
@@ -224,7 +224,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     color: isSelected
                         ? (mood['color'] as Color).withValues(alpha: 0.2)
                         : DesertColors.offWhite,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(
                       color: isSelected
                           ? (mood['color'] as Color)
@@ -381,7 +381,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             Container(
               decoration: BoxDecoration(
                 color: DesertColors.offWhite,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(24),
                 border: Border.all(
                   color: DesertColors.dustyBlue.withValues(alpha: 0.3),
                 ),
@@ -413,7 +413,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       border: Border.all(
                         color: DesertColors.dustyBlue.withValues(alpha: 0.3),
                       ),
@@ -449,7 +449,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: DesertColors.offWhite.withValues(alpha: 0.8),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(24),
               ),
               child: Column(
                 children: [
@@ -486,7 +486,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: DesertColors.offWhite,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: DesertColors.dustyBlue.withValues(alpha: 0.3),
               ),
@@ -594,7 +594,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: 48,
+                  height: 56,
                   child: ElevatedButton(
                     onPressed: () {
                       ref.read(voiceJournalProvider.notifier).startNewEntry();
@@ -603,7 +603,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       backgroundColor: DesertColors.roseSand,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(24),
                       ),
                     ),
                     child: Text(
@@ -617,7 +617,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                 
                 SizedBox(
                   width: double.infinity,
-                  height: 48,
+                  height: 56,
                   child: OutlinedButton(
                     onPressed: () {
                       context.go('/calendar');
@@ -626,7 +626,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       foregroundColor: DesertColors.roseSand,
                       side: BorderSide(color: DesertColors.roseSand),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(24),
                       ),
                     ),
                     child: Text(
@@ -673,7 +673,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   foregroundColor: DesertColors.treeBranch,
                   side: BorderSide(color: DesertColors.treeBranch),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                 ),
                 child: const Text('Back'),
@@ -693,7 +693,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                 backgroundColor: DesertColors.roseSand,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(24),
                 ),
               ),
               child: voiceState.isProcessing

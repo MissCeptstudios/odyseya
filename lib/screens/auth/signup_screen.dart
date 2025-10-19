@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
+import '../../constants/colors.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -59,9 +60,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back,
-                        color: Color(0xFF6B4423),
+                        color: DesertColors.brownBramble,
                         size: 28,
                       ),
                       onPressed: () => context.go('/first-download'),
@@ -80,24 +81,24 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           const SizedBox(height: 20),
 
                           // Title
-                          const Text(
+                          Text(
                             'Create Account',
                             style: TextStyle(
-                              
-                              fontSize: 40,
+
+                              fontSize: 32,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF6B4423),
+                              color: DesertColors.brownBramble,
                             ),
                           ),
 
                           const SizedBox(height: 8),
 
                           // Subtitle
-                          const Text(
+                          Text(
                             'Start your emotional journey today',
                             style: TextStyle(
                               fontSize: 16,
-                              color: Color(0xFF8B6F47),
+                              color: DesertColors.treeBranch,
                             ),
                           ),
 
@@ -107,10 +108,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -119,9 +120,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             child: TextFormField(
                               controller: _nameController,
                               textInputAction: TextInputAction.next,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF6B4423),
+                                color: DesertColors.brownBramble,
                               ),
                               decoration: const InputDecoration(
                                 hintText: 'Full Name',
@@ -153,10 +154,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -166,9 +167,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF6B4423),
+                                color: DesertColors.brownBramble,
                               ),
                               decoration: const InputDecoration(
                                 hintText: 'Email',
@@ -197,10 +198,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -210,14 +211,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.next,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF6B4423),
+                                color: DesertColors.brownBramble,
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Password',
-                                hintStyle: const TextStyle(
-                                  color: Color(0xFF6B4423),
+                                hintStyle: TextStyle(
+                                  color: DesertColors.brownBramble,
                                   fontSize: 18,
                                 ),
                                 border: InputBorder.none,
@@ -228,7 +229,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                                    color: const Color(0xFF6B4423),
+                                    color: DesertColors.brownBramble,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -252,10 +253,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(alpha: 0.08),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -265,14 +266,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               controller: _confirmPasswordController,
                               obscureText: _obscureConfirmPassword,
                               textInputAction: TextInputAction.done,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Color(0xFF6B4423),
+                                color: DesertColors.brownBramble,
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Confirm Password',
-                                hintStyle: const TextStyle(
-                                  color: Color(0xFF6B4423),
+                                hintStyle: TextStyle(
+                                  color: DesertColors.brownBramble,
                                   fontSize: 18,
                                 ),
                                 border: InputBorder.none,
@@ -283,7 +284,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
-                                    color: const Color(0xFF6B4423),
+                                    color: DesertColors.brownBramble,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -338,12 +339,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             child: ElevatedButton(
                               onPressed: authState.isLoading ? null : _submitForm,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFC9A882),
+                                backgroundColor: DesertColors.westernSunrise,
                                 foregroundColor: Colors.white,
-                                elevation: 4,
-                                shadowColor: Colors.black.withValues(alpha: 0.25),
+                                elevation: 0,
+                                shadowColor: Colors.black.withValues(alpha: 0.08),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(24),
                                 ),
                               ),
                               child: authState.isLoading
@@ -358,7 +359,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                   : const Text(
                                       'CONTINUE',
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                         letterSpacing: 1.0,

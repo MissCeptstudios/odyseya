@@ -102,7 +102,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: DesertColors.waterWash.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: DesertColors.waterWash.withValues(alpha: 0.3),
               ),
@@ -191,7 +191,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isPrimary ? DesertColors.primary : DesertColors.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: isPrimary 
                 ? DesertColors.primary 
@@ -258,7 +258,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: DesertColors.accent.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: DesertColors.accent.withValues(alpha: 0.3),
           ),
@@ -514,7 +514,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -537,7 +537,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -563,7 +563,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       borderSide: BorderSide.none,
                     ),
                     suffixIcon: IconButton(
@@ -597,7 +597,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                       borderSide: BorderSide.none,
                     ),
                     suffixIcon: IconButton(
@@ -629,7 +629,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(24),
                     ),
                   ),
                   child: _isLoading

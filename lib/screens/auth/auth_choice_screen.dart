@@ -32,7 +32,7 @@ class AuthChoiceScreen extends StatelessWidget {
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(24),
                     ),
                   ),
                   child: const Text(
@@ -54,9 +54,12 @@ class AuthChoiceScreen extends StatelessWidget {
                   onPressed: () => context.go('/signup'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: DesertColors.caramelDrizzle,
-                    side: BorderSide(color: DesertColors.caramelDrizzle),
+                    side: BorderSide(
+                      color: DesertColors.caramelDrizzle,
+                      width: 1.5,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(24),
                     ),
                   ),
                   child: const Text(

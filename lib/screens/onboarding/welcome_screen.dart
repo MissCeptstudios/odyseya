@@ -104,7 +104,7 @@ class WelcomeScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: DesertColors.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: DesertColors.waterWash.withValues(alpha: 0.3),
               ),
@@ -134,7 +134,7 @@ class WelcomeScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: DesertColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
             color: DesertColors.waterWash.withValues(alpha: 0.1),
