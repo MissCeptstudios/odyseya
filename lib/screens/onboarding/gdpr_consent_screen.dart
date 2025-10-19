@@ -93,8 +93,61 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                 ),
               ),
               
-              const SizedBox(height: 40),
-              
+              const SizedBox(height: 24),
+
+              // Data Collection Summary
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: DesertColors.accent.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: DesertColors.accent.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          color: DesertColors.primary,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'What data we collect',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: DesertColors.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDataItem('Account info (email, name from Google/Apple login)'),
+                    _buildDataItem('Voice recordings & AI-generated transcriptions'),
+                    _buildDataItem('Journal entries, moods, and emotional insights'),
+                    _buildDataItem('App usage analytics (anonymized)'),
+                    _buildDataItem('Device info for security & crash reporting'),
+                    _buildDataItem('Location & weather (optional, only if you enable)'),
+                    const SizedBox(height: 8),
+                    Text(
+                      'All data is encrypted and never sold. You can export or delete anytime.',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: DesertColors.onSecondary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -208,6 +261,36 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDataItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Icon(
+              Icons.check_circle,
+              size: 14,
+              color: DesertColors.primary,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 12,
+                color: DesertColors.onSecondary,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -350,59 +433,292 @@ You may terminate your account at any time. We may terminate accounts that viola
 8. CHANGES TO TERMS
 We may update these terms periodically. Continued use constitutes acceptance of new terms.
 
-For questions about these terms, contact us at legal@odyseya.com''';
+For questions about these terms, contact us at odyseya.journal@gmail.com''';
   }
 
   String _getPrivacyPolicy() {
     return '''Privacy Policy for Odyseya
 
 Last updated: ${DateTime.now().year}
+Effective Date: January 1, ${DateTime.now().year}
+
+INTRODUCTION
+At Odyseya, your privacy is our highest priority. This Privacy Policy explains in detail how we collect, use, store, and protect your personal information. We are committed to full transparency and GDPR compliance.
 
 1. INFORMATION WE COLLECT
-- Account information (email, name)
-- Voice recordings and transcriptions
-- Usage data and preferences
-- Device information
+
+1.1 Account & Authentication Data
+- Email address and display name (via Google Sign In or Sign In with Apple)
+- Profile picture (if provided by authentication provider)
+- User ID and authentication tokens
+- Account creation and last login timestamps
+
+1.2 Voice & Journal Data
+- Voice recordings (audio files stored in encrypted cloud storage)
+- AI-generated transcriptions of your voice recordings
+- Written journal entries and reflections
+- Timestamps of all journal entries
+- Mood selections and emotional data you log
+- AI-generated insights and analysis reports
+- Affirmations and recommendations
+
+1.3 Usage & Preferences Data
+- App settings and preferences (notification settings, AI analysis preferences)
+- Privacy preference selections (AI analysis level)
+- Journaling patterns and frequency
+- Feature usage analytics
+- App performance and crash reports
+
+1.4 Optional Data (Only if You Grant Permission)
+- Location data (for weather and context, only when app is in use)
+- Weather information associated with journal entries
+- Device notifications preferences
+
+1.5 Technical Data
+- Device type, operating system, and version
+- App version and build number
+- Device identifiers (for authentication and security)
+- IP address (for security and fraud prevention)
+- Session information
+
+1.6 Subscription & Payment Data
+- Subscription status and tier (processed via RevenueCat)
+- Purchase history (we do not store credit card details)
+- Transaction IDs
 
 2. HOW WE USE YOUR INFORMATION
-- To provide voice journaling services
-- To generate AI insights about your emotional patterns
-- To improve our services
-- To communicate with you about your account
 
-3. DATA SHARING
-We do not sell or share your personal data with third parties, except:
+2.1 Primary Services
+- Provide voice recording and transcription services
+- Generate AI-powered emotional insights and pattern analysis
+- Store and sync your journal entries across devices
+- Deliver personalized affirmations and recommendations
+- Enable mood tracking and emotional wellness features
+
+2.2 Service Improvement
+- Analyze usage patterns to improve app features (anonymized)
+- Debug issues and fix crashes
+- Develop new features based on user needs
+- Improve AI model accuracy (using anonymized data only)
+
+2.3 Communication
+- Send journaling reminders (if notifications enabled)
+- Provide customer support
+- Send important service updates and security notices
+- Marketing communications (only with explicit opt-in consent)
+
+2.4 Legal & Security
+- Prevent fraud and abuse
+- Comply with legal obligations
+- Enforce our terms of service
+- Protect user safety and app security
+
+3. THIRD-PARTY SERVICES & DATA SHARING
+
+We use the following trusted third-party services. Your data is NEVER sold.
+
+3.1 Firebase (Google Cloud Platform)
+- Authentication: Secure login via Google/Apple
+- Cloud Firestore: Encrypted storage of journal entries and user data
+- Cloud Storage: Encrypted storage of voice recordings
+- Cloud Functions: Server-side processing of data
+- Analytics: App usage patterns (anonymized)
+- Crashlytics: Crash reporting for app stability
+
+3.2 AI Processing Services
+- Voice transcription: Your voice recordings are sent to secure AI services for transcription
+- Emotional analysis: Journal text is analyzed by AI to generate insights
+- All AI processing is performed with enterprise-grade encryption
+- AI services do not train models on your personal data
+
+3.3 RevenueCat
+- Subscription management and in-app purchase processing
+- Receives: User ID, subscription status, purchase events
+- Does not receive: Journal content or emotional data
+
+3.4 Authentication Providers
+- Google Sign In: Email, name, profile picture
+- Sign In with Apple: Email (or private relay), name
+
+3.5 When We Share Data
+We only share your personal data:
 - With your explicit consent
-- To comply with legal obligations
-- To protect our rights and safety
+- To comply with legal obligations (court orders, subpoenas)
+- To protect rights, safety, and security (fraud prevention)
+- With service providers under strict confidentiality agreements
+- In aggregated, anonymized form for research (no personal identification)
 
-4. DATA SECURITY
-- All data is encrypted in transit and at rest
-- We use industry-standard security measures
-- Access to your data is restricted to essential personnel
+We NEVER:
+- Sell your personal data to anyone
+- Share your journal content with advertisers
+- Use your emotional data for marketing to third parties
+- Share your data with data brokers
 
-5. YOUR RIGHTS (GDPR)
-You have the right to:
-- Access your personal data
-- Correct inaccurate data
-- Delete your data
-- Export your data
-- Object to data processing
-- Withdraw consent at any time
+4. DATA SECURITY & ENCRYPTION
+
+4.1 Security Measures
+- End-to-end encryption for data in transit (TLS/SSL)
+- Encryption at rest for all stored data (AES-256)
+- Secure authentication with industry-standard protocols
+- Regular security audits and updates
+- Role-based access control (minimal employee access)
+- Secure cloud infrastructure (Google Cloud Platform)
+
+4.2 Voice Recording Security
+- Voice files are encrypted before upload
+- Stored in secure, private cloud storage buckets
+- Access restricted to your account only
+- Deleted permanently when you choose to delete them
+
+4.3 Data Breach Protocol
+- We will notify you within 72 hours of discovering any data breach
+- Notification will include what data was affected and steps we're taking
+- We maintain incident response procedures and regular backups
+
+5. YOUR RIGHTS (GDPR & PRIVACY LAWS)
+
+You have the following rights regarding your personal data:
+
+5.1 Right to Access
+- View all personal data we hold about you
+- Download a copy in machine-readable format (JSON)
+- Access available in app settings under "Download My Data"
+
+5.2 Right to Rectification
+- Correct any inaccurate personal information
+- Update your account details anytime in settings
+
+5.3 Right to Erasure ("Right to be Forgotten")
+- Delete your account and all associated data
+- Available in app settings under "Delete Account"
+- Permanent deletion occurs within 30 days
+- Some data may be retained for legal compliance (anonymized)
+
+5.4 Right to Data Portability
+- Export your journal entries, mood logs, and personal data
+- Receive data in JSON or CSV format
+- Available in app settings under "Export Data"
+
+5.5 Right to Restrict Processing
+- Limit how we process your data
+- Disable AI analysis while keeping journal storage
+- Configure in app privacy settings
+
+5.6 Right to Object
+- Object to specific data processing activities
+- Opt out of analytics, marketing, or AI features
+- Available in privacy preferences
+
+5.7 Right to Withdraw Consent
+- Change your privacy preferences anytime
+- Revoke marketing consent instantly
+- Modify AI analysis settings
+
+5.8 Right to Lodge a Complaint
+- File complaints with your data protection authority
+- EU users: Contact your local supervisory authority
+- We will cooperate fully with investigations
 
 6. DATA RETENTION
-- Voice recordings: Retained until you delete them
-- Account data: Retained while your account is active
-- Deleted data is permanently removed within 30 days
 
-7. INTERNATIONAL TRANSFERS
-Your data may be processed in countries outside your residence, always with appropriate safeguards.
+6.1 How Long We Keep Your Data
+- Voice Recordings: Until you delete them or close your account
+- Journal Entries: Until you delete them or close your account
+- Account Data: While your account is active, plus 30 days after deletion
+- Analytics Data: Anonymized, retained for up to 2 years
+- Backups: Deleted data removed from backups within 90 days
+- Legal Hold Data: Retained only as required by law
 
-8. CONTACT US
-For privacy questions or to exercise your rights, contact us at privacy@odyseya.com
+6.2 Account Deletion
+- You can delete your account anytime in settings
+- All personal data deleted within 30 days
+- Anonymized analytics data may be retained
+- Deletion is permanent and cannot be undone
 
-9. CHANGES TO POLICY
-We will notify you of significant changes to this privacy policy.''';
+7. INTERNATIONAL DATA TRANSFERS
+
+7.1 Where Your Data Is Processed
+- Primary servers: Google Cloud Platform (US and EU regions)
+- Data may be processed in the United States and European Union
+- We use Standard Contractual Clauses (SCCs) for EU data transfers
+- All transfers comply with GDPR requirements
+
+7.2 Safeguards for International Transfers
+- EU-US Data Privacy Framework compliance (where applicable)
+- Standard Contractual Clauses with all processors
+- Encryption in transit and at rest
+- Regular compliance audits
+
+8. CHILDREN'S PRIVACY
+
+- Odyseya is not intended for users under 16 years of age
+- We do not knowingly collect data from children under 16
+- If we discover underage users, accounts will be deleted immediately
+- Parents: Contact us if you believe your child has created an account
+
+9. COOKIES & TRACKING
+
+- We do not use advertising cookies
+- Essential cookies: Session management and authentication only
+- Analytics: Firebase Analytics (can be disabled in settings)
+- No third-party advertising trackers
+
+10. CALIFORNIA PRIVACY RIGHTS (CCPA)
+
+California residents have additional rights:
+- Right to know what personal information is collected
+- Right to delete personal information
+- Right to opt-out of sale (we don't sell data)
+- Right to non-discrimination for exercising privacy rights
+
+11. MARKETING COMMUNICATIONS
+
+- Marketing emails: Only with explicit opt-in consent
+- Frequency: Weekly wellness tips (optional)
+- Unsubscribe: One-click unsubscribe in every email
+- Preferences: Manage in account settings
+- Your journal content is NEVER used for marketing
+
+12. CHANGES TO THIS PRIVACY POLICY
+
+- We may update this policy periodically
+- Significant changes: You'll be notified via email and in-app
+- Continued use after changes constitutes acceptance
+- Previous versions available upon request
+
+13. CONTACT US & DATA PROTECTION
+
+For privacy questions, to exercise your rights, or report concerns:
+
+Email: odyseya.journal@gmail.com
+Privacy & Data Protection: odyseya.journal@gmail.com
+Support: odyseya.journal@gmail.com
+
+Response time: We aim to respond within 48 hours
+
+Contact:
+Odyseya
+Email: odyseya.journal@gmail.com
+Website: odyseya.com
+
+14. LEGAL BASIS FOR PROCESSING (GDPR)
+
+We process your data based on:
+- Consent: You explicitly agree (withdrawable anytime)
+- Contract: Necessary to provide our services
+- Legitimate Interest: Service improvement, security, fraud prevention
+- Legal Obligation: Compliance with laws and regulations
+
+15. YOUR CALIFORNIA "SHINE THE LIGHT" RIGHTS
+
+California Civil Code Section 1798.83 permits California residents to request information about disclosure of personal information to third parties for direct marketing. We do not share personal information with third parties for their direct marketing purposes.
+
+SUMMARY
+
+We collect only what we need to provide you with an exceptional journaling experience. Your emotional data is private, encrypted, and never sold. You have complete control over your data with easy-to-use privacy tools. We are committed to transparency, security, and your rights under GDPR and other privacy laws.
+
+Last reviewed: ${DateTime.now().toString().substring(0, 10)}
+Version: 2.0''';
   }
 
   String _getMarketingPolicy() {

@@ -214,7 +214,7 @@ Odyseya is provided "as is" without warranties of any kind. We are not liable fo
 9. CHANGES TO TERMS
 We may update these terms from time to time. Continued use of the service constitutes acceptance of updated terms.
 
-For questions about these terms, please contact us at legal@odyseya.app
+For questions about these terms, please contact us at odyseya.journal@gmail.com
 ''';
   }
 
@@ -280,8 +280,8 @@ Your data may be processed in countries where our service providers operate, alw
 
 CONTACT US
 For privacy questions or to exercise your rights:
-- Email: privacy@odyseya.app
-- Data Protection Officer: dpo@odyseya.app
+- Email: odyseya.journal@gmail.com
+- Privacy & Support: odyseya.journal@gmail.com
 
 This policy may be updated periodically. We will notify you of significant changes.
 ''';

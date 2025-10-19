@@ -45,5 +45,25 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Privacy - Microphone Usage Description -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Odyseya needs access to your microphone to record your voice journal entries. Your recordings are encrypted and stored securely.</string>
+
+	<!-- Privacy - User Notifications Usage Description -->
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>Odyseya sends gentle reminders to help you maintain your journaling practice. You can customize or disable notifications anytime in settings.</string>
+
+	<!-- Privacy - Location When In Use Usage Description -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Odyseya can add location and weather context to your journal entries to enrich your journaling experience. This is optional and can be disabled anytime.</string>
+
+	<!-- Privacy - Photo Library Usage Description (for sharing journal entries as images) -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Odyseya needs access to your photo library to save and share your journal entries as images.</string>
+
+	<!-- Privacy - Photo Library Add Usage Description -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Odyseya needs permission to save your journal entries to your photo library.</string>
 </dict>
 </plist>
