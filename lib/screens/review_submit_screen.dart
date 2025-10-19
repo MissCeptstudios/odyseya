@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/navigation/top_navigation_bar.dart';
+import '../providers/voice_journal_provider.dart';
 
 class ReviewSubmitScreen extends ConsumerStatefulWidget {
   const ReviewSubmitScreen({super.key});
@@ -226,10 +227,6 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
   }
 
   Future<void> _handleSubmit() async {
-    // Save entry to Firestore
-    // This screen needs to receive journal entry data (transcription, audio path, etc.)
-    // from the voice recording flow. For now, this is a placeholder implementation.
-
     if (selectedMood == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -241,45 +238,92 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
     }
 
     try {
-      // TODO: Implement full journal entry save when voice recording flow is connected
-      // Example implementation:
-      // final user = ref.read(currentUserProvider);
-      // if (user == null) return;
-      //
-      // final entry = JournalEntry(
-      //   id: '', // Firestore will generate
-      //   userId: user.id,
-      //   mood: selectedMood!.toLowerCase(),
-      //   transcription: transcriptionText, // Need to pass from previous screen
-      //   audioPath: audioFilePath, // Need to pass from previous screen
-      //   createdAt: DateTime.now(),
-      //   isPrivate: true,
-      //   isSynced: false,
-      // );
-      //
-      // await FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(user.id)
-      //     .collection('journals')
-      //     .add(entry.toJson());
-
+      // Show loading indicator
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Journal entry saved successfully!'),
+            content: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Text('Saving your journal entry...'),
+              ],
+            ),
             backgroundColor: Color(0xFF2B8AB8),
+            duration: Duration(seconds: 30), // Will be dismissed when done
+          ),
+        );
+      }
+
+      // Update the mood in the voice journal provider
+      final notifier = ref.read(voiceJournalProvider.notifier);
+      notifier.selectMood(selectedMood!);
+
+      // Save the journal entry using the provider
+      // This will handle:
+      // - Saving to Firestore
+      // - Uploading audio to Firebase Storage
+      // - Requesting AI analysis via backend
+      // - Updating the entry with AI insights
+      await notifier.saveEntry();
+
+      // Check if save was successful
+      final state = ref.read(voiceJournalProvider);
+
+      if (state.error != null) {
+        throw Exception(state.error);
+      }
+
+      if (mounted) {
+        // Dismiss loading snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Text('Journal entry saved successfully! 🎉'),
+                ),
+              ],
+            ),
+            backgroundColor: Color(0xFF2B8AB8),
+            duration: Duration(seconds: 3),
           ),
         );
 
-        // Navigate back to home/calendar
+        // Navigate back to calendar
         context.go('/calendar');
       }
     } catch (e) {
       if (mounted) {
+        // Dismiss loading snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+        // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error saving entry: $e'),
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text('Error saving entry: ${e.toString()}'),
+                ),
+              ],
+            ),
             backgroundColor: const Color(0xFFFF6B6B),
+            duration: const Duration(seconds: 5),
           ),
         );
       }
