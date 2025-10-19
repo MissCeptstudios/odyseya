@@ -1292,7 +1292,7 @@ class SettingsScreen extends ConsumerWidget {
                   context.push('/paywall');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: DesertColors.roseSand,
+                  backgroundColor: DesertColors.westernSunrise,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

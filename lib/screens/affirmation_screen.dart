@@ -283,7 +283,7 @@ class _AffirmationScreenState extends ConsumerState<AffirmationScreen>
                       child: ElevatedButton(
                         onPressed: affirmationState.isLoading ? null : _onContinuePressed,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: DesertColors.caramelDrizzle,
+                          backgroundColor: DesertColors.westernSunrise,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(

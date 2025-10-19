@@ -237,7 +237,7 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                           child: ElevatedButton(
                             onPressed: _handleContinue,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: DesertColors.caramelDrizzle,
+                              backgroundColor: DesertColors.westernSunrise,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 18),
                               shape: RoundedRectangleBorder(

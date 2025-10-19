@@ -112,7 +112,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 ref.read(subscriptionProvider.notifier).refreshSubscriptionStatus();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: DesertColors.roseSand,
+                backgroundColor: DesertColors.westernSunrise,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(
@@ -529,7 +529,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   ? null
                   : () => _handlePurchase(packages[_selectedPackageIndex]),
               style: ElevatedButton.styleFrom(
-                backgroundColor: DesertColors.roseSand,
+                backgroundColor: DesertColors.westernSunrise,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

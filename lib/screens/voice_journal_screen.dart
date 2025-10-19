@@ -600,7 +600,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       ref.read(voiceJournalProvider.notifier).startNewEntry();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: DesertColors.roseSand,
+                      backgroundColor: DesertColors.westernSunrise,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
@@ -690,7 +690,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   ? () => _handlePrimaryAction(voiceState)
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: DesertColors.roseSand,
+                backgroundColor: DesertColors.westernSunrise,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),

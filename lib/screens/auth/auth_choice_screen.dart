@@ -28,7 +28,7 @@ class AuthChoiceScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => context.go('/login'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: DesertColors.caramelDrizzle,
+                    backgroundColor: DesertColors.westernSunrise,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -53,9 +53,9 @@ class AuthChoiceScreen extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () => context.go('/signup'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: DesertColors.caramelDrizzle,
+                    foregroundColor: DesertColors.westernSunrise,
                     side: BorderSide(
-                      color: DesertColors.caramelDrizzle,
+                      color: DesertColors.westernSunrise,
                       width: 1.5,
                     ),
                     shape: RoundedRectangleBorder(
