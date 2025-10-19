@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -102,7 +103,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: moodState.selectedMood != null
-                        ? DesertColors.westernSunrise
+                        ? DesertColors.caramelDrizzle
                         : DesertColors.surface,
                     foregroundColor: Colors.white,
                     elevation: 0,

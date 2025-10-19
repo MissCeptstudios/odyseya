@@ -50,9 +50,13 @@ class EnvConfig {
   static bool get useWhisper => (_getEnv('USE_WHISPER', fallback: 'true') ?? 'true').toLowerCase() == 'true';
   static bool get isProduction => (_getEnv('IS_PROD', fallback: 'false') ?? 'false').toLowerCase() == 'true';
 
-  /// RevenueCat Configuration
+  /// RevenueCat Configuration (Development)
   static String? get revenueCatIosKey => _getEnv('RC_IOS_KEY_DEV');
   static String? get revenueCatAndroidKey => _getEnv('RC_ANDROID_KEY_DEV');
+
+  /// RevenueCat Configuration (Production)
+  static String? get revenueCatIosProdKey => _getEnv('REVENUE_CAT_IOS_PROD_KEY');
+  static String? get revenueCatAndroidProdKey => _getEnv('REVENUE_CAT_ANDROID_PROD_KEY');
 
   /// Subscription Product IDs
   static String get monthlyProductId => _getEnv('MONTHLY_PRODUCT_ID', fallback: 'odyseya_monthly_premium')!;

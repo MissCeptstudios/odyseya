@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import '../../services/background_service.dart';
 import '../../constants/colors.dart';
@@ -43,7 +44,7 @@ class AppBackground extends StatelessWidget {
                   colors: [
                     DesertColors.paleDesert.withValues(alpha: 0.05),
                     Colors.transparent,
-                    DesertColors.westernSunrise.withValues(alpha: 0.03),
+                    DesertColors.caramelDrizzle.withValues(alpha: 0.03),
                   ],
                   stops: const [0.0, 0.5, 1.0],
                 ),

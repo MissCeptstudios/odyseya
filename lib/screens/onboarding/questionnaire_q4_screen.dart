@@ -1,7 +1,7 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/common/odyseya_screen_layout.dart';
 
@@ -29,14 +29,14 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: DesertColors.surface,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: DesertColors.waterWash.withValues(alpha: 0.3),
+                color: const Color(0xFFD4C4B0).withValues(alpha: 0.5),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: DesertColors.waterWash.withValues(alpha: 0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -51,26 +51,26 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
               decoration: InputDecoration(
                 hintText: 'Type your thoughts here (optional)...',
                 hintStyle: TextStyle(
-                  color: DesertColors.onSecondary.withValues(alpha: 0.6),
+                  color: const Color(0xFF8B6F47).withValues(alpha: 0.6),
                 ),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
-                color: DesertColors.onSurface,
+                color: Color(0xFF6B4423),
                 height: 1.5,
               ),
             ),
           ),
-          
+
           const SizedBox(height: 24),
-          
-          Text(
+
+          const Text(
             'Or choose from common emotions:',
             style: TextStyle(
               fontSize: 14,
-              color: DesertColors.onSecondary,
+              color: Color(0xFF8B6F47),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -141,16 +141,21 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: isSelected 
-                ? DesertColors.accent.withValues(alpha: 0.1)
-                : DesertColors.surface,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: isSelected 
-                  ? DesertColors.primary
-                  : DesertColors.waterWash.withValues(alpha: 0.3),
-                width: isSelected ? 2 : 1,
+                color: isSelected
+                  ? const Color(0xFF6B4423) // Brown border when selected
+                  : Colors.transparent,
+                width: 2,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               children: [
@@ -159,17 +164,17 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
                   height: 20,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected 
-                      ? DesertColors.primary
+                    color: isSelected
+                      ? const Color(0xFFC9A882) // Tan/beige background for radio
                       : Colors.transparent,
                     border: Border.all(
-                      color: isSelected 
-                        ? DesertColors.primary
-                        : DesertColors.onSecondary.withValues(alpha: 0.4),
+                      color: isSelected
+                        ? const Color(0xFFC9A882)
+                        : const Color(0xFFD4C4B0).withValues(alpha: 0.5),
                       width: 2,
                     ),
                   ),
-                  child: isSelected 
+                  child: isSelected
                     ? Container(
                         width: 8,
                         height: 8,
@@ -184,12 +189,10 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: isSelected 
-                        ? DesertColors.onSurface
-                        : DesertColors.onSecondary,
+                      color: Color(0xFF6B4423),
                     ),
                   ),
                 ),

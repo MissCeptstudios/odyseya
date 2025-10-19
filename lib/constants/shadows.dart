@@ -1,7 +1,8 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 
 /// Shadow and elevation constants for consistent depth throughout the app
-/// Following Material Design elevation principles adapted for Odyseya's aesthetic
+/// Framework v1.4: Standard shadow 0 4 8 rgba(0,0,0,0.08)
 class OdyseyaShadows {
   OdyseyaShadows._();
 
@@ -13,33 +14,33 @@ class OdyseyaShadows {
   static const double elevation4 = 16.0;  // Floating
   static const double elevation5 = 24.0;  // Modal
 
-  /// Soft ambient shadow - used for subtle elevation
-  /// Best for cards, containers at rest
+  /// Framework standard shadow - Level 1 (Cards, Buttons)
+  /// 0 4 8 rgba(0,0,0,0.08)
   static List<BoxShadow> get soft => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.04),
-          blurRadius: 8,
-          offset: const Offset(0, 2),
+          color: Colors.black.withValues(alpha: 0.08), // Framework: 0.08
+          blurRadius: 8, // Framework: 8
+          offset: const Offset(0, 4), // Framework: 0 4
         ),
       ];
 
-  /// Medium shadow - used for interactive elements
-  /// Best for buttons, cards on hover
+  /// Medium shadow - Level 2 (Active elements)
+  /// 0 2 4 rgba(0,0,0,0.10)
   static List<BoxShadow> get medium => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.06),
-          blurRadius: 12,
-          offset: const Offset(0, 4),
+          color: Colors.black.withValues(alpha: 0.10), // Framework: 0.10
+          blurRadius: 4, // Framework: 4
+          offset: const Offset(0, 2), // Framework: 0 2
         ),
       ];
 
-  /// Strong shadow - used for selected/elevated items
-  /// Best for selected cards, modal overlays
+  /// Strong shadow - Modal
+  /// 0 4 12 rgba(0,0,0,0.10)
   static List<BoxShadow> get strong => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.08),
-          blurRadius: 24,
-          offset: const Offset(0, 8),
+          color: Colors.black.withValues(alpha: 0.10), // Framework: 0.10
+          blurRadius: 12, // Framework: 12
+          offset: const Offset(0, 4), // Framework: 0 4
         ),
       ];
 
@@ -53,11 +54,12 @@ class OdyseyaShadows {
       ];
 
   /// Bottom shadow - used for navigation bars at bottom
+  /// Framework: 0 -2 6 rgba(0,0,0,0.04)
   static List<BoxShadow> get bottomBar => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.05),
-          blurRadius: 8,
-          offset: const Offset(0, -2),
+          color: Colors.black.withValues(alpha: 0.04), // Framework: 0.04
+          blurRadius: 6, // Framework: 6
+          offset: const Offset(0, -2), // Framework: 0 -2
         ),
       ];
 

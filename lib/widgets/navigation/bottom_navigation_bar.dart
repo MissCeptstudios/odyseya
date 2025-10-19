@@ -1,7 +1,10 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import '../../constants/typography.dart';
 import '../../constants/colors.dart';
+import '../../constants/spacing.dart';
 
+/// Framework v1.4: Height 84px, Top radius 24px, Active #D8A36C, Inactive #7A4C25
 class OdyseyaBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -18,17 +21,21 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24), // Framework: 24px top radius
+          topRight: Radius.circular(24),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
+            color: Colors.black.withValues(alpha: 0.04), // Framework: 0.04 opacity
+            blurRadius: 6, // Framework: blur 6
+            offset: const Offset(0, -2), // Framework: 0 -2 6
           ),
         ],
       ),
       child: SafeArea(
         child: Container(
-          height: 72,
+          height: OdyseyaSpacing.navBarHeight, // Framework: 84px (was 72px)
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -82,12 +89,13 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
     required int index,
     required bool isSelected,
   }) {
+    // Framework v1.4: Active #D8A36C, Inactive #7A4C25
     final iconColor = isSelected
-        ? DesertColors.westernSunrise
-        : DesertColors.treeBranch;
+        ? DesertColors.westernSunrise // Framework: #D8A36C (was caramelDrizzle)
+        : DesertColors.warmBrown; // Framework: #7A4C25 (was treeBranch)
     final textColor = isSelected
         ? DesertColors.brownBramble
-        : DesertColors.treeBranch;
+        : DesertColors.warmBrown; // Framework: #7A4C25
 
     return Expanded(
       child: GestureDetector(

@@ -1,7 +1,7 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/common/odyseya_screen_layout.dart';
 
@@ -88,19 +88,17 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: isSelected 
-                ? DesertColors.accent.withValues(alpha: 0.1)
-                : DesertColors.surface,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected 
-                  ? DesertColors.primary
-                  : DesertColors.waterWash.withValues(alpha: 0.3),
-                width: isSelected ? 2 : 1,
+                color: isSelected
+                  ? const Color(0xFF6B4423) // Brown border when selected
+                  : Colors.transparent,
+                width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: DesertColors.waterWash.withValues(alpha: 0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -113,17 +111,17 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
                   height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected 
-                      ? DesertColors.primary
+                    color: isSelected
+                      ? const Color(0xFFC9A882) // Tan/beige background for radio
                       : Colors.transparent,
                     border: Border.all(
-                      color: isSelected 
-                        ? DesertColors.primary
-                        : DesertColors.onSecondary.withValues(alpha: 0.4),
+                      color: isSelected
+                        ? const Color(0xFFC9A882)
+                        : const Color(0xFFD4C4B0).withValues(alpha: 0.5),
                       width: 2,
                     ),
                   ),
-                  child: isSelected 
+                  child: isSelected
                     ? Container(
                         width: 10,
                         height: 10,
@@ -141,12 +139,10 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
                     children: [
                       Text(
                         label,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: isSelected 
-                            ? DesertColors.onSurface
-                            : DesertColors.onSecondary,
+                          color: Color(0xFF6B4423),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -154,7 +150,7 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
                         description,
                         style: TextStyle(
                           fontSize: 14,
-                          color: DesertColors.onSecondary.withValues(alpha: 0.8),
+                          color: const Color(0xFF8B6F47).withValues(alpha: 0.8),
                           height: 1.3,
                         ),
                       ),

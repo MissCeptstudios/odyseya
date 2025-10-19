@@ -25,7 +25,6 @@ enum AIProvider {
   groq,
   openai,  // For future use
   claude,  // For future use
-  gemini,  // DEPRECATED - Removed from app
 }
 
 extension AIProviderExtension on AIProvider {
@@ -37,8 +36,6 @@ extension AIProviderExtension on AIProvider {
         return 'OpenAI';
       case AIProvider.claude:
         return 'Claude';
-      case AIProvider.gemini:
-        return 'Gemini (Removed)';
     }
   }
 
@@ -50,8 +47,6 @@ extension AIProviderExtension on AIProvider {
         return 'PAID - OpenAI GPT-4 (High Quality)';
       case AIProvider.claude:
         return 'PAID - Anthropic Claude (Excellent Analysis)';
-      case AIProvider.gemini:
-        return 'DEPRECATED - Service removed';
     }
   }
 
@@ -61,7 +56,6 @@ extension AIProviderExtension on AIProvider {
         return true;
       case AIProvider.openai:
       case AIProvider.claude:
-      case AIProvider.gemini:
         return false;
     }
   }

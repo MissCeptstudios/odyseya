@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../constants/typography.dart';
@@ -6,6 +7,7 @@ import '../../constants/animations.dart';
 
 /// Unified button component matching the reference design
 /// Provides consistent button styling across the entire app
+/// Framework: Height 56px, Radius 24px, Primary bg #D8A36C
 class OdyseyaButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -71,24 +73,24 @@ class OdyseyaButton extends StatelessWidget {
     switch (buttonStyle) {
       case OdyseyaButtonStyle.primary:
         backgroundColor = isDisabled
-            ? DesertColors.westernSunrise.withValues(alpha: 0.5)
-            : DesertColors.westernSunrise;
+            ? DesertColors.westernSunrise.withValues(alpha: 0.4)
+            : DesertColors.westernSunrise; // Framework: #D8A36C (Accent Caramel)
         textColor = Colors.white;
         borderColor = null;
         break;
       case OdyseyaButtonStyle.secondary:
         backgroundColor = isDisabled
-            ? DesertColors.offWhite.withValues(alpha: 0.5)
-            : DesertColors.offWhite;
-        textColor = DesertColors.deepBrown;
+            ? DesertColors.creamBeige.withValues(alpha: 0.5)
+            : DesertColors.creamBeige;
+        textColor = DesertColors.brownBramble; // Primary brown for text
         borderColor = null;
         break;
       case OdyseyaButtonStyle.tertiary:
         backgroundColor = Colors.transparent;
-        textColor = DesertColors.deepBrown;
+        textColor = DesertColors.brownBramble; // Primary brown for text
         borderColor = isDisabled
-            ? DesertColors.taupe.withValues(alpha: 0.3)
-            : DesertColors.taupe;
+            ? DesertColors.treeBranch.withValues(alpha: 0.3)
+            : DesertColors.treeBranch; // Muted brown for border
         break;
     }
 

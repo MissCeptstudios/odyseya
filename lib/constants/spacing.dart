@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 /// Spacing constants for consistent layout throughout the app
 /// Following an 8px base scale system
 class OdyseyaSpacing {
@@ -24,13 +25,13 @@ class OdyseyaSpacing {
   static const double cardPadding = 20.0;
   static const double cardMargin = 12.0;
 
-  // Button spacing
-  static const double buttonHeight = 56.0;
+  // Button spacing (Framework v1.4)
+  static const double buttonHeight = 56.0;  // Framework: 56px
   static const double buttonVerticalSpacing = 8.0;
   static const double buttonHorizontalPadding = 32.0;
 
-  // Navigation
-  static const double navBarHeight = 72.0;
+  // Navigation (Framework v1.4)
+  static const double navBarHeight = 84.0;  // Framework: 84px (was 72px)
   static const double navBarPadding = 16.0;
 
   // Section spacing
@@ -38,13 +39,16 @@ class OdyseyaSpacing {
   static const double sectionSpacingLarge = 32.0;
   static const double heroSpacing = 40.0;
 
-  // Border radius
+  // Border radius (Framework v1.4: Global standard 24px)
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 12.0;
-  static const double radiusLarge = 16.0;
+  static const double radiusLarge = 16.0;    // Toast: 16px
   static const double radiusXLarge = 20.0;
-  static const double radiusXXLarge = 24.0;
-  static const double radiusPill = 28.0;
+  static const double radiusXXLarge = 24.0;  // Standard: 24px
+  static const double radiusCard = 24.0;     // Framework: Cards 24px
+  static const double radiusButton = 24.0;   // Framework: Buttons 24px
+  static const double radiusModal = 32.0;    // Framework: Modals 32px
+  static const double radiusPill = 24.0;     // Framework: Changed from 28px to 24px
 
   // Icon sizes
   static const double iconSmall = 16.0;

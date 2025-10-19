@@ -15,26 +15,14 @@ class AITestService {
   /// Run comprehensive tests on all AI services
   Future<AITestResults> runAllTests() async {
     final results = AITestResults();
-    
+
     if (kDebugMode) {
       debugPrint('Starting AI services comprehensive test...');
     }
 
     // Test configuration system
     await _testConfigurationSystem(results);
-    
-    // Test Gemini if configured
-    if (_factory.getGeminiService().isConfigured) {
-      await _testGeminiService(results);
-    } else {
-      results.geminiResult = AIServiceTestResult(
-        serviceName: 'Google Gemini',
-        isConfigured: false,
-        testPassed: false,
-        message: 'API key not configured',
-      );
-    }
-    
+
     // Test Groq if configured
     if (_factory.getGroqService().isConfigured) {
       await _testGroqService(results);
@@ -46,15 +34,15 @@ class AITestService {
         message: 'API key not configured',
       );
     }
-    
+
     // Test fallback analysis
     await _testFallbackAnalysis(results);
-    
+
     if (kDebugMode) {
       debugPrint('AI services test completed');
       debugPrint(results.summary);
     }
-    
+
     return results;
   }
 
@@ -77,7 +65,6 @@ class AITestService {
         details: {
           'current_provider': status.currentProvider.displayName,
           'available_providers': status.availableProviders.length.toString(),
-          'gemini_configured': maskedKeys['gemini'] != null ? 'Yes' : 'No',
           'groq_configured': maskedKeys['groq'] != null ? 'Yes' : 'No',
         },
       );
@@ -91,50 +78,6 @@ class AITestService {
     }
   }
 
-  /// Test Gemini AI service
-  Future<void> _testGeminiService(AITestResults results) async {
-    try {
-      if (kDebugMode) {
-        debugPrint('Testing Gemini AI service...');
-      }
-      
-      final service = _factory.getGeminiService();
-      final testText = 'I feel excited about starting this new project today. It is challenging but I am ready to learn.';
-      
-      final startTime = DateTime.now();
-      final analysis = await service.analyzeEmotionalContent(
-        text: testText,
-        mood: 'optimistic',
-      );
-      final duration = DateTime.now().difference(startTime);
-      
-      // Validate analysis structure
-      final isValid = _validateAnalysis(analysis);
-      
-      results.geminiResult = AIServiceTestResult(
-        serviceName: 'Google Gemini',
-        isConfigured: true,
-        testPassed: isValid,
-        message: isValid ? 'Gemini analysis successful' : 'Gemini returned invalid analysis structure',
-        responseTime: duration,
-        details: {
-          'emotional_tone': analysis.emotionalTone,
-          'confidence': analysis.confidence.toStringAsFixed(2),
-          'triggers_count': analysis.triggers.length.toString(),
-          'suggestions_count': analysis.suggestions.length.toString(),
-          'emotions_detected': analysis.emotionScores.length.toString(),
-          'response_time_ms': duration.inMilliseconds.toString(),
-        },
-      );
-    } catch (e) {
-      results.geminiResult = AIServiceTestResult(
-        serviceName: 'Google Gemini',
-        isConfigured: true,
-        testPassed: false,
-        message: 'Gemini test failed: $e',
-      );
-    }
-  }
 
   /// Test Groq AI service
   Future<void> _testGroqService(AITestResults results) async {
@@ -187,29 +130,26 @@ class AITestService {
       if (kDebugMode) {
         debugPrint('Testing fallback analysis...');
       }
-      
+
       // Temporarily disable real services to test fallback
-      final geminiService = _factory.getGeminiService();
       final groqService = _factory.getGroqService();
-      
+
       // Store original keys and clear them temporarily
-      final geminiKey = geminiService.isConfigured;
       final groqKey = groqService.isConfigured;
-      
-      if (geminiKey) geminiService.setApiKey('');
+
       if (groqKey) groqService.setApiKey('');
-      
+
       try {
         final testText = 'Today was a mixed day. I accomplished some goals but also faced unexpected challenges.';
-        
+
         // This should use fallback analysis
         final analysis = await _factory.getCurrentService().analyzeEmotionalContent(
           text: testText,
           mood: 'mixed',
         );
-        
+
         final isValid = _validateAnalysis(analysis);
-        
+
         results.fallbackResult = AIServiceTestResult(
           serviceName: 'Fallback Analysis',
           isConfigured: true,
@@ -276,8 +216,8 @@ class AITestService {
 🔧 No AI service configured yet!
 
 To test AI analysis:
-1. Configure at least one API key (Gemini or Groq)
-2. Both services are FREE with excellent quality
+1. Configure Groq API key
+2. Groq is FREE with excellent quality
 3. Run tests again after configuration
 
 ${_config.getSetupInstructions()}
@@ -290,9 +230,9 @@ ${_config.getSetupInstructions()}
 ✅ One AI service configured: ${status.serviceName}
 
 Recommendations:
-- Configure a second service (${status.currentProvider == AIProvider.gemini ? 'Groq' : 'Gemini'}) for redundancy
-- Both services are FREE and provide excellent analysis
-- Having backup services ensures reliability
+- Your Groq AI service is configured and ready
+- Groq provides FREE and excellent analysis quality
+- System is ready for use!
 ''';
     }
     
@@ -312,14 +252,13 @@ Your AI analysis system is fully ready!
 /// Test results for all AI services
 class AITestResults {
   AIServiceTestResult? configurationResult;
-  AIServiceTestResult? geminiResult;
   AIServiceTestResult? groqResult;
   AIServiceTestResult? fallbackResult;
 
-  int get totalTests => [configurationResult, geminiResult, groqResult, fallbackResult]
+  int get totalTests => [configurationResult, groqResult, fallbackResult]
       .where((result) => result != null).length;
 
-  int get passedTests => [configurationResult, geminiResult, groqResult, fallbackResult]
+  int get passedTests => [configurationResult, groqResult, fallbackResult]
       .where((result) => result?.testPassed == true).length;
 
   int get failedTests => totalTests - passedTests;
@@ -335,8 +274,8 @@ class AITestResults {
     buffer.writeln('Overall: ${allTestsPassed ? 'PASSED ✅' : 'SOME FAILURES ⚠️'}');
     
     buffer.writeln('\nDetailed Results:');
-    
-    [configurationResult, geminiResult, groqResult, fallbackResult]
+
+    [configurationResult, groqResult, fallbackResult]
         .where((result) => result != null)
         .forEach((result) {
       buffer.writeln('${result!.testPassed ? '✅' : '❌'} ${result.serviceName}: ${result.message}');

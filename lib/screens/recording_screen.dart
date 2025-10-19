@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/voice_journal_provider.dart';
 import '../widgets/voice_recording/audio_waveform_widget.dart';
+import '../constants/colors.dart';
+import '../constants/typography.dart';
 
 class RecordingScreen extends ConsumerStatefulWidget {
   const RecordingScreen({super.key});
@@ -36,149 +38,248 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Top Toggle Buttons
+              // Header with back arrow, greeting, and settings
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: _buildToggleButton(
-                        label: 'Record',
-                        isSelected: isRecordMode,
-                        onTap: () => setState(() => isRecordMode = true),
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: DesertColors.brownBramble, size: 28),
+                      onPressed: () => context.pop(),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: _buildToggleButton(
-                        label: 'Type',
-                        isSelected: !isRecordMode,
-                        onTap: () => setState(() => isRecordMode = false),
-                      ),
+                    Text(
+                      'Hi Mike',
+                      style: OdyseyaTypography.h1,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.settings, color: DesertColors.brownBramble, size: 28),
+                      onPressed: () {
+                        context.push('/settings');
+                      },
                     ),
                   ],
                 ),
               ),
 
-              const Spacer(),
-
-              // Content Area - Record or Type
-              if (isRecordMode)
-                // Audio Waveform
-                Container(
-                  height: 200,
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: AudioWaveformWidget(
-                    amplitudeStream:
-                        ref.watch(amplitudeStreamProvider).asData?.value != null
-                        ? Stream.value(
-                            ref.watch(amplitudeStreamProvider).asData!.value,
-                          )
-                        : null,
-                    isRecording: voiceState.isRecording,
-                    isPaused: voiceState.isPaused,
-                    waveColor: const Color(0xFF5BA3C5),
-                    height: 200,
-                    barCount: 50,
-                  ),
-                )
-              else
-                // Text Input Area
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 40),
-                  padding: const EdgeInsets.all(20),
+              // Main content container with cream background
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.9),
-                    borderRadius: BorderRadius.circular(20),
+                    color: DesertColors.creamBeige,
+                    borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
+                        color: Colors.black.withValues(alpha: 0.08),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
-                  child: TextField(
-                    controller: _textController,
-                    maxLines: 8,
-                    decoration: const InputDecoration(
-                      hintText: 'Share your thoughts...',
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: Color(0xFF8B7355),
-                        fontSize: 16,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF2B7A9E),
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-
-              const SizedBox(height: 40),
-
-              // Timer Display (only in record mode)
-              if (isRecordMode && voiceState.isRecording)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
+                      const SizedBox(height: 24),
+
+                      // Question text
+                      Text(
+                        'Whats on your mind?',
+                        style: OdyseyaTypography.h1Large,
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Toggle Buttons
                       Padding(
-                        padding: const EdgeInsets.only(left: 40),
-                        child: Text(
-                          _formatDuration(voiceState.recordingDuration),
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _buildToggleButton(
+                                label: 'Record',
+                                isSelected: isRecordMode,
+                                onTap: () => setState(() => isRecordMode = true),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: _buildToggleButton(
+                                label: 'Type',
+                                isSelected: !isRecordMode,
+                                onTap: () => setState(() => isRecordMode = false),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // Content Area - Record or Type
+                      if (isRecordMode) ...[
+                        // Audio Waveform
+                        Container(
+                          height: 180,
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: AudioWaveformWidget(
+                            amplitudeStream:
+                                ref.watch(amplitudeStreamProvider).asData?.value != null
+                                ? Stream.value(
+                                    ref.watch(amplitudeStreamProvider).asData!.value,
+                                  )
+                                : null,
+                            isRecording: voiceState.isRecording,
+                            isPaused: voiceState.isPaused,
+                            waveColor: DesertColors.waterWash,
+                            height: 180,
+                            barCount: 50,
+                          ),
+                        ),
+
+                        const Spacer(),
+
+                        // Timer Display
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _formatDuration(voiceState.recordingDuration),
+                                style: OdyseyaTypography.h1Large.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              Text(
+                                _formatDuration(const Duration(minutes: 2, seconds: 30)),
+                                style: OdyseyaTypography.h1Large.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Microphone Button
+                        GestureDetector(
+                          onTap: _handleRecordButtonPress,
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: DesertColors.waterWash,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.15),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              voiceState.isRecording ? Icons.stop : Icons.mic,
+                              color: Colors.white,
+                              size: 56,
+                            ),
+                          ),
+                        ),
+                      ] else ...[
+                        // Text Input Area (Type Mode)
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 32),
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: DesertColors.waterWash.withValues(alpha: 0.3),
+                                width: 1.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              controller: _textController,
+                              maxLines: null,
+                              expands: true,
+                              textAlignVertical: TextAlignVertical.top,
+                              decoration: InputDecoration(
+                                hintText: 'Share your thoughts...',
+                                border: InputBorder.none,
+                                hintStyle: OdyseyaTypography.hint,
+                              ),
+                              style: OdyseyaTypography.bodyLarge,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+                      ],
+
+                      const SizedBox(height: 32),
+
+                      // CONTINUE Button
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _handleContinue,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: DesertColors.caramelDrizzle,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 4,
+                              shadowColor: Colors.black.withValues(alpha: 0.25),
+                            ),
+                            child: Text(
+                              'CONTINUE',
+                              style: OdyseyaTypography.buttonLarge,
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 40),
-                        child: Text(
-                          '-${_formatDuration(const Duration(minutes: 3, seconds: 28) - voiceState.recordingDuration)}',
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
+              ),
 
-              // Action Button (Record or Submit)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40),
-                child: GestureDetector(
-                  onTap: isRecordMode ? _handleRecordButtonPress : _handleSubmit,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFF2B8AB8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+              // Bottom Navigation Bar
+              Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: DesertColors.creamBeige,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, -2),
                     ),
-                    child: Icon(
-                      isRecordMode
-                          ? (voiceState.isRecording ? Icons.stop : Icons.mic)
-                          : Icons.arrow_forward,
-                      color: Colors.white,
-                      size: 45,
-                    ),
-                  ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildNavItem(Icons.calendar_today, 'Calendar', false),
+                    _buildNavItem(Icons.home, 'Home', true),
+                    _buildNavItem(Icons.calendar_month, 'Calendar', false),
+                  ],
                 ),
               ),
             ],
@@ -196,34 +297,57 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : [],
+          color: isSelected ? DesertColors.waterWash : Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: isSelected
-                ? const Color(0xFF2B7A9E)
-                : const Color(0xFF8B7355),
-            letterSpacing: 0.5,
+          style: OdyseyaTypography.button.copyWith(
+            color: isSelected ? Colors.white : DesertColors.caramelDrizzle,
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildNavItem(IconData icon, String label, bool isActive) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          color: isActive ? DesertColors.caramelDrizzle : DesertColors.treeBranch,
+          size: 28,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: isActive ? OdyseyaTypography.navActive : OdyseyaTypography.navInactive,
+        ),
+      ],
+    );
+  }
+
+  void _handleContinue() {
+    if (isRecordMode) {
+      if (ref.read(voiceJournalProvider).isRecording) {
+        // Stop recording first
+        ref.read(voiceJournalProvider.notifier).stopRecording();
+      }
+      _navigateToReview();
+    } else {
+      _handleSubmit();
+    }
   }
 
   void _handleRecordButtonPress() {

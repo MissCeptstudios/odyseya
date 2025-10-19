@@ -55,7 +55,22 @@ class RevenueCatService {
     // In production, use production keys
     // In development, use development keys
     if (EnvConfig.isProduction) {
-      // TODO: Add production keys to .env
+      // Production keys: Add these to .env file before production release
+      //
+      // REVENUE_CAT_IOS_PROD_KEY=your_ios_production_key_here
+      // REVENUE_CAT_ANDROID_PROD_KEY=your_android_production_key_here
+      //
+      // Get production keys from: https://app.revenuecat.com/
+      // 1. Go to your project settings
+      // 2. Navigate to API Keys section
+      // 3. Copy the production API keys for iOS and Android
+      //
+      // Then update EnvConfig class to read these production keys
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        return EnvConfig.revenueCatIosProdKey ?? '';
+      } else if (defaultTargetPlatform == TargetPlatform.android) {
+        return EnvConfig.revenueCatAndroidProdKey ?? '';
+      }
       return '';
     }
 

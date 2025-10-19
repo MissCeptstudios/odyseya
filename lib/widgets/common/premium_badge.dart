@@ -96,10 +96,10 @@ class PremiumGate extends ConsumerWidget {
             onTap: () => _showUpgradeDialog(context),
             child: Container(
               decoration: BoxDecoration(
-                color: DesertColors.offWhite.withOpacity(0.9),
+                color: DesertColors.offWhite.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: DesertColors.roseSand.withOpacity(0.5),
+                  color: DesertColors.roseSand.withValues(alpha: 0.5),
                   width: 2,
                 ),
               ),
@@ -117,7 +117,7 @@ class PremiumGate extends ConsumerWidget {
                   Text(
                     featureName,
                     style: OdyseyaTypography.h2.copyWith(
-                      color: DesertColors.deepBrown,
+                      color: DesertColors.brownBramble,
                       fontSize: 20,
                     ),
                     textAlign: TextAlign.center,
@@ -128,7 +128,7 @@ class PremiumGate extends ConsumerWidget {
                     child: Text(
                       featureDescription,
                       style: OdyseyaTypography.body.copyWith(
-                        color: DesertColors.taupe,
+                        color: DesertColors.treeBranch,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -178,7 +178,7 @@ class PremiumGate extends ConsumerWidget {
             Text(
               'Premium Feature',
               style: OdyseyaTypography.h2.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
                 fontSize: 20,
               ),
             ),
@@ -191,7 +191,7 @@ class PremiumGate extends ConsumerWidget {
             Text(
               featureName,
               style: OdyseyaTypography.button.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
                 fontSize: 16,
               ),
             ),
@@ -199,14 +199,14 @@ class PremiumGate extends ConsumerWidget {
             Text(
               featureDescription,
               style: OdyseyaTypography.body.copyWith(
-                color: DesertColors.taupe,
+                color: DesertColors.treeBranch,
               ),
             ),
             const SizedBox(height: 16),
             Text(
               'Upgrade to Premium to unlock this and many other features.',
               style: OdyseyaTypography.body.copyWith(
-                color: DesertColors.taupe,
+                color: DesertColors.treeBranch,
               ),
             ),
           ],
@@ -216,7 +216,7 @@ class PremiumGate extends ConsumerWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Not Now',
-              style: TextStyle(color: DesertColors.taupe),
+              style: TextStyle(color: DesertColors.treeBranch),
             ),
           ),
           ElevatedButton(
@@ -295,7 +295,7 @@ class PremiumButton extends ConsumerWidget {
             : DesertColors.offWhite,
         foregroundColor: isPrimary
             ? Colors.white
-            : DesertColors.deepBrown,
+            : DesertColors.brownBramble,
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
           vertical: 12,

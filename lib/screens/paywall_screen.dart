@@ -70,7 +70,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Text(
             'Loading subscription options...',
             style: OdyseyaTypography.body.copyWith(
-              color: DesertColors.taupe,
+              color: DesertColors.treeBranch,
             ),
           ),
         ],
@@ -94,7 +94,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             Text(
               'Unable to load subscription options',
               style: OdyseyaTypography.h2.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
               ),
               textAlign: TextAlign.center,
             ),
@@ -102,7 +102,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             Text(
               'Please check your internet connection and try again.',
               style: OdyseyaTypography.body.copyWith(
-                color: DesertColors.taupe,
+                color: DesertColors.treeBranch,
               ),
               textAlign: TextAlign.center,
             ),
@@ -126,7 +126,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               onPressed: () => context.pop(),
               child: Text(
                 'Go Back',
-                style: TextStyle(color: DesertColors.taupe),
+                style: TextStyle(color: DesertColors.treeBranch),
               ),
             ),
           ],
@@ -173,7 +173,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 onPressed: () => context.pop(),
                 icon: Icon(
                   Icons.close,
-                  color: DesertColors.deepBrown,
+                  color: DesertColors.brownBramble,
                 ),
               ),
             ],
@@ -219,7 +219,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Text(
             'Unlock Your Full\nEmotional Journey',
             style: OdyseyaTypography.h1.copyWith(
-              color: DesertColors.deepBrown,
+              color: DesertColors.brownBramble,
               fontSize: 32,
             ),
             textAlign: TextAlign.center,
@@ -231,7 +231,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Text(
             'Get unlimited access to all features and insights',
             style: OdyseyaTypography.bodyLarge.copyWith(
-              color: DesertColors.taupe,
+              color: DesertColors.treeBranch,
             ),
             textAlign: TextAlign.center,
           ),
@@ -278,10 +278,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: DesertColors.offWhite.withOpacity(0.8),
+        color: DesertColors.offWhite.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: DesertColors.dustyBlue.withOpacity(0.3),
+          color: DesertColors.dustyBlue.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -290,7 +290,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Text(
             'Premium Features',
             style: OdyseyaTypography.h2.copyWith(
-              color: DesertColors.deepBrown,
+              color: DesertColors.brownBramble,
             ),
           ),
           const SizedBox(height: 20),
@@ -317,7 +317,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: DesertColors.roseSand.withOpacity(0.2),
+              color: DesertColors.roseSand.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -334,7 +334,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 Text(
                   title,
                   style: OdyseyaTypography.button.copyWith(
-                    color: DesertColors.deepBrown,
+                    color: DesertColors.brownBramble,
                     fontSize: 16,
                   ),
                 ),
@@ -342,7 +342,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 Text(
                   description,
                   style: OdyseyaTypography.ui.copyWith(
-                    color: DesertColors.taupe,
+                    color: DesertColors.treeBranch,
                     fontSize: 13,
                   ),
                 ),
@@ -363,7 +363,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Text(
             'Choose Your Plan',
             style: OdyseyaTypography.h2.copyWith(
-              color: DesertColors.deepBrown,
+              color: DesertColors.brownBramble,
             ),
           ),
           const SizedBox(height: 16),
@@ -400,13 +400,13 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isSelected
-              ? DesertColors.roseSand.withOpacity(0.1)
+              ? DesertColors.roseSand.withValues(alpha: 0.1)
               : DesertColors.offWhite,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected
                 ? DesertColors.roseSand
-                : DesertColors.dustyBlue.withOpacity(0.3),
+                : DesertColors.dustyBlue.withValues(alpha: 0.3),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -421,7 +421,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 border: Border.all(
                   color: isSelected
                       ? DesertColors.roseSand
-                      : DesertColors.taupe,
+                      : DesertColors.treeBranch,
                   width: 2,
                 ),
                 color: isSelected ? DesertColors.roseSand : Colors.transparent,
@@ -447,7 +447,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       Text(
                         package.storeProduct.title.replaceAll('(Odyseya)', '').trim(),
                         style: OdyseyaTypography.button.copyWith(
-                          color: DesertColors.deepBrown,
+                          color: DesertColors.brownBramble,
                           fontSize: 18,
                         ),
                       ),
@@ -478,7 +478,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   Text(
                     package.storeProduct.description,
                     style: OdyseyaTypography.ui.copyWith(
-                      color: DesertColors.taupe,
+                      color: DesertColors.treeBranch,
                       fontSize: 13,
                     ),
                   ),
@@ -492,7 +492,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             Text(
               package.storeProduct.priceString,
               style: OdyseyaTypography.h2.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
                 fontSize: 20,
               ),
             ),
@@ -558,7 +558,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Text(
             'Cancel anytime from your device settings',
             style: OdyseyaTypography.ui.copyWith(
-              color: DesertColors.taupe,
+              color: DesertColors.treeBranch,
               fontSize: 12,
             ),
             textAlign: TextAlign.center,
@@ -593,14 +593,12 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               Text(
                 'By subscribing, you agree to our ',
                 style: OdyseyaTypography.ui.copyWith(
-                  color: DesertColors.taupe,
+                  color: DesertColors.treeBranch,
                   fontSize: 11,
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  // TODO: Open terms of service
-                },
+                onTap: () => _showTermsOfService(context),
                 child: Text(
                   'Terms of Service',
                   style: OdyseyaTypography.ui.copyWith(
@@ -613,14 +611,12 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               Text(
                 ' and ',
                 style: OdyseyaTypography.ui.copyWith(
-                  color: DesertColors.taupe,
+                  color: DesertColors.treeBranch,
                   fontSize: 11,
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  // TODO: Open privacy policy
-                },
+                onTap: () => _showPrivacyPolicy(context),
                 child: Text(
                   'Privacy Policy',
                   style: OdyseyaTypography.ui.copyWith(
@@ -713,5 +709,186 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         });
       }
     }
+  }
+
+  void _showTermsOfService(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: DesertColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: Text(
+          'Terms of Service',
+          style: OdyseyaTypography.h2.copyWith(
+            color: DesertColors.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: Container(
+          width: double.maxFinite,
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: SingleChildScrollView(
+            child: Text(
+              _getTermsOfService(),
+              style: OdyseyaTypography.body.copyWith(
+                color: DesertColors.onSecondary,
+                height: 1.5,
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Close',
+              style: OdyseyaTypography.button.copyWith(
+                color: DesertColors.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPrivacyPolicy(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: DesertColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: Text(
+          'Privacy Policy',
+          style: OdyseyaTypography.h2.copyWith(
+            color: DesertColors.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: Container(
+          width: double.maxFinite,
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: SingleChildScrollView(
+            child: Text(
+              _getPrivacyPolicy(),
+              style: OdyseyaTypography.body.copyWith(
+                color: DesertColors.onSecondary,
+                height: 1.5,
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Close',
+              style: OdyseyaTypography.button.copyWith(
+                color: DesertColors.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getTermsOfService() {
+    return '''Terms & Conditions for Odyseya
+
+Last updated: ${DateTime.now().year}
+
+1. ACCEPTANCE OF TERMS
+By using Odyseya, you agree to be bound by these Terms & Conditions.
+
+2. DESCRIPTION OF SERVICE
+Odyseya is a voice journaling application that helps users track their emotional well-being through voice recordings and AI-powered insights.
+
+3. SUBSCRIPTION TERMS
+- Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period
+- Account will be charged for renewal within 24 hours prior to the end of the current period
+- Subscriptions may be managed and auto-renewal turned off in Account Settings
+- Any unused portion of a free trial period will be forfeited when purchasing a subscription
+
+4. USER RESPONSIBILITIES
+- You are responsible for maintaining the confidentiality of your account
+- You must provide accurate information when creating your account
+- You agree to use the service for lawful purposes only
+
+5. PRIVACY AND DATA
+- Your voice recordings and journal entries are encrypted and stored securely
+- We do not share your personal data with third parties without consent
+- You can export or delete your data at any time
+
+6. INTELLECTUAL PROPERTY
+- You retain ownership of your journal content
+- Odyseya retains rights to the application and its features
+
+7. LIMITATION OF LIABILITY
+Odyseya is provided "as is" and we make no warranties about the service's availability or accuracy.
+
+8. TERMINATION
+You may terminate your account at any time. We may terminate accounts that violate these terms.
+
+9. CHANGES TO TERMS
+We may update these terms periodically. Continued use constitutes acceptance of new terms.
+
+For questions about these terms, contact us at legal@odyseya.com''';
+  }
+
+  String _getPrivacyPolicy() {
+    return '''Privacy Policy for Odyseya
+
+Last updated: ${DateTime.now().year}
+
+1. INFORMATION WE COLLECT
+- Account information (email, name)
+- Voice recordings and transcriptions
+- Usage data and preferences
+- Device information
+
+2. HOW WE USE YOUR INFORMATION
+- To provide voice journaling services
+- To generate AI insights about your emotional patterns
+- To improve our services
+- To communicate with you about your account
+
+3. DATA SHARING
+We do not sell or share your personal data with third parties, except:
+- With your explicit consent
+- To comply with legal obligations
+- To protect our rights and safety
+
+4. DATA SECURITY
+- All data is encrypted in transit and at rest
+- We use industry-standard security measures
+- Access to your data is restricted to essential personnel
+
+5. YOUR RIGHTS (GDPR)
+You have the right to:
+- Access your personal data
+- Correct inaccurate data
+- Delete your data
+- Export your data
+- Object to data processing
+- Withdraw consent at any time
+
+6. DATA RETENTION
+- Voice recordings: Retained until you delete them
+- Account data: Retained while your account is active
+- Deleted data is permanently removed within 30 days
+
+7. INTERNATIONAL TRANSFERS
+Your data may be processed in countries outside your residence, always with appropriate safeguards.
+
+8. CONTACT US
+For privacy questions or to exercise your rights, contact us at privacy@odyseya.com
+
+9. CHANGES TO POLICY
+We will notify you of significant changes to this privacy policy.''';
   }
 }

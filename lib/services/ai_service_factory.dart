@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'ai_service_interface.dart';
 import 'groq_ai_service.dart';
+import 'openai_service.dart';
+import 'openai_backend_service.dart';
 
 class AIServiceFactory {
   static final AIServiceFactory _instance = AIServiceFactory._internal();
@@ -8,10 +10,12 @@ class AIServiceFactory {
   AIServiceFactory._internal();
 
   // Current AI provider configuration
-  AIProvider _currentProvider = AIProvider.groq; // Default to Groq (free)
+  AIProvider _currentProvider = AIProvider.openai; // Default to OpenAI for best quality
 
   // Service instances (lazy loaded)
   GroqAIService? _groqService;
+  OpenAIService? _openaiService;
+  OpenAIBackendService? _openaiBackendService;
 
   /// Get the current AI service based on configuration
   AIServiceInterface getCurrentService() {
@@ -19,11 +23,9 @@ class AIServiceFactory {
       case AIProvider.groq:
         return getGroqService();
       case AIProvider.openai:
-        throw UnimplementedError('OpenAI service not yet implemented');
+        return getOpenAIBackendService(); // Use secure backend service
       case AIProvider.claude:
         throw UnimplementedError('Claude service not yet implemented');
-      case AIProvider.gemini:
-        throw UnimplementedError('Gemini service has been removed. Please use Groq.');
     }
   }
 
@@ -31,6 +33,18 @@ class AIServiceFactory {
   GroqAIService getGroqService() {
     _groqService ??= GroqAIService();
     return _groqService!;
+  }
+
+  /// Get OpenAI service instance (direct - for legacy/testing only)
+  OpenAIService getOpenAIService() {
+    _openaiService ??= OpenAIService();
+    return _openaiService!;
+  }
+
+  /// Get OpenAI Backend service instance (secure - routes through Firebase)
+  OpenAIBackendService getOpenAIBackendService() {
+    _openaiBackendService ??= OpenAIBackendService();
+    return _openaiBackendService!;
   }
 
   /// Switch to a different AI provider
@@ -57,13 +71,15 @@ class AIServiceFactory {
       }
     }
 
-    // Future: OpenAI and Claude configuration
+    // OpenAI configuration - DEPRECATED (now uses backend service)
+    // Backend service doesn't need API key configuration from client
     if (openaiApiKey != null && openaiApiKey.isNotEmpty) {
       if (kDebugMode) {
-        debugPrint('OpenAI API key received (service not yet implemented)');
+        debugPrint('OpenAI API key provided, but backend service is used (keys stored securely in Firebase)');
       }
     }
 
+    // Future: Claude configuration
     if (claudeApiKey != null && claudeApiKey.isNotEmpty) {
       if (kDebugMode) {
         debugPrint('Claude API key received (service not yet implemented)');
@@ -78,24 +94,34 @@ class AIServiceFactory {
   List<AIProvider> getAvailableServices() {
     final available = <AIProvider>[];
 
+    // OpenAI backend service is always available (configured on backend)
+    if (getOpenAIBackendService().isConfigured) {
+      available.add(AIProvider.openai);
+    }
+
     if (getGroqService().isConfigured) {
       available.add(AIProvider.groq);
     }
 
-    // Future: Add OpenAI and Claude when implemented
+    // Future: Add Claude when implemented
 
     return available;
   }
 
-  /// Get the best available service (configured and free)
+  /// Get the best available service (prefer OpenAI for quality)
   AIProvider getBestAvailableService() {
     final available = getAvailableServices();
 
     if (available.isEmpty) {
-      return AIProvider.groq; // Default fallback
+      return AIProvider.openai; // Default fallback
     }
 
-    // Prefer Groq as the primary free service
+    // Prefer OpenAI for best quality if configured
+    if (available.contains(AIProvider.openai)) {
+      return AIProvider.openai;
+    }
+
+    // Then Groq as free alternative
     if (available.contains(AIProvider.groq)) {
       return AIProvider.groq;
     }
@@ -174,8 +200,10 @@ class AIServiceFactory {
 
   /// Reset all configurations (for testing or troubleshooting)
   void resetConfiguration() {
-    _currentProvider = AIProvider.groq;
+    _currentProvider = AIProvider.openai;
     _groqService = null;
+    _openaiService = null;
+    _openaiBackendService = null;
 
     if (kDebugMode) {
       debugPrint('AI service configuration reset');
@@ -212,11 +240,13 @@ class AIServiceManager {
   /// Initialize AI services with configuration
   static Future<void> initialize({
     String? groqApiKey,
+    String? openaiApiKey,
     AIProvider? preferredProvider,
   }) async {
     // Configure services
     _factory.configureServices(
       groqApiKey: groqApiKey,
+      openaiApiKey: openaiApiKey,
     );
 
     // Set preferred provider or auto-select best

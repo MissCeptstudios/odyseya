@@ -1,205 +1,132 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../constants/colors.dart';
-import '../widgets/common/app_background.dart';
 
-class FirstDownloadAppScreen extends StatefulWidget {
+class FirstDownloadAppScreen extends StatelessWidget {
   const FirstDownloadAppScreen({super.key});
-
-  @override
-  State<FirstDownloadAppScreen> createState() => _FirstDownloadAppScreenState();
-}
-
-class _FirstDownloadAppScreenState extends State<FirstDownloadAppScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _fadeController;
-  late AnimationController _scaleController;
-  late AnimationController _textController;
-  
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _textFadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-    
-    _scaleController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-    
-    _textController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeIn,
-    ));
-
-    _scaleAnimation = Tween<double>(
-      begin: 0.5,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _scaleController,
-      curve: Curves.elasticOut,
-    ));
-
-    _textFadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _textController,
-      curve: Curves.easeInOut,
-    ));
-
-    _startAnimations();
-  }
-
-  void _startAnimations() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    if (mounted) _fadeController.forward();
-    
-    await Future.delayed(const Duration(milliseconds: 200));
-    if (mounted) _scaleController.forward();
-    
-    await Future.delayed(const Duration(milliseconds: 400));
-    if (mounted) _textController.forward();
-    
-    // Removed auto-navigation - now user controls with Continue button
-  }
-
-  void _navigateToNext() {
-    if (mounted) {
-      context.go('/auth');
-    }
-  }
-
-  @override
-  void dispose() {
-    _fadeController.dispose();
-    _scaleController.dispose();
-    _textController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppBackground(
-        useOverlay: true,
-        overlayOpacity: 0.2,
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(flex: 1),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Desert background
+          Image.asset(
+            'assets/images/Background_F.png',
+            fit: BoxFit.cover,
+          ),
 
-              // Maximum size Odyseya Logo PNG
-              AnimatedBuilder(
-                animation: _fadeAnimation,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: AnimatedBuilder(
-                      animation: _scaleAnimation,
-                      builder: (context, child) {
-                        return Transform.scale(
-                          scale: _scaleAnimation.value,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.9, // 90% of screen width
-                            height: MediaQuery.of(context).size.height * 0.5, // 50% of screen height
-                            child: Image.asset(
-                              'assets/images/Odyseya_logo_noBGR.png',
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: MediaQuery.of(context).size.height * 0.5,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        );
+          // Content
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(flex: 2),
+
+                  // Compass logo
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Inner compass graphic (static)
+                        Image.asset(
+                          'assets/images/inside_compass.png',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.contain,
+                        ),
+                        // Outer compass ring
+                        Image.asset(
+                          'assets/images/just_compass.png',
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Odyseya text logo
+                  Image.asset(
+                    'assets/images/Odyseya_word.png',
+                    width: 200,
+                    height: 50,
+                    fit: BoxFit.contain,
+                  ),
+
+                  const Spacer(flex: 3),
+
+                  // Sign in button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.go('/login');
                       },
-                    ),
-                  );
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              // "Your emotional journey awaits" - sans-serif font, logo color
-              AnimatedBuilder(
-                animation: _textFadeAnimation,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: _textFadeAnimation,
-                    child: Text(
-                      'Your greatest adventure is within',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF7A4B2E), // Exact logo color: #7A4B2E
-                        fontFamily: 'Cormorant Garamond',
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w500,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFC9A882), // Beige/tan color
+                        foregroundColor: Colors.white,
+                        elevation: 4,
+                        shadowColor: Colors.black.withValues(alpha: 0.25),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                },
-              ),
-
-              const Spacer(flex: 1),
-
-              // Continue button
-              AnimatedBuilder(
-                animation: _textFadeAnimation,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: _textFadeAnimation,
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 40),
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: _navigateToNext,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: DesertColors.westernSunrise,
-                            foregroundColor: Colors.white,
-                            elevation: 8,
-                            shadowColor: DesertColors.westernSunrise.withValues(alpha: 0.3),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: const Text(
-                            'Begin Your Journey Today',
-                            style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                              fontFamily: '.SF Pro Text',
-                              color: Colors.white,
-                            ),
-                          ),
+                      child: const Text(
+                        'Sign in',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  );
-                },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Create account button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.go('/signup');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF6B4423), // Brown text
+                        elevation: 4,
+                        shadowColor: Colors.black.withValues(alpha: 0.25),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Text(
+                        'Create account',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF6B4423), // Brown text
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const Spacer(flex: 2),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

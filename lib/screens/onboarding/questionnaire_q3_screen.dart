@@ -1,7 +1,7 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/common/odyseya_screen_layout.dart';
 
@@ -92,23 +92,19 @@ class QuestionnaireQ3Screen extends ConsumerWidget {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: isSelected 
-                ? DesertColors.accent.withValues(alpha: 0.1)
-                : isDisabled 
-                  ? DesertColors.surface.withValues(alpha: 0.5)
-                  : DesertColors.surface,
+              color: isDisabled
+                ? Colors.white.withValues(alpha: 0.5)
+                : Colors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected 
-                  ? DesertColors.primary
-                  : isDisabled
-                    ? DesertColors.waterWash.withValues(alpha: 0.2)
-                    : DesertColors.waterWash.withValues(alpha: 0.3),
-                width: isSelected ? 2 : 1,
+                color: isSelected
+                  ? const Color(0xFF6B4423) // Brown border when selected
+                  : Colors.transparent,
+                width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: DesertColors.waterWash.withValues(alpha: 0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -121,19 +117,19 @@ class QuestionnaireQ3Screen extends ConsumerWidget {
                   height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected 
-                      ? DesertColors.primary
+                    color: isSelected
+                      ? const Color(0xFFC9A882) // Tan/beige background for check
                       : Colors.transparent,
                     border: Border.all(
-                      color: isSelected 
-                        ? DesertColors.primary
-                        : isDisabled 
-                          ? DesertColors.onSecondary.withValues(alpha: 0.2)
-                          : DesertColors.onSecondary.withValues(alpha: 0.4),
+                      color: isSelected
+                        ? const Color(0xFFC9A882)
+                        : isDisabled
+                          ? const Color(0xFFD4C4B0).withValues(alpha: 0.3)
+                          : const Color(0xFFD4C4B0).withValues(alpha: 0.5),
                       width: 2,
                     ),
                   ),
-                  child: isSelected 
+                  child: isSelected
                     ? const Icon(
                         Icons.check,
                         size: 16,
@@ -148,11 +144,9 @@ class QuestionnaireQ3Screen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: isSelected 
-                        ? DesertColors.onSurface
-                        : isDisabled 
-                          ? DesertColors.onSecondary.withValues(alpha: 0.5)
-                          : DesertColors.onSecondary,
+                      color: isDisabled
+                        ? const Color(0xFF8B6F47).withValues(alpha: 0.5)
+                        : const Color(0xFF6B4423),
                     ),
                   ),
                 ),

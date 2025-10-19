@@ -200,15 +200,15 @@ class _RecordButtonState extends ConsumerState<RecordButton>
       // Active recording: Western Sunrise glow
       buttonColor = voiceState.isPaused
           ? DesertColors.dustyBlue
-          : DesertColors.westernSunrise; // Changed to golden glow
+          : DesertColors.caramelDrizzle; // Changed to golden glow
       buttonIcon = voiceState.isPaused ? Icons.play_arrow : Icons.mic;
       buttonLabel = voiceState.isPaused ? 'Resume' : 'Recording...';
       onPressed = null; // Main button disabled while recording
     } else {
       // Ready to record: Western Sunrise for CTA
       buttonColor = canStart
-          ? DesertColors.westernSunrise // Changed to Western Sunrise
-          : DesertColors.taupe.withValues(alpha: 0.3);
+          ? DesertColors.caramelDrizzle // Changed to Western Sunrise
+          : DesertColors.treeBranch.withValues(alpha: 0.3);
       buttonIcon = Icons.mic;
       buttonLabel = voiceState.hasRecording ? 'Record Again' : 'Start Recording';
       onPressed = canStart
@@ -315,7 +315,7 @@ class _RecordButtonState extends ConsumerState<RecordButton>
           Text(
             label,
             style: TextStyle(
-              color: DesertColors.deepBrown,
+              color: DesertColors.brownBramble,
               fontSize: 14,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.3,

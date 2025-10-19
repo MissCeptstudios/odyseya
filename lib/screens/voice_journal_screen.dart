@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -108,63 +109,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     );
   }
 
-  Widget _buildHeader(VoiceJournalState voiceState) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          // Back Button
-          IconButton(
-            onPressed: () {
-              _showExitDialog();
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: DesertColors.deepBrown,
-            ),
-          ),
-          
-          const SizedBox(width: 8),
-          
-          // Title
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _getStepTitle(voiceState.currentStep),
-                  style: OdyseyaTypography.h2.copyWith(
-                    color: const Color(0xFF442B0C),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  _getStepSubtitle(voiceState.currentStep),
-                  style: OdyseyaTypography.ui.copyWith(
-                    color: DesertColors.taupe,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          
-          // Help Button
-          IconButton(
-            onPressed: () {
-              _showHelpDialog(voiceState.currentStep);
-            },
-            icon: Icon(
-              Icons.help_outline,
-              color: DesertColors.taupe,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildProgressIndicator(VoiceJournalState voiceState) {
     final totalSteps = VoiceJournalStep.values.length - 1; // Exclude completed
     final currentStepIndex = voiceState.currentStep.index;
@@ -228,10 +172,9 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
               )
             : Text(
                 '${step.index + 1}',
-                style: TextStyle(
-                  fontSize: 10,
+                style: OdyseyaTypography.captionSmall.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: DesertColors.taupe,
+                  color: DesertColors.treeBranch,
                 ),
               ),
       ),
@@ -259,7 +202,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
       {'label': 'Calm', 'emoji': '😌', 'color': DesertColors.dustyBlue},
       {'label': 'Sad', 'emoji': '😢', 'color': DesertColors.roseSand},
       {'label': 'Anxious', 'emoji': '😰', 'color': DesertColors.terracotta},
-      {'label': 'Angry', 'emoji': '😠', 'color': DesertColors.deepBrown},
+      {'label': 'Angry', 'emoji': '😠', 'color': DesertColors.brownBramble},
     ];
 
     return SingleChildScrollView(
@@ -298,9 +241,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       const SizedBox(width: 16),
                       Text(
                         mood['label'] as String,
-                        style: OdyseyaTypography.h2.copyWith(
-                          color: DesertColors.deepBrown,
-                          fontSize: 20,
+                        style: OdyseyaTypography.h2Large.copyWith(
+                          color: DesertColors.brownBramble,
                         ),
                       ),
                       const Spacer(),
@@ -341,8 +283,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   'Voice',
                   style: OdyseyaTypography.h2.copyWith(
                     color: voiceState.inputMethod == 'voice'
-                        ? DesertColors.deepBrown
-                        : DesertColors.taupe.withValues(alpha: 0.5),
+                        ? DesertColors.brownBramble
+                        : DesertColors.treeBranch.withValues(alpha: 0.5),
                     fontWeight: voiceState.inputMethod == 'voice'
                         ? FontWeight.w600
                         : FontWeight.w400,
@@ -354,7 +296,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                 child: Text(
                   '/',
                   style: OdyseyaTypography.h2.copyWith(
-                    color: DesertColors.taupe.withValues(alpha: 0.3),
+                    color: DesertColors.treeBranch.withValues(alpha: 0.3),
                   ),
                 ),
               ),
@@ -364,8 +306,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   'Type',
                   style: OdyseyaTypography.h2.copyWith(
                     color: voiceState.inputMethod == 'text'
-                        ? DesertColors.deepBrown
-                        : DesertColors.taupe.withValues(alpha: 0.5),
+                        ? DesertColors.brownBramble
+                        : DesertColors.treeBranch.withValues(alpha: 0.5),
                     fontWeight: voiceState.inputMethod == 'text'
                         ? FontWeight.w600
                         : FontWeight.w400,
@@ -410,7 +352,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     Text(
                       voiceState.recordingDuration.inMinutes.toString().padLeft(2, '0'),
                       style: OdyseyaTypography.h1Large.copyWith(
-                        color: DesertColors.deepBrown,
+                        color: DesertColors.brownBramble,
                         fontSize: 40,
                         fontWeight: FontWeight.w300,
                       ),
@@ -419,7 +361,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     Text(
                       (voiceState.recordingDuration.inSeconds % 60).toString().padLeft(2, '0'),
                       style: OdyseyaTypography.h1Large.copyWith(
-                        color: DesertColors.deepBrown,
+                        color: DesertColors.brownBramble,
                         fontSize: 40,
                         fontWeight: FontWeight.w300,
                       ),
@@ -459,8 +401,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                         const SizedBox(width: 8),
                         Text(
                           'Write your thoughts',
-                          style: OdyseyaTypography.button.copyWith(
-                            color: DesertColors.deepBrown,
+                          style: OdyseyaTypography.h3.copyWith(
+                            color: DesertColors.brownBramble,
                           ),
                         ),
                       ],
@@ -482,14 +424,14 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         hintText: 'Share what\'s on your mind...',
-                        hintStyle: OdyseyaTypography.bodyLarge.copyWith(
-                          color: DesertColors.taupe.withValues(alpha: 0.5),
+                        hintStyle: OdyseyaTypography.hint.copyWith(
+                          color: DesertColors.treeBranch.withValues(alpha: 0.5),
                         ),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.all(16),
                       ),
                       style: OdyseyaTypography.bodyLarge.copyWith(
-                        color: DesertColors.deepBrown,
+                        color: DesertColors.brownBramble,
                       ),
                       onChanged: (text) {
                         ref.read(voiceJournalProvider.notifier).updateTranscription(text);
@@ -519,8 +461,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                   const SizedBox(height: 8),
                   Text(
                     'Type freely about your thoughts and feelings. Take your time to express yourself fully.',
-                    style: OdyseyaTypography.ui.copyWith(
-                      color: DesertColors.taupe,
+                    style: OdyseyaTypography.secondary.copyWith(
+                      color: DesertColors.treeBranch,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -563,7 +505,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                     Text(
                       'Your journal entry is ready',
                       style: OdyseyaTypography.h2.copyWith(
-                        color: DesertColors.deepBrown,
+                        color: DesertColors.brownBramble,
                       ),
                     ),
                   ],
@@ -571,8 +513,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                 const SizedBox(height: 16),
                 Text(
                   'Take a moment to review everything before saving. You can always come back and edit later.',
-                  style: OdyseyaTypography.ui.copyWith(
-                    color: DesertColors.taupe,
+                  style: OdyseyaTypography.secondary.copyWith(
+                    color: DesertColors.treeBranch,
                   ),
                 ),
               ],
@@ -630,7 +572,7 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
             Text(
               'Entry Saved Successfully',
               style: OdyseyaTypography.h1.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
               ),
               textAlign: TextAlign.center,
             ),
@@ -639,8 +581,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
 
             Text(
               'Thank you for taking time to connect with your emotions. Your insights are valuable and will help you grow.',
-              style: OdyseyaTypography.bodyLarge.copyWith(
-                color: DesertColors.taupe,
+              style: OdyseyaTypography.body.copyWith(
+                color: DesertColors.treeBranch,
               ),
               textAlign: TextAlign.center,
             ),
@@ -728,8 +670,8 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
                         ref.read(voiceJournalProvider.notifier).goBack();
                       },
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: DesertColors.taupe,
-                  side: BorderSide(color: DesertColors.taupe),
+                  foregroundColor: DesertColors.treeBranch,
+                  side: BorderSide(color: DesertColors.treeBranch),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -826,32 +768,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
     }
   }
 
-  String _getStepTitle(VoiceJournalStep step) {
-    switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return 'How are you feeling?';
-      case VoiceJournalStep.journaling:
-        return 'What\'s on your mind today?';
-      case VoiceJournalStep.review:
-        return 'Review Entry';
-      case VoiceJournalStep.completed:
-        return 'Complete';
-    }
-  }
-
-  String _getStepSubtitle(VoiceJournalStep step) {
-    switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return 'Select a mood to begin';
-      case VoiceJournalStep.journaling:
-        return ''; // No subtitle for journaling screen
-      case VoiceJournalStep.review:
-        return 'Check before saving';
-      case VoiceJournalStep.completed:
-        return 'Thank you for sharing';
-    }
-  }
-
   IconData _getStepIcon(VoiceJournalStep step) {
     switch (step) {
       case VoiceJournalStep.moodSelection:
@@ -862,113 +778,6 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen>
         return Icons.preview;
       case VoiceJournalStep.completed:
         return Icons.check;
-    }
-  }
-
-  void _showExitDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: DesertColors.offWhite,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: Text(
-          'Leave Journal Entry?',
-          style: TextStyle(
-            color: DesertColors.deepBrown,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        content: Text(
-          'Your progress will be lost if you leave now. Are you sure you want to exit?',
-          style: TextStyle(
-            color: DesertColors.taupe,
-            height: 1.4,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Stay',
-              style: TextStyle(color: DesertColors.taupe),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              ref.read(voiceJournalProvider.notifier).startNewEntry();
-              context.go('/home');
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: DesertColors.terracotta,
-              foregroundColor: Colors.white,
-            ),
-            child: const Text('Leave'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showHelpDialog(VoiceJournalStep step) {
-    final helpText = _getHelpText(step);
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: DesertColors.offWhite,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: Row(
-          children: [
-            Icon(
-              Icons.help_outline,
-              color: DesertColors.roseSand,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'How it works',
-              style: TextStyle(
-                color: DesertColors.deepBrown,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        content: Text(
-          helpText,
-          style: TextStyle(
-            color: DesertColors.taupe,
-            height: 1.4,
-          ),
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: DesertColors.roseSand,
-              foregroundColor: Colors.white,
-            ),
-            child: const Text('Got it'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getHelpText(VoiceJournalStep step) {
-    switch (step) {
-      case VoiceJournalStep.moodSelection:
-        return 'Select the mood that best describes how you\'re feeling right now. This helps us provide better insights tailored to your emotional state.';
-      case VoiceJournalStep.journaling:
-        return 'Choose voice or text to express your thoughts. Speak or write freely about what\'s on your mind. There\'s no right or wrong way to journal.';
-      case VoiceJournalStep.review:
-        return 'Take a moment to review your entry and AI insights. You can go back to make changes or save it to your private journal.';
-      case VoiceJournalStep.completed:
-        return 'Your journal entry has been saved successfully. You can create another entry or explore your journal history.';
     }
   }
 }

@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,16 +18,16 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Initialize rotation animation controller for compass searching for north
+    // Initialize rotation animation for spinning compass
     _controller = AnimationController(
-      duration: const Duration(seconds: 3), // Smooth rotation
+      duration: const Duration(seconds: 3), // 3 seconds per full rotation
       vsync: this,
     );
 
-    // Full rotation animation - compass spins around its own axis searching for north
+    // Full rotation animation
     _rotationAnimation = Tween<double>(
       begin: 0.0,
-      end: 2 * 3.14159, // Full 360 degree rotation (2π radians)
+      end: 2 * 3.14159, // 360 degrees (2π radians)
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
 
     // Repeat the rotation continuously
@@ -42,68 +43,78 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _navigateToHome() async {
-    // Wait for 10 seconds
-    await Future.delayed(const Duration(seconds: 10));
+    // Wait for 8 seconds
+    await Future.delayed(const Duration(seconds: 8));
 
-    // Navigate to home screen (main app shell)
+    // Navigate to first download/marketing screen
     if (mounted) {
-      context.go('/home');
+      context.go('/first-download');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for proper sizing
+    final screenWidth = MediaQuery.of(context).size.width;
+    final compassSize = screenWidth * 0.5; // Compass is 50% of screen width
+    final insideSize = compassSize * 0.65; // Inside is 65% of compass size
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // 1. Full screen background
-          Image.asset('assets/images/Background_F.png', fit: BoxFit.cover),
+          // Desert background from UX folder
+          Image.asset(
+            'assets/images/Background_F.png',
+            fit: BoxFit.cover,
+          ),
 
-          // 2. Content with compass and logo centered in middle of screen
+          // Centered logo and text
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Compass layers - perfectly aligned and symmetric
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Inner landscape (STATIC - blue/brown doesn't move)
-                    Image.asset(
-                      'assets/images/inside_compass.png',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.contain,
-                    ),
-
-                    // Outer compass ring (ANIMATED - compass rotates searching for north)
-                    AnimatedBuilder(
-                      animation: _rotationAnimation,
-                      builder: (context, child) {
-                        return Transform.rotate(
-                          angle: _rotationAnimation.value,
-                          alignment: Alignment.center,
-                          child: child,
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/just_compass.png',
-                        width: 320,
-                        height: 320,
+                // Compass with spinning animation
+                SizedBox(
+                  width: compassSize,
+                  height: compassSize,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Inner graphic (STATIC - blue crown stays in place)
+                      Image.asset(
+                        'assets/images/inside_compass.png',
+                        width: insideSize,
+                        height: insideSize,
                         fit: BoxFit.contain,
                       ),
-                    ),
-                  ],
+
+                      // Outer compass ring (SPINNING ANIMATION)
+                      AnimatedBuilder(
+                        animation: _rotationAnimation,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: _rotationAnimation.value,
+                            child: child,
+                          );
+                        },
+                        child: Image.asset(
+                          'assets/images/just_compass.png',
+                          width: compassSize,
+                          height: compassSize,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: compassSize * 0.15),
 
-                // Odyseya Logo below compass
+                // "Odyseya" text from UX folder - bigger size
                 Image.asset(
-                  'assets/images/Odyseya_logo_noBGR.png',
-                  width: 200,
-                  height: 80,
+                  'assets/images/Odyseya_word.png',
+                  width: compassSize * 1.4,
                   fit: BoxFit.contain,
                 ),
               ],

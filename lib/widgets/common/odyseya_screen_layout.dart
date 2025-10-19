@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../constants/typography.dart';
@@ -105,7 +106,7 @@ class OdyseyaScreenLayout extends StatelessWidget {
               onPressed: onBack ?? () => Navigator.of(context).pop(),
               icon: Icon(
                 Icons.arrow_back,
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
               ),
             )
           else
@@ -117,7 +118,7 @@ class OdyseyaScreenLayout extends StatelessWidget {
               onPressed: onHelp,
               icon: Icon(
                 helpIcon,
-                color: DesertColors.taupe,
+                color: DesertColors.treeBranch,
               ),
             )
           else
@@ -136,7 +137,7 @@ class OdyseyaScreenLayout extends StatelessWidget {
             Text(
               title!,
               style: OdyseyaTypography.h1.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
               ),
               textAlign: TextAlign.center,
             ),
@@ -145,7 +146,7 @@ class OdyseyaScreenLayout extends StatelessWidget {
             Text(
               subtitle!,
               style: OdyseyaTypography.body.copyWith(
-                color: DesertColors.taupe,
+                color: DesertColors.treeBranch,
               ),
               textAlign: TextAlign.center,
             ),

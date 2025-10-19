@@ -1,3 +1,4 @@
+// Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/common/app_background.dart';

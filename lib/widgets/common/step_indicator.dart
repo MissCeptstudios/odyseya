@@ -51,8 +51,8 @@ class StepIndicator extends StatelessWidget {
       size = 32;
     } else {
       // Future step - smaller, light gray
-      backgroundColor = DesertColors.taupe.withValues(alpha: 0.15);
-      textColor = DesertColors.taupe.withValues(alpha: 0.5);
+      backgroundColor = DesertColors.treeBranch.withValues(alpha: 0.15);
+      textColor = DesertColors.treeBranch.withValues(alpha: 0.5);
       size = 32;
     }
 
@@ -101,7 +101,7 @@ class StepProgressIndicator extends StatelessWidget {
             Container(
               height: 2,
               decoration: BoxDecoration(
-                color: DesertColors.taupe.withValues(alpha: 0.2),
+                color: DesertColors.treeBranch.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(1),
               ),
               child: Align(
@@ -141,7 +141,7 @@ class StepProgressIndicator extends StatelessWidget {
         shape: BoxShape.circle,
         color: isCompleted || isActive
             ? DesertColors.dustyBlue
-            : DesertColors.taupe.withValues(alpha: 0.2),
+            : DesertColors.treeBranch.withValues(alpha: 0.2),
         border: Border.all(
           color: isActive
               ? DesertColors.dustyBlue
@@ -157,7 +157,7 @@ class StepProgressIndicator extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: isCompleted || isActive
                 ? Colors.white
-                : DesertColors.taupe.withValues(alpha: 0.5),
+                : DesertColors.treeBranch.withValues(alpha: 0.5),
           ),
         ),
       ),

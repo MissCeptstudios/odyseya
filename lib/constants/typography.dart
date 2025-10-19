@@ -1,199 +1,305 @@
 import 'package:flutter/material.dart';
+import 'colors.dart';
 
 /// Odyseya Typography System
 ///
-/// Font Families:
-/// - Inter: UI elements, navigation, buttons
-/// - Nunito Sans: Journaling content, body text
-/// - Cormorant Garamond: Quotes, affirmations, welcome screens
+/// Primary Font: Inter (modern sans-serif for digital readability)
 ///
-/// Hierarchy:
-/// H1: 22-24pt Cormorant (welcome screens, quotes)
-/// H2: 18-20pt Inter Medium (sections, AI insights)
-/// Body: 16pt Nunito Sans Regular (journal entries)
-/// Subtext: 12-13pt Inter/Nunito Light (meta info)
-/// Navigation: 11-12pt Inter (nav labels)
+/// Font Weights:
+/// - Bold/SemiBold (600-700): Titles like "Today's affirmation", "What's on your mind?", "Hey Mike!"
+/// - Medium/Regular (400-500): Smaller labels, subtitles, body text
+/// - Light (300): Optional hints, extra information, labels inside cards
+///
+/// Color Usage:
+/// - Primary brown (#57351E): All core typography - headers, body text, settings, insights
+/// - Accent caramel (#DBAC80): Active icons, dividers, selection states, emphasis words
+/// - Muted brown (#8B7362): Secondary or descriptive text under main elements
+/// - White (#FFFFFF): Button text and icons placed over filled shapes (blue or brown)
 
 class OdyseyaTypography {
-  // Font families
+  // Font family
   static const String inter = 'Inter';
-  static const String nunitoSans = 'Nunito Sans';
-  static const String cormorantGaramond = 'Cormorant Garamond';
 
   // ============================================
-  // H1 - Cormorant Garamond (Welcome screens, Quotes, Affirmations)
+  // HEADINGS - Inter Bold/SemiBold (600-700)
   // ============================================
 
-  /// H1 Large - Affirmations on welcome screen (24pt)
+  /// H1 Large - Main page titles, "What's on your mind?" (32pt, SemiBold)
   static const TextStyle h1Large = TextStyle(
-    fontFamily: cormorantGaramond,
-    fontSize: 24,
-    fontWeight: FontWeight.w400,
+    fontFamily: inter,
+    fontSize: 32,
+    fontWeight: FontWeight.w600,
     height: 1.3,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
-  /// H1 Regular - Quote headers (22pt)
+  /// H1 - Section headers, "Hey Mike!", "Today's affirmation" (24pt, SemiBold)
   static const TextStyle h1 = TextStyle(
-    fontFamily: cormorantGaramond,
-    fontSize: 22,
-    fontWeight: FontWeight.w400,
+    fontFamily: inter,
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
     height: 1.3,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
-  /// H1 Italic - Quote headers with emphasis (22pt italic)
-  static const TextStyle h1Italic = TextStyle(
-    fontFamily: cormorantGaramond,
-    fontSize: 22,
-    fontWeight: FontWeight.w400,
-    fontStyle: FontStyle.italic,
-    height: 1.3,
-  );
-
-  // ============================================
-  // H2 - Inter Medium (Section headers, AI insights)
-  // ============================================
-
-  /// H2 Large - Major section headers (20pt)
+  /// H2 Large - Subsection headers (20pt, SemiBold)
   static const TextStyle h2Large = TextStyle(
     fontFamily: inter,
     fontSize: 20,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     height: 1.4,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
-  /// H2 Regular - AI insights, subsection headers (18pt)
+  /// H2 - Card titles, section labels (18pt, SemiBold)
   static const TextStyle h2 = TextStyle(
     fontFamily: inter,
     fontSize: 18,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     height: 1.4,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
-  // ============================================
-  // Body Text - Nunito Sans (Journal entries, main content)
-  // ============================================
-
-  /// Body Large - Main journal text (16pt)
-  static const TextStyle bodyLarge = TextStyle(
-    fontFamily: nunitoSans,
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    height: 1.5,
-  );
-
-  /// Body Regular - Secondary content (15pt)
-  static const TextStyle body = TextStyle(
-    fontFamily: nunitoSans,
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    height: 1.5,
-  );
-
-  /// Body Medium - Emphasized body text (16pt medium)
-  static const TextStyle bodyMedium = TextStyle(
-    fontFamily: nunitoSans,
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    height: 1.5,
-  );
-
-  // ============================================
-  // Buttons - Inter (CTA buttons, action buttons)
-  // ============================================
-
-  /// Button Large - Primary CTA buttons (16pt bold)
-  static const TextStyle buttonLarge = TextStyle(
+  /// H3 - Small headers (16pt, SemiBold)
+  static const TextStyle h3 = TextStyle(
     fontFamily: inter,
     fontSize: 16,
-    fontWeight: FontWeight.w700,
-    height: 1.2,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
-  /// Button Regular - Secondary buttons (16pt regular)
+  // ============================================
+  // BODY TEXT - Inter Regular/Medium (400-500)
+  // ============================================
+
+  /// Body Large - Main content text (18pt, Regular)
+  static const TextStyle bodyLarge = TextStyle(
+    fontFamily: inter,
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    height: 1.6,
+    color: DesertColors.brownBramble, // Primary brown
+  );
+
+  /// Body - Standard body text (16pt, Regular)
+  static const TextStyle body = TextStyle(
+    fontFamily: inter,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+    color: DesertColors.brownBramble, // Primary brown
+  );
+
+  /// Body Medium - Emphasized body text (16pt, Medium)
+  static const TextStyle bodyMedium = TextStyle(
+    fontFamily: inter,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    height: 1.5,
+    color: DesertColors.brownBramble, // Primary brown
+  );
+
+  /// Body Small - Smaller body text (14pt, Regular)
+  static const TextStyle bodySmall = TextStyle(
+    fontFamily: inter,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+    color: DesertColors.brownBramble, // Primary brown
+  );
+
+  // ============================================
+  // SECONDARY TEXT - Inter Regular (400) with Muted Brown
+  // ============================================
+
+  /// Secondary Large - Descriptive text under main elements (16pt, Regular)
+  static const TextStyle secondaryLarge = TextStyle(
+    fontFamily: inter,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+    color: DesertColors.treeBranch, // Muted brown
+  );
+
+  /// Secondary - Smaller descriptive text (14pt, Regular)
+  static const TextStyle secondary = TextStyle(
+    fontFamily: inter,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: DesertColors.treeBranch, // Muted brown
+  );
+
+  /// Secondary Small - Tiny descriptive text (12pt, Regular)
+  static const TextStyle secondarySmall = TextStyle(
+    fontFamily: inter,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    color: DesertColors.treeBranch, // Muted brown
+  );
+
+  // ============================================
+  // BUTTONS - Inter SemiBold/Bold (600-700)
+  // ============================================
+
+  /// Button Large - Primary CTA buttons (18pt, SemiBold)
+  static const TextStyle buttonLarge = TextStyle(
+    fontFamily: inter,
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+    letterSpacing: 1.2,
+    color: Colors.white, // White for buttons on filled backgrounds
+  );
+
+  /// Button - Standard buttons (16pt, SemiBold)
   static const TextStyle button = TextStyle(
     fontFamily: inter,
     fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
     height: 1.2,
+    letterSpacing: 0.5,
+    color: Colors.white, // White for buttons on filled backgrounds
   );
 
-  /// Button Small - Tertiary buttons (14pt medium)
+  /// Button Small - Tertiary/small buttons (14pt, Medium)
   static const TextStyle buttonSmall = TextStyle(
     fontFamily: inter,
     fontSize: 14,
     fontWeight: FontWeight.w500,
     height: 1.2,
+    color: DesertColors.brownBramble, // Primary brown for text buttons
   );
 
   // ============================================
-  // UI Elements - Inter (Sections, labels, top bar)
+  // UI ELEMENTS - Inter Medium (500)
   // ============================================
 
-  /// UI Large - Top bar, major sections (16pt medium)
+  /// UI Large - Top bar, major UI sections (16pt, Medium)
   static const TextStyle uiLarge = TextStyle(
     fontFamily: inter,
     fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.3,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
-  /// UI Regular - Section labels (14pt medium)
+  /// UI - Section labels, form labels (14pt, Medium)
   static const TextStyle ui = TextStyle(
     fontFamily: inter,
     fontSize: 14,
     fontWeight: FontWeight.w500,
     height: 1.3,
+    color: DesertColors.brownBramble, // Primary brown
+  );
+
+  /// UI Small - Small labels (12pt, Medium)
+  static const TextStyle uiSmall = TextStyle(
+    fontFamily: inter,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    height: 1.3,
+    color: DesertColors.brownBramble, // Primary brown
   );
 
   // ============================================
-  // Navigation - Inter (Bottom nav, tabs)
+  // NAVIGATION - Inter Medium/SemiBold (500-600)
   // ============================================
 
-  /// Navigation Active - Selected nav item (12pt semibold)
+  /// Navigation Active - Selected nav item (12pt, SemiBold)
   static const TextStyle navActive = TextStyle(
     fontFamily: inter,
     fontSize: 12,
     fontWeight: FontWeight.w600,
     height: 1.2,
+    color: DesertColors.caramelDrizzle, // Accent caramel for active state
   );
 
-  /// Navigation Inactive - Unselected nav item (11pt regular)
+  /// Navigation Inactive - Unselected nav item (12pt, Regular)
   static const TextStyle navInactive = TextStyle(
     fontFamily: inter,
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: FontWeight.w400,
     height: 1.2,
+    color: DesertColors.treeBranch, // Muted brown
   );
 
   // ============================================
-  // Subtext / Meta Info - Inter/Nunito Light (Timestamps, hints)
+  // HINTS & CAPTIONS - Inter Light (300)
   // ============================================
 
-  /// Caption - Hint text, placeholders (13pt light)
+  /// Caption - Hint text, placeholders, extra info (14pt, Light)
   static const TextStyle caption = TextStyle(
-    fontFamily: nunitoSans,
-    fontSize: 13,
+    fontFamily: inter,
+    fontSize: 14,
     fontWeight: FontWeight.w300,
-    height: 1.3,
+    height: 1.4,
+    color: DesertColors.treeBranch, // Muted brown
   );
 
-  /// Caption Small - Timestamps, meta info (12pt light)
+  /// Caption Small - Timestamps, meta info (12pt, Light)
   static const TextStyle captionSmall = TextStyle(
     fontFamily: inter,
     fontSize: 12,
     fontWeight: FontWeight.w300,
     height: 1.3,
+    color: DesertColors.treeBranch, // Muted brown
+  );
+
+  /// Hint - Form field hints, labels inside cards (13pt, Light)
+  static const TextStyle hint = TextStyle(
+    fontFamily: inter,
+    fontSize: 13,
+    fontWeight: FontWeight.w300,
+    height: 1.4,
+    color: DesertColors.treeBranch, // Muted brown
   );
 
   // ============================================
-  // Special - Quote attribution
+  // ACCENT/EMPHASIS - Accent Caramel Color
   // ============================================
 
-  /// Quote Author - Author/source of quote (14pt Cormorant)
-  static const TextStyle quoteAuthor = TextStyle(
-    fontFamily: cormorantGaramond,
+  /// Accent Body - Body text with accent color for emphasis (16pt, Medium)
+  static const TextStyle accentBody = TextStyle(
+    fontFamily: inter,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    height: 1.5,
+    color: DesertColors.caramelDrizzle, // Accent caramel
+  );
+
+  /// Accent Small - Small accent text (14pt, Medium)
+  static const TextStyle accentSmall = TextStyle(
+    fontFamily: inter,
     fontSize: 14,
-    fontWeight: FontWeight.w400,
-    height: 1.3,
+    fontWeight: FontWeight.w500,
+    height: 1.4,
+    color: DesertColors.caramelDrizzle, // Accent caramel
   );
+
+  // ============================================
+  // HELPER METHODS - Apply colors to existing styles
+  // ============================================
+
+  /// Apply primary brown color to any TextStyle
+  static TextStyle withPrimaryColor(TextStyle style) {
+    return style.copyWith(color: DesertColors.brownBramble);
+  }
+
+  /// Apply muted brown color to any TextStyle
+  static TextStyle withSecondaryColor(TextStyle style) {
+    return style.copyWith(color: DesertColors.treeBranch);
+  }
+
+  /// Apply accent caramel color to any TextStyle
+  static TextStyle withAccentColor(TextStyle style) {
+    return style.copyWith(color: DesertColors.caramelDrizzle);
+  }
+
+  /// Apply white color to any TextStyle (for buttons on filled backgrounds)
+  static TextStyle withWhiteColor(TextStyle style) {
+    return style.copyWith(color: Colors.white);
+  }
 }

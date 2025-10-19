@@ -1,13 +1,20 @@
+// Enforce design consistency based on UX_odyseya_framework.md
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:app_settings/app_settings.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/colors.dart';
 import '../constants/typography.dart';
+import '../models/journal_entry.dart';
 import '../providers/settings_provider.dart';
 import '../providers/notification_provider.dart';
 import '../providers/subscription_provider.dart';
+import '../services/data_export_service.dart';
 import '../widgets/common/app_background.dart';
 import '../widgets/common/premium_badge.dart';
+import '../providers/journal_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -132,7 +139,7 @@ class SettingsScreen extends ConsumerWidget {
                       Icons.download,
                       color: DesertColors.onSecondary,
                     ),
-                    onTap: () => _showExportDataDialog(context),
+                    onTap: () => _showExportDataDialog(context, ref),
                   ),
                 ],
               ),
@@ -537,10 +544,10 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  Future<void> _showExportDataDialog(BuildContext context) async {
+  Future<void> _showExportDataDialog(BuildContext context, WidgetRef ref) async {
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -579,21 +586,21 @@ class SettingsScreen extends ConsumerWidget {
               icon: Icons.article,
               title: 'Journal Entries',
               subtitle: 'All your written reflections and voice transcriptions',
-              onTap: () => _exportJournalEntries(context),
+              onTap: () => _exportJournalEntries(context, ref),
             ),
             const SizedBox(height: 8),
             _buildExportOption(
               icon: Icons.psychology,
               title: 'AI Insights',
               subtitle: 'Emotional analysis and patterns from your entries',
-              onTap: () => _exportAIInsights(context),
+              onTap: () => _exportAIInsights(context, ref),
             ),
             const SizedBox(height: 8),
             _buildExportOption(
               icon: Icons.mood,
               title: 'Mood Data',
               subtitle: 'Your mood tracking history and trends',
-              onTap: () => _exportMoodData(context),
+              onTap: () => _exportMoodData(context, ref),
             ),
             const SizedBox(height: 16),
             Container(
@@ -710,59 +717,275 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  void _exportJournalEntries(BuildContext context) {
+  Future<void> _exportJournalEntries(BuildContext context, WidgetRef ref) async {
     Navigator.of(context).pop();
+
+    // Show loading
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Preparing journal entries export...'),
+        content: Row(
+          children: const [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+            SizedBox(width: 12),
+            Text('Preparing journal entries export...'),
+          ],
+        ),
         backgroundColor: DesertColors.primary,
         behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         margin: const EdgeInsets.all(16),
       ),
     );
-    
-    // TODO: Implement actual journal entries export
-    // This would typically:
-    // 1. Fetch all journal entries from Firestore
-    // 2. Format them as PDF or JSON
-    // 3. Save to device storage or share
+
+    try {
+      final exportService = DataExportService();
+
+      // Fetch actual journal entries from Firestore
+      final journalEntriesAsync = ref.read(journalEntriesProvider);
+      final journalEntries = journalEntriesAsync.when(
+        data: (entries) => entries,
+        loading: () => <JournalEntry>[],
+        error: (_, _) => <JournalEntry>[],
+      );
+
+      if (journalEntries.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('No journal entries to export'),
+            backgroundColor: DesertColors.onSecondary,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+        return;
+      }
+
+      // Export as both JSON and CSV
+      final jsonFile = await exportService.exportJournalEntriesAsJSON(journalEntries);
+      final csvFile = await exportService.exportJournalEntriesAsCSV(journalEntries);
+
+      // Share files
+      await exportService.shareFiles([jsonFile, csvFile]);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Journal entries exported successfully!'),
+            backgroundColor: DesertColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error exporting journal entries: $e'),
+            backgroundColor: DesertColors.terracotta,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    }
   }
 
-  void _exportAIInsights(BuildContext context) {
+  Future<void> _exportAIInsights(BuildContext context, WidgetRef ref) async {
     Navigator.of(context).pop();
+
+    // Show loading
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Preparing AI insights export...'),
+        content: Row(
+          children: const [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+            SizedBox(width: 12),
+            Text('Preparing AI insights export...'),
+          ],
+        ),
         backgroundColor: DesertColors.primary,
         behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         margin: const EdgeInsets.all(16),
       ),
     );
-    
-    // TODO: Implement actual AI insights export
+
+    try {
+      final exportService = DataExportService();
+
+      // Fetch actual journal entries from Firestore
+      final journalEntriesAsync = ref.read(journalEntriesProvider);
+      final journalEntries = journalEntriesAsync.when(
+        data: (entries) => entries,
+        loading: () => <JournalEntry>[],
+        error: (_, _) => <JournalEntry>[],
+      );
+
+      if (journalEntries.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('No AI insights to export'),
+            backgroundColor: DesertColors.onSecondary,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+        return;
+      }
+
+      final file = await exportService.exportAIInsights(journalEntries);
+      await exportService.shareFile(file);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('AI insights exported successfully!'),
+            backgroundColor: DesertColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error exporting AI insights: $e'),
+            backgroundColor: DesertColors.terracotta,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    }
   }
 
-  void _exportMoodData(BuildContext context) {
+  Future<void> _exportMoodData(BuildContext context, WidgetRef ref) async {
     Navigator.of(context).pop();
+
+    // Show loading
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Preparing mood data export...'),
+        content: Row(
+          children: const [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+            SizedBox(width: 12),
+            Text('Preparing mood data export...'),
+          ],
+        ),
         backgroundColor: DesertColors.primary,
         behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         margin: const EdgeInsets.all(16),
       ),
     );
-    
-    // TODO: Implement actual mood data export
+
+    try {
+      final exportService = DataExportService();
+
+      // Fetch actual journal entries from Firestore
+      final journalEntriesAsync = ref.read(journalEntriesProvider);
+      final journalEntries = journalEntriesAsync.when(
+        data: (entries) => entries,
+        loading: () => <JournalEntry>[],
+        error: (_, _) => <JournalEntry>[],
+      );
+
+      if (journalEntries.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('No mood data to export'),
+            backgroundColor: DesertColors.onSecondary,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+        return;
+      }
+
+      final file = await exportService.exportMoodData(journalEntries);
+      await exportService.shareFile(file);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Mood data exported successfully!'),
+            backgroundColor: DesertColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error exporting mood data: $e'),
+            backgroundColor: DesertColors.terracotta,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _requestNotificationPermission(BuildContext context, WidgetRef ref) async {
@@ -836,8 +1059,8 @@ class SettingsScreen extends ConsumerWidget {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              // TODO: Open app settings - this would require the app_settings package
-              // AppSettings.openAppSettings();
+              // Open device app settings for notification permissions
+              AppSettings.openAppSettings(type: AppSettingsType.notification);
             },
             child: Text(
               'Open Settings',
@@ -927,18 +1150,40 @@ class SettingsScreen extends ConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () {
-                  // TODO: Add link to manage subscription in App Store/Play Store
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text('Manage your subscription in your device settings'),
-                      backgroundColor: DesertColors.deepBrown,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  );
+                onPressed: () async {
+                  // Open subscription management in App Store or Play Store
+                  try {
+                    if (Platform.isIOS) {
+                      // iOS: Open App Store subscriptions page
+                      final uri = Uri.parse('https://apps.apple.com/account/subscriptions');
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                      } else {
+                        throw 'Could not open App Store';
+                      }
+                    } else if (Platform.isAndroid) {
+                      // Android: Open Play Store subscriptions page
+                      final uri = Uri.parse('https://play.google.com/store/account/subscriptions');
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                      } else {
+                        throw 'Could not open Play Store';
+                      }
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text('Manage your subscription in your device settings'),
+                          backgroundColor: DesertColors.brownBramble,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      );
+                    }
+                  }
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
@@ -1021,7 +1266,7 @@ class SettingsScreen extends ConsumerWidget {
             Text(
               'Unlock Your Full Journey',
               style: OdyseyaTypography.h2.copyWith(
-                color: DesertColors.deepBrown,
+                color: DesertColors.brownBramble,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -1029,7 +1274,7 @@ class SettingsScreen extends ConsumerWidget {
             Text(
               'Get unlimited access to all features and deeper emotional insights',
               style: OdyseyaTypography.body.copyWith(
-                color: DesertColors.taupe,
+                color: DesertColors.treeBranch,
                 fontSize: 14,
               ),
             ),
@@ -1114,7 +1359,7 @@ class SettingsScreen extends ConsumerWidget {
           Text(
             text,
             style: OdyseyaTypography.body.copyWith(
-              color: DesertColors.deepBrown,
+              color: DesertColors.brownBramble,
               fontSize: 14,
             ),
           ),

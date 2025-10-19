@@ -70,21 +70,21 @@ CustomTransitionPage<void> _buildPageWithSlideTransition({
 // Router configuration
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    initialLocation: '/first-download', // Show first download screen
+    initialLocation: '/splash', // Show splash screen first when app is downloaded
     debugLogDiagnostics: true,
     routes: [
-      // First Download Screen
-      GoRoute(
-        path: '/first-download',
-        name: 'first-download',
-        builder: (context, state) => const FirstDownloadAppScreen(),
-      ),
-
-      // Splash Screen
+      // Splash Screen - First thing users see when downloading the app
       GoRoute(
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
+      ),
+
+      // First Download/Marketing Screen - After splash
+      GoRoute(
+        path: '/first-download',
+        name: 'first-download',
+        builder: (context, state) => const FirstDownloadAppScreen(),
       ),
 
       // Onboarding Flow
