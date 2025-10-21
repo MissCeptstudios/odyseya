@@ -15,65 +15,8 @@ class WelcomeScreen extends ConsumerWidget {
       onPrimaryPressed: () => context.go('/onboarding/questionnaire/q1'),
       child: Column(
         children: [
-          const SizedBox(height: 40),
-          
-          // Hero Logo Section
-          Container(
-            width: 140,
-            height: 140,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  DesertColors.primary.withValues(alpha: 0.8),
-                  DesertColors.accent,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: DesertColors.primary.withValues(alpha: 0.3),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.self_improvement,
-              size: 70,
-              color: Colors.white,
-            ),
-          ),
-          
-          const SizedBox(height: 40),
-          
-          // App Name and Tagline
-          Text(
-            'Odyseya',
-            style: TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.w200,
-              color: DesertColors.onSurface,
-              letterSpacing: 3.0,
-            ),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          Text(
-            'Your safe space for emotional exploration',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              color: DesertColors.onSecondary,
-              fontWeight: FontWeight.w300,
-              letterSpacing: 0.5,
-            ),
-          ),
-          
-          const SizedBox(height: 48),
-          
+          const SizedBox(height: 24),
+
           // Value Proposition Cards
           _buildFeatureCard(
             icon: Icons.mic,

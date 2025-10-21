@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
+import '../../widgets/common/odyseya_button.dart';
 
 class GdprConsentScreen extends ConsumerStatefulWidget {
   const GdprConsentScreen({super.key});
@@ -23,11 +24,15 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
         title: Text(
           title,
           style: TextStyle(
-            color: DesertColors.onSurface,
+            color: DesertColors.brownBramble,
             fontWeight: FontWeight.w600,
+            fontSize: 20,
           ),
         ),
         content: Container(
@@ -37,8 +42,9 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
             child: Text(
               content,
               style: TextStyle(
-                color: DesertColors.onSecondary,
+                color: DesertColors.treeBranch,
                 height: 1.5,
+                fontSize: 14,
               ),
             ),
           ),
@@ -48,7 +54,10 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: TextStyle(color: DesertColors.primary),
+              style: TextStyle(
+                color: DesertColors.westernSunrise,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -64,85 +73,74 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: DesertColors.onSurface),
-          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(Icons.arrow_back, color: DesertColors.brownBramble),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Odyseya Logo and Compass at the top
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Compass icon
+                  Image.asset(
+                    'assets/images/inside_compass.png',
+                    height: 48,
+                    width: 48,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.explore,
+                        size: 48,
+                        color: DesertColors.westernSunrise,
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  // Odyseya text logo
+                  Image.asset(
+                    'assets/images/Odyseya_word.png',
+                    height: 32,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Text(
+                        'Odyseya',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
+                          color: DesertColors.brownBramble,
+                          fontFamily: 'Cormorant Garamond',
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 32),
+
               // Title matching reference design
               Text(
                 'We care about your privacy',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: DesertColors.onSurface,
+                  fontWeight: FontWeight.w600,
+                  color: DesertColors.brownBramble,
+                  height: 1.2,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
                 'Please accept our terms and privacy policy to create your account.',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: DesertColors.onSecondary,
+                  color: DesertColors.treeBranch,
                   height: 1.5,
-                ),
-              ),
-              
-              const SizedBox(height: 24),
-
-              // Data Collection Summary
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: DesertColors.accent.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: DesertColors.accent.withValues(alpha: 0.2),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: DesertColors.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'What data we collect',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: DesertColors.onSurface,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _buildDataItem('Account info (email, name from Google/Apple login)'),
-                    _buildDataItem('Voice recordings & AI-generated transcriptions'),
-                    _buildDataItem('Journal entries, moods, and emotional insights'),
-                    _buildDataItem('App usage analytics (anonymized)'),
-                    _buildDataItem('Device info for security & crash reporting'),
-                    _buildDataItem('Location & weather (optional, only if you enable)'),
-                    const SizedBox(height: 8),
-                    Text(
-                      'All data is encrypted and never sold. You can export or delete anytime.',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: DesertColors.onSecondary,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
                 ),
               ),
 
@@ -161,9 +159,9 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                         onReadMore: () => _showDocument('Terms & Conditions', _getTermsAndConditions()),
                         isRequired: true,
                       ),
-                      
+
                       const SizedBox(height: 16),
-                      
+
                       // Privacy Policy
                       _buildConsentItem(
                         title: 'I accept Privacy Policy',
@@ -173,9 +171,9 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                         onReadMore: () => _showDocument('Privacy Policy', _getPrivacyPolicy()),
                         isRequired: true,
                       ),
-                      
+
                       const SizedBox(height: 16),
-                      
+
                       // Marketing consent (optional)
                       _buildConsentItem(
                         title: 'I agree to receive marketing updates',
@@ -185,33 +183,37 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                         onReadMore: () => _showDocument('Marketing Communications', _getMarketingPolicy()),
                         isRequired: false,
                       ),
-                      
+
                       const SizedBox(height: 32),
-                      
-                      // Privacy assurance
+
+                      // Privacy assurance - UX compliant card
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: DesertColors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: DesertColors.primary.withValues(alpha: 0.2),
-                          ),
+                          color: DesertColors.westernSunrise.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(24), // UX Framework: 24px radius
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.08),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Row(
                           children: [
                             Icon(
                               Icons.security,
-                              color: DesertColors.primary,
-                              size: 20,
+                              color: DesertColors.westernSunrise,
+                              size: 24,
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 'Your data is encrypted and secure. You can change these preferences anytime in settings.',
                                 style: TextStyle(
-                                  fontSize: 12,
-                                  color: DesertColors.onSecondary,
+                                  fontSize: 13,
+                                  color: DesertColors.treeBranch,
                                   height: 1.4,
                                 ),
                               ),
@@ -223,74 +225,22 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
-              // Create Account button (changed from Continue)
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: _canContinue
-                      ? () {
-                          // Store consent and navigate directly to welcome screen
-                          context.go('/welcome');
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _canContinue
-                        ? DesertColors.caramelDrizzle
-                        : DesertColors.surface,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    disabledBackgroundColor: DesertColors.surface,
-                    disabledForegroundColor: DesertColors.onSurface.withValues(alpha: 0.5),
-                  ),
-                  child: Text(
-                    'Create Account',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+
+              // Create Account button - UX Framework compliant
+              OdyseyaButton.primary(
+                text: 'Create Account',
+                onPressed: _canContinue
+                    ? () {
+                        // Store consent and navigate directly to welcome screen
+                        context.go('/welcome');
+                      }
+                    : null,
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildDataItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Icon(
-              Icons.check_circle,
-              size: 14,
-              color: DesertColors.primary,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 12,
-                color: DesertColors.onSecondary,
-                height: 1.4,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -304,19 +254,21 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
     required bool isRequired,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20), // UX Framework: 20px padding
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(24), // UX Framework: 24px radius
         border: Border.all(
-          color: DesertColors.surface,
-          width: 1,
+          color: value
+              ? DesertColors.westernSunrise.withValues(alpha: 0.4)
+              : DesertColors.creamBeige,
+          width: value ? 1.5 : 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withValues(alpha: 0.08), // UX Framework: shadow level 1
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -329,12 +281,15 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 2),
                 child: SizedBox(
-                  width: 20,
-                  height: 20,
+                  width: 24,
+                  height: 24,
                   child: Checkbox(
                     value: value,
                     onChanged: onChanged,
-                    activeColor: DesertColors.caramelDrizzle,
+                    activeColor: DesertColors.westernSunrise, // UX Framework: Primary Action
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
@@ -352,7 +307,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: DesertColors.onSurface,
+                              color: DesertColors.brownBramble, // UX Framework: Primary text
                             ),
                           ),
                         ),
@@ -362,7 +317,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.red,
+                              color: Colors.red.shade700,
                             ),
                           ),
                       ],
@@ -372,7 +327,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                       subtitle,
                       style: TextStyle(
                         fontSize: 14,
-                        color: DesertColors.onSecondary,
+                        color: DesertColors.treeBranch, // UX Framework: Secondary text
                         height: 1.4,
                       ),
                     ),
@@ -383,8 +338,8 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                         'Read more',
                         style: TextStyle(
                           fontSize: 14,
-                          color: DesertColors.caramelDrizzle,
-                          fontWeight: FontWeight.w500,
+                          color: DesertColors.westernSunrise, // UX Framework: Accent
+                          fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline,
                         ),
                       ),
