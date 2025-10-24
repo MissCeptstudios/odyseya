@@ -98,24 +98,7 @@ class AuthChoiceScreen extends StatelessWidget {
                             width: MediaQuery.of(context).size.width * 0.42,
                             fit: BoxFit.contain,
                           ),
-                          const SizedBox(height: 12),
-
-                          // Tagline
-                          Text(
-                            'Your voice. Your journey.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'CormorantGaramond',
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.3,
-                              height: 1.3,
-                              color: Color(0xFF57351E),
-                            ),
-                          ),
-
-                          // Divider between sections
-                          const SizedBox(height: 36),
+                          const SizedBox(height: 24),
 
                           // Poetic Quote
                           Text(
@@ -203,7 +186,8 @@ class AuthChoiceScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
+              );
+              },
             ),
           ),
         ],

@@ -48,7 +48,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
     return Scaffold(
       backgroundColor: DesertColors.creamBeige,
       appBar: AppBar(
-        backgroundColor: DesertColors.creamBeige,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         iconTheme: const IconThemeData(color: DesertColors.onSurface),
@@ -72,65 +72,80 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
           ),
         ),
       ),
-      body: Column(
-          children: [
-            const SizedBox(height: 24),
-            // "How are you feeling?" section - no card background
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Text(
-                'How are you feeling?',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 32,
-                  fontWeight: FontWeight.w600,
-                  color: DesertColors.brownBramble, // Primary Brown
+      extendBodyBehindAppBar: false,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Full-screen background image
+          Image.asset(
+            'assets/images/Background.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+
+          // Content overlay
+          Column(
+            children: [
+              const SizedBox(height: 24),
+              // "How are you feeling?" section - no card background
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Text(
+                  'How are you feeling?',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    color: DesertColors.brownBramble, // Primary Brown
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Expanded(
-              child: SwipeableMoodCards(
-                moods: Mood.defaultMoods,
-                onMoodSelected: _onMoodSelected,
-                selectedMood: moodState.selectedMood,
+              const SizedBox(height: 24),
+              Expanded(
+                child: SwipeableMoodCards(
+                  moods: Mood.defaultMoods,
+                  onMoodSelected: _onMoodSelected,
+                  selectedMood: moodState.selectedMood,
+                ),
               ),
-            ),
-            SafeArea(
-              top: false,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: ElevatedButton(
-                    onPressed: moodState.selectedMood != null
-                        ? _onContinue
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: moodState.selectedMood != null
-                          ? const Color(0xFFD8A36C) // Primary Caramel per UX framework
-                          : const Color(0xFFD8A36C).withValues(alpha: 0.4), // Disabled state
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16), // Per UX framework
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: moodState.selectedMood != null
+                          ? _onContinue
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: moodState.selectedMood != null
+                            ? const Color(0xFFD8A36C) // Primary Caramel per UX framework
+                            : const Color(0xFFD8A36C).withValues(alpha: 0.4), // Disabled state
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16), // Per UX framework
+                        ),
+                        shadowColor: Colors.black.withValues(alpha: 0.08),
+                        disabledBackgroundColor: const Color(0xFFD8A36C).withValues(alpha: 0.4),
+                        disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
                       ),
-                      shadowColor: Colors.black.withValues(alpha: 0.08),
-                      disabledBackgroundColor: const Color(0xFFD8A36C).withValues(alpha: 0.4),
-                      disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
-                    ),
-                    child: Text(
-                      moodState.selectedMood != null
-                          ? 'CONTINUE TO JOURNAL'
-                          : 'SELECT A MOOD',
-                      style: OdyseyaTypography.buttonLarge,
+                      child: Text(
+                        moodState.selectedMood != null
+                            ? 'CONTINUE TO JOURNAL'
+                            : 'SELECT A MOOD',
+                        style: OdyseyaTypography.buttonLarge,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ],
       ),
     );
   }
