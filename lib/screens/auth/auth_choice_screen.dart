@@ -20,112 +20,117 @@ class AuthChoiceScreen extends StatelessWidget {
             height: double.infinity,
           ),
 
-          // Content overlay - centered vertically
+          // Content overlay - centered vertically with improved layout
           SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-                child: Container(
-                  padding: const EdgeInsets.all(32.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.12),
-                        blurRadius: 16,
-                        offset: const Offset(0, 6),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Responsive padding based on screen height
+                final verticalPadding = constraints.maxHeight * 0.05;
+                final horizontalPadding = constraints.maxWidth * 0.06;
+
+                return Center(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding.clamp(20.0, 32.0),
+                      vertical: verticalPadding.clamp(16.0, 32.0),
+                    ),
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxWidth: 480, // Maximum width for better readability
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // ZWARTA SEKCJA LOGO - Kompas + Odyseya + Podtytuł jako jedno spójne logo
-
-                      // Compass Logo
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        height: MediaQuery.of(context).size.width * 0.35,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // Inner compass graphic (blue crown)
-                            Image.asset(
-                              'assets/images/inside_compass.png',
-                              width: MediaQuery.of(context).size.width * 0.23,
-                              height: MediaQuery.of(context).size.width * 0.23,
-                              fit: BoxFit.contain,
-                            ),
-                            // Outer compass ring
-                            Image.asset(
-                              'assets/images/just_compass.png',
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              height: MediaQuery.of(context).size.width * 0.35,
-                              fit: BoxFit.contain,
-                            ),
-                          ],
-                        ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 28.0,
+                        vertical: 36.0,
                       ),
-                      const SizedBox(height: 4), // Bardzo mały gap - spójne logo
-
-                      // App Name Logo - bardzo blisko kompasu
-                      Image.asset(
-                        'assets/images/Odyseya_word.png',
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        fit: BoxFit.contain,
-                      ),
-                      const SizedBox(height: 8), // Bardzo mały gap - spójne logo
-
-                      // Tagline - bardzo blisko logo, część spójnej sekcji logo
-                      Text(
-                        'Your voice. Your journey.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'CormorantGaramond',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.5,
-                          height: 1.3,
-                          color: Color(0xFF57351E),
-                          shadows: [
-                            Shadow(
-                              offset: Offset(0.5, 0.5),
-                              blurRadius: 1.0,
-                              color: Color.fromARGB(15, 0, 0, 0),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // DUŻA PRZERWA po sekcji logo
-                      const SizedBox(height: 40),
-
-                      // DOLNA CZĘŚĆ - Cytat poetycki
-                      // Poetic Quote - większy akcent, oddzielony od góry
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          'Like a desert wanderer,\ndiscover your true self\nin the silence of your path',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'CormorantGaramond',
-                            fontSize: 19,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: -0.3,
-                            height: 1.45,
-                            color: Color(0xFF57351E),
-                            shadows: [
-                              Shadow(
-                                offset: Offset(0.5, 0.5),
-                                blurRadius: 1.5,
-                                color: Color.fromARGB(20, 0, 0, 0),
-                              ),
-                            ],
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 24,
+                            offset: const Offset(0, 8),
+                            spreadRadius: 0,
                           ),
-                        ),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 32),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // ZWARTA SEKCJA LOGO - Kompas + Odyseya + Podtytuł
+
+                          // Compass Logo
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.28,
+                            height: MediaQuery.of(context).size.width * 0.28,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Inner compass graphic (blue crown)
+                                Image.asset(
+                                  'assets/images/inside_compass.png',
+                                  width: MediaQuery.of(context).size.width * 0.19,
+                                  height: MediaQuery.of(context).size.width * 0.19,
+                                  fit: BoxFit.contain,
+                                ),
+                                // Outer compass ring
+                                Image.asset(
+                                  'assets/images/just_compass.png',
+                                  width: MediaQuery.of(context).size.width * 0.28,
+                                  height: MediaQuery.of(context).size.width * 0.28,
+                                  fit: BoxFit.contain,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          // App Name Logo
+                          Image.asset(
+                            'assets/images/Odyseya_word.png',
+                            width: MediaQuery.of(context).size.width * 0.42,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Tagline
+                          Text(
+                            'Your voice. Your journey.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'CormorantGaramond',
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.3,
+                              height: 1.3,
+                              color: Color(0xFF57351E),
+                            ),
+                          ),
+
+                          // Divider between sections
+                          const SizedBox(height: 36),
+
+                          // Poetic Quote
+                          Text(
+                            'Like a desert wanderer,\ndiscover your true self\nin the silence of your path',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'CormorantGaramond',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: -0.2,
+                              height: 1.5,
+                              color: Color(0xFF57351E),
+                            ),
+                          ),
+                          const SizedBox(height: 36),
 
                       // Sign In Button (Primary Button - 56px height, 16px radius)
                       Container(
