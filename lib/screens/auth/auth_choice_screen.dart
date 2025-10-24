@@ -41,7 +41,8 @@ class AuthChoiceScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // GÓRNA CZĘŚĆ - Logo + Tytuł + Podtytuł
+                      // ZWARTA SEKCJA LOGO - Kompas + Odyseya + Podtytuł jako jedno spójne logo
+
                       // Compass Logo
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.35,
@@ -66,27 +67,27 @@ class AuthChoiceScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4), // Bardzo mały gap - spójne logo
 
-                      // App Name Logo - TYTUŁ (zaraz pod kompasem)
+                      // App Name Logo - bardzo blisko kompasu
                       Image.asset(
                         'assets/images/Odyseya_word.png',
                         width: MediaQuery.of(context).size.width * 0.45,
                         fit: BoxFit.contain,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8), // Bardzo mały gap - spójne logo
 
-                      // Tagline - PODTYTUŁ (ten sam kolor co logo Odyseya - wizualnie spójne)
+                      // Tagline - bardzo blisko logo, część spójnej sekcji logo
                       Text(
                         'Your voice. Your journey.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'CormorantGaramond',
-                          fontSize: 17,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.5,
                           height: 1.3,
-                          color: Color(0xFF57351E), // Ten sam kolor co logo dla spójności
+                          color: Color(0xFF57351E),
                           shadows: [
                             Shadow(
                               offset: Offset(0.5, 0.5),
@@ -96,7 +97,9 @@ class AuthChoiceScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 32),
+
+                      // DUŻA PRZERWA po sekcji logo
+                      const SizedBox(height: 40),
 
                       // DOLNA CZĘŚĆ - Cytat poetycki
                       // Poetic Quote - większy akcent, oddzielony od góry

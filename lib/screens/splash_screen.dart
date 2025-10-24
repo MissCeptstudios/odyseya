@@ -124,9 +124,10 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
 
-                SizedBox(height: compassSize * 0.12),
+                // Bardzo mały gap - logo zlizane jak na zdjęciu
+                const SizedBox(height: 4),
 
-                // "Odyseya" text from UX folder - bigger size
+                // "Odyseya" text from UX folder - bardzo blisko kompasu
                 Image.asset(
                   'assets/images/Odyseya_word.png',
                   width: compassSize * 1.4,
