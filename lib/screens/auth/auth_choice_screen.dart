@@ -141,7 +141,7 @@ class AuthChoiceScreen extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'SIGN IN',
+                            'BACK TO YOUR JOURNEY',
                             style: OdyseyaTypography.buttonLarge,
                           ),
                         ),
@@ -195,3 +195,4 @@ class AuthChoiceScreen extends StatelessWidget {
     );
   }
 }
+r 

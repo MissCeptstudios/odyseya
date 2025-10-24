@@ -87,12 +87,13 @@ class _MoodCardState extends State<MoodCard>
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: widget.isSelected
-                        ? DesertColors.buttonSelectedBorder
-                        : DesertColors.buttonUnselectedBorder,
-                    width: 2,
-                  ),
+                  // Only show border when selected
+                  border: widget.isSelected
+                      ? Border.all(
+                          color: DesertColors.buttonSelectedBorder,
+                          width: 2,
+                        )
+                      : null,
                   boxShadow: [
                     // Soft ambient shadow
                     BoxShadow(
