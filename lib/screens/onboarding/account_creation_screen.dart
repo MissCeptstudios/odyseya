@@ -102,7 +102,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: DesertColors.waterWash.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: DesertColors.waterWash.withValues(alpha: 0.3),
               ),
@@ -191,7 +191,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isPrimary ? DesertColors.primary : DesertColors.surface,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isPrimary 
                 ? DesertColors.primary 
@@ -258,7 +258,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: DesertColors.accent.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: DesertColors.accent.withValues(alpha: 0.3),
           ),
@@ -514,7 +514,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -537,7 +537,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -563,7 +563,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                     suffixIcon: IconButton(
@@ -597,7 +597,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                     filled: true,
                     fillColor: DesertColors.waterWash.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                     suffixIcon: IconButton(
@@ -622,29 +622,34 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                 const SizedBox(height: 24),
 
                 // Sign Up Button
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: DesertColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                SizedBox(
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: DesertColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
+                      shadowColor: Colors.transparent,
                     ),
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            'Create Account',
+                            style: OdyseyaTypography.button,
                           ),
-                        )
-                      : Text(
-                          'Create Account',
-                          style: OdyseyaTypography.button,
-                        ),
+                  ),
                 ),
                 const SizedBox(height: 16),
               ],

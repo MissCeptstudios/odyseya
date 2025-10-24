@@ -1,208 +1,144 @@
-# 🌞 Odyseya UX Design System — Full Specification (v1.4)
-
-## 🔮 Brand Concept
-
-Odyseya is an emotional journaling app — calm, reflective, and minimalist.
-
-**Core theme:** "Desert calm meets emotional clarity."
-
-Colors, typography, and visual spacing are designed to express peace, warmth, and emotional balance.
-
----
-
-## 🎨 1. Color Palette
-
-| Name | HEX Code | Usage |
-|------|----------|-------|
-| **Primary Brown (Bramble)** | `#57351E` | Main text, headers, interface elements |
-| **Accent Caramel (Primary Action)** | `#D8A36C` | Primary buttons, active borders |
-| **Light Caramel (Secondary)** | `#DBAC80` | Gradient backgrounds, warmth highlights |
-| **Highlight Blue (Calm Blue)** | `#C6D9ED` | Active states, emotional highlights |
-| **Muted Brown (Tree Branch)** | `#8B7362` | Descriptive text, placeholders |
-| **Background Sand (Base)** | `#F9F5F0` | App background |
-| **Card White** | `#FFFFFF` | Widget, card, and field backgrounds |
-| **Shadow Grey** | `rgba(0,0,0,0.08)` | Subtle shadow under elements |
-
-### Gradients:
-- **Desert Dawn:** `#DBAC80 → #FFFFFF`
-- **Western Sunrise:** `#D8A36C → #FFFFFF`
-- **Arctic Glow:** `#C6D9ED → #FFFFFF`
-- **Bramble Depth:** `#57351E (20%) → #FFFFFF (85%)`
-
-All gradients flow toward white with soft, seamless transitions.
-
----
-
-## ✍️ 2. Typography
-
-**Font:** Inter
-
-### Color Usage:
-- **Primary text:** `#57351E`
-- **Secondary text:** `#8B7362`
-- **Accent:** `#D8A36C`
-- **Button text:** `#FFFFFF`
-
-| Style | Size | Weight | Usage |
-|-------|------|--------|-------|
-| **H1 Large** | 32 pt | 600 | "What's on your mind today?" |
-| **H1** | 24 pt | 600 | "Today's affirmation", section headers |
-| **H2** | 18–20 pt | 600 | Card titles, subsections |
-| **Body** | 16 pt | 400 | Main journal text |
-| **Body Small** | 14 pt | 400 | Secondary body text |
-| **Secondary** | 14 pt | 400 | Subtitles, descriptions |
-| **Button** | 16–18 pt | 600 | Button text |
-| **Caption** | 12–13 pt | 300 | Hints, metadata, timestamps |
-
----
-
-## 🔘 3. Buttons
-
-### Primary Button
-
-| State | Background | Text | Border | Shadow |
-|-------|------------|------|--------|--------|
-| **Default** | `#D8A36C` | `#FFFFFF` | none | `0 4 8 rgba(0,0,0,0.08)` |
-| **Hover/Focus** | `#C18E57` | `#FFFFFF` | 2 px white border | `0 4 8 rgba(0,0,0,0.10)` |
-| **Disabled** | `rgba(216,163,108,0.4)` | `rgba(255,255,255,0.7)` | none | none |
-
-- 📏 **Height:** 56 px
-- 🟤 **Corner Radius:** 24 px
-- 🕊️ **Animation:** fade-in/out 200 ms (ease-in-out)
-
-### Functional Button / Keyword Chip
-
-| State | Background | Text | Border | Shadow |
-|-------|------------|------|--------|--------|
-| **Unselected** | `#FFFFFF` | `#57351E` | 1.5 px `#D8A36C` | `0 2 6 rgba(0,0,0,0.06)` |
-| **Selected** | `#C6D9ED` | `#FFFFFF` | 2 px `#FFFFFF` | `0 4 8 rgba(0,0,0,0.08)` |
-
-- 📏 **Radius:** 24 px
-- 🎞️ **Animation:** 0.2 s ease-in-out
-- ⚙️ **Use:** emotion tags, message style choices, filters
-
----
-
-## 🏜️ 4. Fields & Cards
-
-| State | Background | Border | Shadow | Description |
-|-------|------------|--------|--------|-------------|
-| **Inactive** | `#FFFFFF` | none | `0 4 8 rgba(0,0,0,0.08)` | Default state |
-| **Active** | `#FFFFFF` | 1.5 px solid `#D8A36C` | `0 4 8 rgba(0,0,0,0.10)` | Selected state |
-| **Disabled** | `#F9F5F0` | none | none | Disabled |
-
-- 📏 **Radius:** 24 px
-- 📐 **Padding:** 20 px
-- 🧠 **Text:** Inter Regular 16 pt
-- 🌫️ **Shadow:** soft, diffused, neutral grey
-
----
-
-## 🧭 5. Bottom Navigation (Bottom Strap)
-
-| State | Color | Description |
-|-------|-------|-------------|
-| **Inactive Icon** | `#7A4C25` | Warm brown |
-| **Active Icon** | `#D8A36C` | Light caramel |
-| **Background** | `#FFFFFF` | Clean white |
-
-- 📏 **Height:** 84 px
-- 📐 **Top radius:** 24 px
-- 💨 **Shadow:** `0 -2 6 rgba(0,0,0,0.04)`
-
----
-
-## ☁️ 6. Shadows & Elevation
-
-| Level | Value | Usage |
-|-------|-------|-------|
-| **0** | none | Flat UI |
-| **1** | `0 4 8 rgba(0,0,0,0.08)` | Cards, buttons |
-| **2** | `0 2 4 rgba(0,0,0,0.10)` | Active elements |
-| **3** | `0 -2 6 rgba(0,0,0,0.04)` | Bottom navigation |
-| **Modal** | `0 4 12 rgba(0,0,0,0.10)` | Panels, snackbars |
-
-🧘‍♀️ Always soft, subtle, without harsh outlines.
-
----
-
-## 💫 7. Motion & Interactions
-
-- **Animation duration:** 200–300 ms
-- **Easing:** cubic-bezier(0.4, 0, 0.2, 1)
-- **Focus / Select:** soft fade + gentle lift
-- **Button click:** slight scale 0.98 → 1.0
-- **Modal open:** fade + slide-up (ease-out)
-- **Toast:** fade-in/out (3 s)
-
----
-
-## 🧩 8. Core Components
-
-| Component | Description | Status |
-|-----------|-------------|--------|
-| **PrimaryButton** | main CTA | ✅ |
-| **FunctionalButton** | tag / style selector | ✅ |
-| **InputCard** | journal field | ✅ |
-| **MoodSlider** | emotion selector (gradient track) | ✅ |
-| **AffirmationCard** | daily quote card | ✅ |
-| **ModalSheet** | bottom option panel | ✅ |
-| **Toast/Snackbar** | feedback notification | ✅ |
-
----
-
-## 🌿 9. Consistency Rules
-
-| Element | Rule |
-|---------|------|
-| **Corner radius** | 24 px (modal 32 px, toast 16 px) |
-| **Grid** | 8 px spacing |
-| **Text color** | always `#57351E` or `#8B7362` |
-| **Gradients** | always fade toward white |
-| **Animations** | calm, smooth transitions |
-| **Visual tone** | warm, minimalist, reflective |
-| **Whitespace** | generous for balance and breathing room |
-| **Icon style** | outline / minimal, pastel tones |
-
----
-
-## 💭 10. Microinteractions & Behaviors
-
-- Cards and buttons **lift gently** on tap
-- Selecting a field adds a thin **#D8A36C border**
-- Button press triggers **subtle pulse or scale**
-- Toast appears for **3 seconds** at the bottom (fade)
-- App maintains **rhythmic calm**: no abrupt transitions
-
----
-
-## 🧠 11. Claude Code System Prompt
-
-### 🎯 Claude Code Design Enforcement Prompt — Odyseya
-
-**Instruction:**
-
-When creating or updating any screen in the Odyseya app, strictly follow the guidelines in "Odyseya Design System v1.4."
-
-Maintain full consistency across colors, typography, borders, shadows, motion, and components.
-
-**Apply:**
-
-- **Color palette:** Brown `#57351E`, Caramel `#D8A36C`, Blue `#C6D9ED`, White `#FFFFFF`, Muted `#8B7362`
-- **Font:** Inter (400, 500, 600)
-- **Corner radius:** 24 px (global standard)
-- **Shadow:** `0 4 8 rgba(0,0,0,0.08)`
-- **Buttons:** caramel-filled (Primary) or white with caramel border (Functional)
-- **Active states:** thin `#D8A36C` border + soft shadow
-- **Background:** `#F9F5F0`, cards `#FFFFFF`
-- **Animations:** smooth 200–300 ms, ease-in-out
-- **Whitespace:** generous, calm spacing
-- **Bottom navigation:** active icon `#D8A36C`, inactive `#7A4C25`
-
-Every Odyseya screen should feel like part of a **tranquil desert landscape**.
-
-Colors, gradients, and motion must evoke **emotional clarity and warmth**.
-
----
-
-🔒 **Claude Code must consistently apply these design rules to all components, widgets, and layouts within the Odyseya ecosystem.**
+🏜️ Odyseya UI Design System — v2.0 (Production Guide)
+“Soft motion, pastel shadows, no clutter, no rush.”
+Visual identity for the emotional journaling app Odyseya — calm, poetic, and desert-inspired.
+🔮 1. Brand Essence
+Odyseya is a calm, reflective, minimalist emotional journaling app — a poetic desert journey guided by inner direction.
+Everything in the UI should feel slow, warm, and intentional.
+Core Flow: Inspiration → Action → Reflection → Renewal
+Core Theme: “Desert calm meets emotional clarity.”
+🎨 2. Color Palette (Finalized)
+Name	HEX	Description	Usage
+Brown Bramble	#57351E	Deep grounding brown	Titles, active icons
+Tree Branch	#8B7362	Muted brown	Secondary text
+Western Sunrise	#D8A36C	Warm golden brown	Buttons, accents
+Caramel Drizzle	#DBAC80	Light sandy caramel	Gradients, warmth
+Arctic Rain	#C6D9ED	Soft sky blue	Calm contrast color
+Water Wash	#AAC6E5	Misty blue	Accent backgrounds
+Light Sand	#F9F5F0	Soft beige white	Main app background
+Pure White	#FFFFFF	Cards, surfaces	Reading areas
+Gradients
+Desert Dawn: #DBAC80 → #FFFFFF
+Western Sunrise: #D8A36C → #FFFFFF
+Arctic Glow: #C6D9ED → #FFFFFF
+Always fading toward white for light and calm feel.
+✍️ 3. Typography System
+Use	Font	Size	Weight	Color
+App header (Hi Joanna)	Inter	22–24 pt	600	#57351E
+Section Titles (H1)	Inter	24–32 pt	600	#57351E
+Body Text	Inter	16 pt	400	#57351E
+Secondary Text	Inter	14 pt	400	#8B7362
+Captions	Inter	12–13 pt	300	#8B7362
+Affirmations / AI Reflections	Cormorant Garamond Italic	26–30 pt	500	#57351E
+Affirmation font is poetic, soft, and expressive — never bold or mechanical.
+🧭 4. Header & Navigation
+Top Header Layout
+← Hi, Joanna                                  ⚙️
+Font: Inter 24 pt, weight 600
+Color: #57351E
+Left: Back arrow
+Right: Settings (gear icon)
+Optional subtitle: “How are you feeling today?”
+Bottom Navigation Bar
+Tab	Icon	Label	Description
+🌅 Inspiration	Light bulb / sunrise	Affirmation screen	Poetic daily quote
+✏️ Action	Pen / mic	Journal + Mood	Write, record, or upload
+📊 Reflection	Chart / calendar	Calendar & Insights	Mood tracking
+🌿 Renewal	Leaf / spark	Self-helper	Breathing, manifestation, letter
+Behavior:
+State	Icon color
+Inactive	#D8A36C (Western Sunrise)
+Active	#57351E (Brown Bramble)
+Background: white
+Top radius: 24 px
+Height: 84 px
+Shadow: 0 -2 6 rgba(0,0,0,0.05)
+Transition: fade 250 ms
+🪶 5. Logo Specifications
+Use	File	Size	Notes
+Main Logo (Splash)	Odyseya.png	width 220 px	Centered hero logo
+Compact Logo (AppBar)	Just_compass.png	width 48 px	Optional beside title
+App Icon	Compass.png	512×512	Store / launcher
+Maintain 16 px margin from screen edges.
+🌅 6. Background Logic
+Visual Modes
+Type	Use	Background
+Calm (emotional)	Journaling, Reflection, Affirmation	Gradient + Compass overlay
+Plain (focused)	GDPR, Onboarding, Settings, Paywall	Flat white
+Compass Background Map
+Screen	File	Placement	Opacity
+Splash	Odyseya.png	Center	0.35
+Affirmation	Just_compass.png	Bottom-right	0.25
+Journal / Mood	inside_compass.png	Center	0.20
+Reflection	Compass.png + background.png	Top-left	0.25
+Renewal	Just_compass.png	Bottom-center	0.25
+GDPR / Onboarding / Settings	—	White background	—
+🧩 7. Corner Radius System
+Unified curvature across all UI elements.
+Element	Radius
+Buttons (all)	16 px
+Cards / Fields / Widgets	16 px
+Modals / Bottom Sheets (top only)	32 px
+Toasts / Snackbars	12 px
+Avatars / Photos	circular / 16 px clip
+Bottom Navigation (top)	24 px
+“If it touches the user’s focus zone, it has a 16 px curvature.”
+🔘 8. Components
+Component	Spec	Notes
+Primary Button	60 px height, 16 px radius, #D8A36C background	Hover: lighter caramel
+Functional Button (Chip)	White fill, caramel border, 16 px radius	Selected → Calm Blue
+Input Field / Journal Card	White, soft shadow, caramel border on focus	Padding 20 px
+Affirmation Card	White with 16 px radius	Poetic font
+ModalSheet	32 px top corners	Slide-up motion
+Toast	12 px radius	Fades in/out in 3 s
+☁️ 9. Shadows & Motion
+Element	Shadow	Motion
+Cards / Buttons	0 4 8 rgba(0,0,0,0.08)	fade/scale 200 ms
+Modals	0 4 12 rgba(0,0,0,0.10)	slide-up 250 ms
+Toasts	light soft	fade-in/out 3 s
+Compass	slow rotation 10–15°, 10s loop	opacity pulse 0.2–0.3
+All transitions use ease-in-out curve (0.4, 0, 0.2, 1).
+💭 10. Affirmation & AI Poetic Layer
+Affirmation Font
+GoogleFonts.cormorantGaramond(
+  fontSize: 28,
+  fontStyle: FontStyle.italic,
+  color: Color(0xFF57351E),
+  height: 1.3,
+);
+AI Reflection ("Odyseya Mirror")
+“Your words carry the warmth of calm dunes — a soft echo of understanding.”
+Displayed under each journal entry as a poetic insight card.
+🧱 11. Layout Constants
+Constant	Value
+Screen Padding	24 px
+Grid Spacing	8 px
+Corner Radius (global)	16 px
+Modal Radius	32 px
+Toast Radius	12 px
+Header Height	72 px
+Bottom Nav Height	84 px
+📅 12. MVP Phases
+Phase	Features	Description
+MVP1	Splash, Auth, Onboarding, Affirmation, Mood, Journal (voice/text/photo), AI Light, Calendar, Settings	Core journaling experience
+MVP2	Self-helper tools (breathing, manifestation, letter to self), weekly AI insights, book suggestions	Deeper renewal features
+🪞 13. Emotional UI Summary
+Phase	Feeling	Focus
+Inspiration	Calm, grounded	Affirmation
+Action	Expressive, honest	Journaling
+Reflection	Insightful, balanced	Understanding
+Renewal	Restorative, hopeful	Healing & growth
+🧠 14. Implementation Prompt (Claude / Flutter)
+Instruction:
+Apply desert gradient background (#DBAC80 → #FFFFFF) or white (for GDPR/onboarding).
+Always include top header with greeting, arrow, and settings.
+Bottom navigation with 4 tabs — active color #57351E, inactive #D8A36C.
+All corners 16 px, modals 32 px top, toasts 12 px.
+Affirmations and AI reflections must use Cormorant Garamond Italic.
+Font colors and shadows must match the palette above.
+Motions smooth and poetic — never abrupt.
+✅ Final Rule
+Every screen in Odyseya should feel like a breath.
+The white cards float gently on desert gradients.
+The compass turns slowly, reminding the user of direction.
+The corners curve softly, as if shaped by wind.
+And every word — whether written or spoken — rests in calm, golden light.

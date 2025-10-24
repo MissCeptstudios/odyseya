@@ -25,7 +25,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
         ),
         title: Text(
           title,
@@ -71,6 +71,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: DesertColors.brownBramble),
@@ -78,49 +79,13 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
         ),
       ),
       body: SafeArea(
+        top: false,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Odyseya Logo and Compass at the top
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Compass icon
-                  Image.asset(
-                    'assets/images/inside_compass.png',
-                    height: 48,
-                    width: 48,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(
-                        Icons.explore,
-                        size: 48,
-                        color: DesertColors.westernSunrise,
-                      );
-                    },
-                  ),
-                  const SizedBox(width: 12),
-                  // Odyseya text logo
-                  Image.asset(
-                    'assets/images/Odyseya_word.png',
-                    height: 32,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Text(
-                        'Odyseya',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w600,
-                          color: DesertColors.brownBramble,
-                          fontFamily: 'Cormorant Garamond',
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
 
               // Title matching reference design
               Text(
@@ -191,7 +156,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: DesertColors.westernSunrise.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(24), // UX Framework: 24px radius
+                          borderRadius: BorderRadius.circular(16), // UX Framework: 24px radius
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.08),
@@ -257,7 +222,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
       padding: const EdgeInsets.all(20), // UX Framework: 20px padding
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24), // UX Framework: 24px radius
+        borderRadius: BorderRadius.circular(16), // UX Framework: 24px radius
         border: Border.all(
           color: value
               ? DesertColors.westernSunrise.withValues(alpha: 0.4)
@@ -480,11 +445,44 @@ We use the following trusted third-party services. Your data is NEVER sold.
 - Analytics: App usage patterns (anonymized)
 - Crashlytics: Crash reporting for app stability
 
-3.2 AI Processing Services
-- Voice transcription: Your voice recordings are sent to secure AI services for transcription
-- Emotional analysis: Journal text is analyzed by AI to generate insights
+3.2 AI Processing Services & Models (EU AI Act Transparency)
+
+We use the following AI models to enhance your journaling experience:
+
+OpenAI Whisper (Large-v3)
+- Purpose: Converts your voice recordings to text (speech-to-text transcription)
+- Processing: Your audio is sent securely to OpenAI's API, transcribed, then deleted from their servers
+- Data retention: OpenAI does not store or train models on your data
+- Provider: OpenAI (https://openai.com/policies/privacy-policy)
+
+OpenAI GPT-3.5-Turbo / GPT-4
+- Purpose: Generates reflective insights, mood analysis, and daily affirmations
+- Processing: Text-only analysis (no voice data sent to GPT models)
+- Data retention: OpenAI does not store or train models on your data
+- Provider: OpenAI (https://openai.com/policies/privacy-policy)
+
+Groq Llama 3 (Fallback AI)
+- Purpose: Alternative AI analysis if OpenAI is unavailable
+- Processing: Text-only, encrypted transmission
+- Data retention: No model training on your data
+- Provider: Groq (https://groq.com/privacy-policy)
+
+AI Risk Classification (EU AI Act Compliance):
+- Odyseya's AI system is classified as "Limited Risk" under the EU AI Act
+- Our AI provides reflective insights, NOT medical advice or therapy
+- AI suggestions are informational only and do not replace professional mental health support
+- You remain in full control of all decisions
+- No automated decision-making affects your legal rights
+
+Important Disclaimers:
+⚠️ Odyseya is NOT a mental health treatment tool
+⚠️ AI insights are NOT clinical diagnoses
+⚠️ If you are experiencing a mental health crisis, please contact a licensed professional or emergency services
+
+Your Rights Regarding AI:
+- You can disable AI analysis anytime in privacy settings
+- You can request human review of any AI-generated insight by contacting support
 - All AI processing is performed with enterprise-grade encryption
-- AI services do not train models on your personal data
 
 3.3 RevenueCat
 - Subscription management and in-app purchase processing
@@ -576,13 +574,27 @@ You have the following rights regarding your personal data:
 
 6. DATA RETENTION
 
-6.1 How Long We Keep Your Data
-- Voice Recordings: Until you delete them or close your account
-- Journal Entries: Until you delete them or close your account
-- Account Data: While your account is active, plus 30 days after deletion
-- Analytics Data: Anonymized, retained for up to 2 years
-- Backups: Deleted data removed from backups within 90 days
-- Legal Hold Data: Retained only as required by law
+6.1 Complete Data Retention Schedule
+
+| Data Type | Retention Period | After Deletion |
+|-----------|------------------|----------------|
+| Voice Recordings | Until you delete or close account | Deleted within 30 days |
+| Journal Entries | Until you delete or close account | Deleted within 30 days |
+| AI-Generated Insights | Same as journal entry | Deleted with entry |
+| Daily Affirmations (cached) | 90 days or until saved by user | Auto-deleted after 90 days |
+| Daily Affirmations (saved) | Until you delete or close account | Deleted within 30 days |
+| Mood Logs | Until you delete or close account | Deleted within 30 days |
+| Account Data (email, name, ID) | While account active + 30 days | Permanently deleted |
+| User Preferences & Settings | While account active + 30 days | Permanently deleted |
+| Subscription Data | While account active + 7 years | Required for tax/legal compliance |
+| Analytics Data (anonymized) | Anonymized within 48 hours, retained 2 years | No personal data after anonymization |
+| Crash Logs & Diagnostics | 90 days | Auto-deleted |
+| Authentication Tokens | Until logout or 30 days inactive | Auto-expired |
+| Notification Preferences | While account active + 30 days | Deleted with account |
+| Backups | Active backups purged within 90 days of deletion | N/A |
+| Legal Hold Data | Only as required by law | Deleted when legal hold lifted |
+
+All retention periods comply with GDPR Article 5(1)(e) - storage limitation principle.
 
 6.2 Account Deletion
 - You can delete your account anytime in settings
@@ -618,13 +630,42 @@ You have the following rights regarding your personal data:
 - Analytics: Firebase Analytics (can be disabled in settings)
 - No third-party advertising trackers
 
-10. CALIFORNIA PRIVACY RIGHTS (CCPA)
+10. CALIFORNIA PRIVACY RIGHTS (CCPA/CPRA)
 
-California residents have additional rights:
-- Right to know what personal information is collected
-- Right to delete personal information
-- Right to opt-out of sale (we don't sell data)
-- Right to non-discrimination for exercising privacy rights
+10.1 DO NOT SELL OR SHARE MY PERSONAL INFORMATION
+
+Odyseya does NOT sell or share your personal information for monetary or other valuable consideration.
+
+If you are a California resident, you have the right to opt-out of the sale or sharing of your personal information. However, because we do not engage in these practices, there is no need to opt-out.
+
+For clarity:
+✅ We do not sell personal data to third parties
+✅ We do not share data with advertisers
+✅ We do not participate in cross-context behavioral advertising
+✅ We do not sell or share sensitive personal information (including health/emotional data)
+
+To exercise your California privacy rights, contact us at odyseya.journal@gmail.com
+
+10.2 Additional California Rights (CCPA/CPRA)
+
+California residents have the following rights:
+- Right to Know: What personal information is collected, used, and shared
+- Right to Delete: Request deletion of your personal information
+- Right to Correct: Request correction of inaccurate personal information
+- Right to Opt-Out: Opt-out of sale/sharing (we don't sell, so this doesn't apply)
+- Right to Limit Use of Sensitive Personal Information: Control how we use emotional/health data
+- Right to Non-Discrimination: No penalty for exercising your privacy rights
+
+How to Exercise Your Rights:
+- Email: odyseya.journal@gmail.com
+- In-App: Settings → Privacy → Download My Data / Delete Account
+- Response Time: We respond within 10 business days and fulfill requests within 45 days
+
+10.3 Financial Incentives (CCPA Disclosure)
+
+Odyseya offers a 14-day free trial of premium features. This trial does not require you to provide additional personal data beyond your account information.
+
+We do not offer financial incentives in exchange for your personal data. The value of your personal data is not calculated or monetized by Odyseya.
 
 11. MARKETING COMMUNICATIONS
 

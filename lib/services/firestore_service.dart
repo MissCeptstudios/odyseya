@@ -48,11 +48,13 @@ class FirestoreService {
     }
   }
 
-  /// Get all journal entries for a user
-  Stream<List<JournalEntry>> getJournalEntries(String userId) {
+  /// Get journal entries for a user with optional limit for performance
+  /// Default limit of 20 entries - use getJournalEntriesInRange() for more specific queries
+  Stream<List<JournalEntry>> getJournalEntries(String userId, {int limit = 20}) {
     try {
       return _getUserJournalCollection(userId)
           .orderBy('createdAt', descending: true)
+          .limit(limit) // ⚡ Performance: Only load recent entries by default
           .snapshots()
           .map((snapshot) {
         return snapshot.docs.map((doc) {
@@ -168,17 +170,17 @@ class FirestoreService {
   }
 
   /// Search journal entries by transcription text
+  /// ⚡ Performance: Limited to last 50 entries for client-side search
+  /// For production full-text search, consider using Algolia or ElasticSearch
   Future<List<JournalEntry>> searchJournalEntries({
     required String userId,
     required String query,
+    int limit = 50,
   }) async {
     try {
-      // Note: Firestore doesn't support full-text search natively
-      // This is a simple implementation that fetches all entries and filters locally
-      // For production, consider using Algolia or ElasticSearch
       final snapshot = await _getUserJournalCollection(userId)
           .orderBy('createdAt', descending: true)
-          .limit(100) // Limit to last 100 entries for performance
+          .limit(limit) // ⚡ Limit search scope for performance
           .get();
 
       return snapshot.docs
@@ -265,9 +267,13 @@ class FirestoreService {
   }
 
   /// Get statistics for user's journal
+  /// ⚡ Performance: Limited to 100 most recent entries for stats calculation
   Future<Map<String, dynamic>> getJournalStats(String userId) async {
     try {
-      final snapshot = await _getUserJournalCollection(userId).get();
+      final snapshot = await _getUserJournalCollection(userId)
+          .orderBy('createdAt', descending: true)
+          .limit(100) // ⚡ Cap at 100 entries for performance
+          .get();
       final entries = snapshot.docs.map((doc) => _journalEntryFromFirestore(doc)).toList();
 
       // Calculate stats

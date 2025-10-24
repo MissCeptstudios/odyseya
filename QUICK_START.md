@@ -104,17 +104,33 @@ In Firebase Console → Firestore:
    - `email`: your-email@example.com
    - `createdAt`: (click "timestamp" and "now")
 
-## Step 8: Test (1 min)
+## Step 8: Test on Mobile (1 min)
 
-Run your Flutter app:
+Run your Flutter app on iOS or Android:
+
+**iOS Simulator:**
 ```bash
-flutter run
+open -a Simulator
+flutter run -d ios
+```
+
+**Android Emulator:**
+```bash
+flutter run -d android
+```
+
+**Physical Device:**
+```bash
+flutter devices  # List connected devices
+flutter run -d <device-id>
 ```
 
 Create a journal entry and verify:
 1. AI analysis appears
 2. Firebase Console → Functions shows invocation
 3. Firestore → users → {userId} → usage → shows count
+
+**Note:** Odyseya is mobile-only (iOS and Android). Web, macOS, Windows, and Linux are not supported.
 
 ## Done! 🎉
 

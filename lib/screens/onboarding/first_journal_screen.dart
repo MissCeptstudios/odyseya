@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
-import '../../screens/mood_selection_screen.dart';
+import '../action/mood_selection_screen.dart';
 
 class FirstJournalScreen extends ConsumerWidget {
   const FirstJournalScreen({super.key});
@@ -304,12 +305,9 @@ class FirstJournalScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
-                  'Let\'s Go!',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                child: Text(
+                  'LET\'S GO!',
+                  style: OdyseyaTypography.buttonLarge,
                 ),
               ),
             ),

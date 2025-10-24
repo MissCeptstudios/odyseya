@@ -34,9 +34,11 @@ class _AudioWaveformWidgetState extends State<AudioWaveformWidget>
   void initState() {
     super.initState();
 
+    // ⚡ Performance: Reduced from 50ms to 100ms (20 fps → 10 fps)
+    // Reduces widget rebuilds by 50% while maintaining smooth visual effect
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 50),
+      duration: const Duration(milliseconds: 100),
     )..repeat();
 
     // Initialize with zero amplitudes

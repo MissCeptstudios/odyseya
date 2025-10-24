@@ -25,8 +25,8 @@ class OdyseyaSpacing {
   static const double cardPadding = 20.0;
   static const double cardMargin = 12.0;
 
-  // Button spacing (Framework v1.4)
-  static const double buttonHeight = 56.0;  // Framework: 56px
+  // Button spacing (Framework v1.5)
+  static const double buttonHeight = 60.0;  // Framework: 60px (updated from 56px)
   static const double buttonVerticalSpacing = 8.0;
   static const double buttonHorizontalPadding = 32.0;
 
@@ -39,16 +39,16 @@ class OdyseyaSpacing {
   static const double sectionSpacingLarge = 32.0;
   static const double heroSpacing = 40.0;
 
-  // Border radius (Framework v1.4: Global standard 24px)
+  // Border radius (Framework v1.5: Global standard 16px)
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 12.0;
   static const double radiusLarge = 16.0;    // Toast: 16px
   static const double radiusXLarge = 20.0;
-  static const double radiusXXLarge = 24.0;  // Standard: 24px
-  static const double radiusCard = 24.0;     // Framework: Cards 24px
-  static const double radiusButton = 24.0;   // Framework: Buttons 24px
+  static const double radiusXXLarge = 24.0;  // Standard: 24px (deprecated for most uses)
+  static const double radiusCard = 16.0;     // Framework: Cards 16px (updated from 24px)
+  static const double radiusButton = 16.0;   // Framework: Buttons 16px (updated from 24px)
   static const double radiusModal = 32.0;    // Framework: Modals 32px
-  static const double radiusPill = 24.0;     // Framework: Changed from 28px to 24px
+  static const double radiusPill = 24.0;     // Framework: Pill style remains 24px
 
   // Icon sizes
   static const double iconSmall = 16.0;

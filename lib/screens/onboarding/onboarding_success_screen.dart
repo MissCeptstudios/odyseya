@@ -54,11 +54,19 @@ class _OnboardingSuccessScreenState extends State<OnboardingSuccessScreen>
     });
     
     // Auto-navigate after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
+    _autoNavigate();
+  }
+
+  Future<void> _autoNavigate() async {
+    try {
+      await Future.delayed(const Duration(seconds: 3));
       if (mounted) {
         context.go('/home');
       }
-    });
+    } catch (e) {
+      // Log error but continue - user can tap "Continue to App" button
+      debugPrint('Auto-navigation error: $e');
+    }
   }
 
   @override

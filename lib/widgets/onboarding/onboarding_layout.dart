@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
-import '../common/app_background.dart';
 
 class OnboardingLayout extends ConsumerStatefulWidget {
   final Widget child;
@@ -69,11 +68,8 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
     final onboardingData = ref.watch(onboardingProvider);
     final onboardingNotifier = ref.read(onboardingProvider.notifier);
 
-    return AppBackground(
-      useOverlay: true,
-      overlayOpacity: 0.9,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+        backgroundColor: DesertColors.creamBeige,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -181,7 +177,7 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
                 padding: const EdgeInsets.all(24),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 56,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: onboardingNotifier.canProceedFromCurrentStep
                         ? widget.onNext
@@ -200,9 +196,11 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
                     child: Text(
                       widget.nextButtonText,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
+                        letterSpacing: 1.0,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -212,7 +210,6 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
           ],
         ),
       ),
-    ),
     );
   }
 }

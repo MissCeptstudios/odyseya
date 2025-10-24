@@ -68,13 +68,7 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
                 index: 3,
                 isSelected: currentIndex == 3,
               ),
-              _buildNavItem(
-                context,
-                icon: Icons.settings_outlined,
-                label: 'Settings',
-                index: 4,
-                isSelected: currentIndex == 4,
-              ),
+              // Settings removed per UX requirements - now in top navigation
             ],
           ),
         ),

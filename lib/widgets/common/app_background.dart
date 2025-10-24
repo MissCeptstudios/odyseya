@@ -28,7 +28,11 @@ class AppBackground extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(BackgroundService.getCurrentBackground()),
+          image: ResizeImage(
+            AssetImage(BackgroundService.getCurrentBackground()),
+            width: 1080,  // ⚡ Performance: Cache at FHD resolution
+            height: 1920,
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -56,9 +60,13 @@ class AppBackground extends StatelessWidget {
             Opacity(
               opacity: 0.03,
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/background_day.png'),
+                    image: ResizeImage(
+                      const AssetImage('assets/images/background_day.png'),
+                      width: 1080,  // ⚡ Performance: Cache grain texture
+                      height: 1920,
+                    ),
                     fit: BoxFit.cover,
                     repeat: ImageRepeat.repeat,
                     opacity: 0.1,

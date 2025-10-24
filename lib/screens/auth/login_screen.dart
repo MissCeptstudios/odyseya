@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
 import '../../models/auth_user.dart';
 import '../../constants/typography.dart';
 import '../../constants/colors.dart';
+import '../../config/env_config.dart';
+import '../../widgets/auth/social_auth_buttons.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +21,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Auto-fill demo credentials in debug mode for easier testing
+    if (kDebugMode && !EnvConfig.isProduction) {
+      _emailController.text = 'demo@odyseya.app';
+      _passwordController.text = 'DemoPass123!';
+    }
+  }
 
   @override
   void dispose() {
@@ -53,16 +66,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Desert background
+          // Full-screen background image
           Image.asset(
-            'assets/images/Background_F.png',
+            'assets/images/Background.png',
             fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
 
-          // Content
+          // Content overlay
           SafeArea(
             child: Column(
               children: [
+                // Debug mode indicator
+                if (kDebugMode && !EnvConfig.isProduction)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      color: DesertColors.waterWash,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.bug_report,
+                          size: 14,
+                          color: DesertColors.brownBramble,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'DEBUG MODE - Auto-filled',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: DesertColors.brownBramble,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 // Back button
                 Align(
                   alignment: Alignment.topLeft,
@@ -110,11 +155,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                           const SizedBox(height: 40),
 
+                          // Social Auth Buttons
+                          SocialAuthButtons(
+                            onAppleSignIn: () {
+                              ref.read(authStateProvider.notifier).signInWithApple();
+                            },
+                            onGoogleSignIn: () {
+                              ref.read(authStateProvider.notifier).signInWithGoogle();
+                            },
+                            isLoading: authState.isLoading,
+                          ),
+
+                          // Divider
+                          const AuthDivider(),
+
                           // Email Field
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -140,7 +199,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 border: InputBorder.none,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 24,
-                                  vertical: 20,
+                                  vertical: 16,
                                 ),
                               ),
                               validator: (value) {
@@ -158,7 +217,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -184,7 +243,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 border: InputBorder.none,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 24,
-                                  vertical: 20,
+                                  vertical: 16,
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -246,7 +305,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 elevation: 0,
                                 shadowColor: Colors.black.withValues(alpha: 0.08),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
                               child: authState.isLoading
@@ -258,15 +317,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                       ),
                                     )
-                                  : const Text(
+                                  : Text(
                                       'SIGN IN',
+                                      style: OdyseyaTypography.buttonLarge,
+                                    ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Don't have an account? Sign up
+                          Center(
+                            child: GestureDetector(
+                              onTap: () => context.go('/signup'),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                      text: "Don't have an account? ",
+                                    ),
+                                    TextSpan(
+                                      text: 'Sign up',
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.white,
-                                        letterSpacing: 1.0,
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
 

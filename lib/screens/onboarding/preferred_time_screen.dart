@@ -144,7 +144,7 @@ class PreferredTimeScreen extends ConsumerWidget {
           children: [
             Container(
               width: 56,
-              height: 56,
+              height: 60,
               decoration: BoxDecoration(
                 color: isSelected 
                     ? iconColor.withValues(alpha: 0.2)

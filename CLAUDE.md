@@ -22,10 +22,15 @@ Create a safe, calm, and emotionally intelligent space where **anyone** can jour
 - Soft animations and supportive language that feel emotionally safe and welcoming to all
 
 ### Tech Stack:
-- Flutter (cross-platform mobile)
+- Flutter (iOS and Android mobile apps only)
 - Firebase (Authentication, Firestore, Storage, FCM)
 - Claude + OpenAI (Whisper + GPT)
 - RevenueCat for in-app purchases
+
+### Platform Support:
+- **iOS**: iPhone and iPad
+- **Android**: Phones and tablets
+- **NOT supported**: Web, macOS, Windows, Linux (mobile-first experience)
 
 ### Coding Standards:
 - Use Riverpod or Provider for scalable state management

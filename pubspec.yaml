@@ -71,7 +71,10 @@ dependencies:
 
   # HTTP requests
   http: ^1.1.0
-  
+
+  # Google Fonts
+  google_fonts: ^6.1.0
+
   # Settings storage
   shared_preferences: ^2.2.2
 
@@ -100,6 +103,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  widgetbook: ^3.18.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -120,6 +124,14 @@ flutter:
         - asset: fonts/CormorantGaramond-Regular.ttf
           weight: 400
 
+    # Sans-serif font for splash screen quote
+    - family: Josefin Sans
+      fonts:
+        - asset: fonts/JosefinSans-Regular.ttf
+          weight: 400
+        - asset: fonts/JosefinSans-SemiBold.ttf
+          weight: 600
+
   # Assets
   assets:
     - .env
@@ -131,6 +143,7 @@ flutter:
     - assets/images/inside_compass.png
     - assets/images/background_day.png
     - assets/images/background_desert.png
+    - assets/images/Background.png
     - assets/images/Background_F.png
     - assets/images/Dessert.png
     - assets/images/moods/

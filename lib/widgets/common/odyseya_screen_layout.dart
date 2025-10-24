@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../constants/typography.dart';
-import 'app_background.dart';
 import 'step_indicator.dart';
 import 'odyseya_button.dart';
 
@@ -48,11 +47,8 @@ class OdyseyaScreenLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBackground(
-      useOverlay: true,
-      overlayOpacity: 0.03,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+        backgroundColor: DesertColors.creamBeige,
         body: SafeArea(
           child: Column(
             children: [
@@ -90,7 +86,6 @@ class OdyseyaScreenLayout extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 

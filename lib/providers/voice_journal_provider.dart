@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/journal_entry.dart';
@@ -131,6 +132,9 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
   final AIAnalysisService _aiService;
   final Ref _ref;
 
+  // ⚡ Performance: Track stream subscriptions for proper disposal
+  final List<StreamSubscription> _subscriptions = [];
+
   VoiceJournalNotifier(
     this._recordingService,
     this._transcriptionService,
@@ -141,21 +145,33 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
   }
 
   void _setupListeners() {
-    // Listen to recording service streams
-    _recordingService.isRecording.listen((isRecording) {
-      state = state.copyWith(isRecording: isRecording);
-    });
+    // Listen to recording service streams and track subscriptions
+    _subscriptions.add(
+      _recordingService.isRecording.listen((isRecording) {
+        if (mounted) {
+          state = state.copyWith(isRecording: isRecording);
+        }
+      }),
+    );
 
-    _recordingService.recordingDuration.listen((duration) {
-      state = state.copyWith(recordingDuration: duration);
-    });
+    _subscriptions.add(
+      _recordingService.recordingDuration.listen((duration) {
+        if (mounted) {
+          state = state.copyWith(recordingDuration: duration);
+        }
+      }),
+    );
 
-    _recordingService.recordingState.listen((recordingState) {
-      state = state.copyWith(
-        isRecording: recordingState == RecordingState.recording,
-        isPaused: recordingState == RecordingState.paused,
-      );
-    });
+    _subscriptions.add(
+      _recordingService.recordingState.listen((recordingState) {
+        if (mounted) {
+          state = state.copyWith(
+            isRecording: recordingState == RecordingState.recording,
+            isPaused: recordingState == RecordingState.paused,
+          );
+        }
+      }),
+    );
   }
 
   // Mood Selection
@@ -446,6 +462,12 @@ class VoiceJournalNotifier extends StateNotifier<VoiceJournalState> {
 
   @override
   void dispose() {
+    // ⚡ Performance: Cancel all stream subscriptions to prevent memory leaks
+    for (final subscription in _subscriptions) {
+      subscription.cancel();
+    }
+    _subscriptions.clear();
+
     _recordingService.dispose();
     super.dispose();
   }

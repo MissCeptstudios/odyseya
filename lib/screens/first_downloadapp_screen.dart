@@ -1,6 +1,8 @@
 // Enforce design consistency based on UX_odyseya_framework.md
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../constants/typography.dart';
+import '../constants/colors.dart';
 
 class FirstDownloadAppScreen extends StatelessWidget {
   const FirstDownloadAppScreen({super.key});
@@ -8,17 +10,8 @@ class FirstDownloadAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Desert background
-          Image.asset(
-            'assets/images/Background_F.png',
-            fit: BoxFit.cover,
-          ),
-
-          // Content
-          SafeArea(
+      backgroundColor: DesertColors.creamBeige,
+      body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
@@ -39,6 +32,8 @@ class FirstDownloadAppScreen extends StatelessWidget {
                           width: 100,
                           height: 100,
                           fit: BoxFit.contain,
+                          cacheWidth: 300,  // ⚡ Performance: 3x for high DPI
+                          cacheHeight: 300,
                         ),
                         // Outer compass ring
                         Image.asset(
@@ -46,6 +41,8 @@ class FirstDownloadAppScreen extends StatelessWidget {
                           width: 150,
                           height: 150,
                           fit: BoxFit.contain,
+                          cacheWidth: 450,  // ⚡ Performance: 3x for high DPI
+                          cacheHeight: 450,
                         ),
                       ],
                     ),
@@ -59,6 +56,8 @@ class FirstDownloadAppScreen extends StatelessWidget {
                     width: 200,
                     height: 50,
                     fit: BoxFit.contain,
+                    cacheWidth: 600,  // ⚡ Performance: 3x for high DPI
+                    cacheHeight: 150,
                   ),
 
                   const Spacer(flex: 3),
@@ -66,27 +65,23 @@ class FirstDownloadAppScreen extends StatelessWidget {
                   // Sign in button
                   SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: 60,
                     child: ElevatedButton(
                       onPressed: () {
                         context.go('/login');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFC9A882), // Beige/tan color
+                        backgroundColor: const Color(0xFFD8A36C), // #D8A36C westernSunrise
                         foregroundColor: Colors.white,
-                        elevation: 4,
-                        shadowColor: Colors.black.withValues(alpha: 0.25),
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Sign in',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+                        style: OdyseyaTypography.buttonLarge,
                       ),
                     ),
                   ),
@@ -96,26 +91,25 @@ class FirstDownloadAppScreen extends StatelessWidget {
                   // Create account button
                   SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: 60,
                     child: ElevatedButton(
                       onPressed: () {
                         context.go('/signup');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF6B4423), // Brown text
-                        elevation: 4,
-                        shadowColor: Colors.black.withValues(alpha: 0.25),
+                        foregroundColor: const Color(0xFF57351E), // #57351E brownBramble
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(color: const Color(0xFFD8A36C), width: 1.5),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Create account',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF6B4423), // Brown text
+                        style: OdyseyaTypography.buttonLarge.copyWith(
+                          color: const Color(0xFF57351E), // #57351E brownBramble
                         ),
                       ),
                     ),
@@ -125,8 +119,6 @@ class FirstDownloadAppScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
       ),
     );
   }

@@ -221,9 +221,20 @@ class _RecordButtonState extends ConsumerState<RecordButton>
           : null;
     }
 
-    return GestureDetector(
-      onTap: onPressed,
-      child: AnimatedContainer(
+    return Semantics(
+      label: voiceState.isRecording
+          ? (voiceState.isPaused ? 'Resume recording' : 'Recording in progress')
+          : (voiceState.hasRecording ? 'Record again' : 'Start recording'),
+      hint: voiceState.isRecording
+          ? (voiceState.isPaused
+              ? 'Double tap to resume your voice journal entry'
+              : 'Use pause or stop buttons below to control recording')
+          : 'Double tap to begin recording your voice journal entry',
+      button: true,
+      enabled: onPressed != null,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         width: 160,
@@ -273,6 +284,7 @@ class _RecordButtonState extends ConsumerState<RecordButton>
             ),
           ],
         ),
+      ),
       ),
     );
   }

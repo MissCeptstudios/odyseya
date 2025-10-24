@@ -9,7 +9,7 @@ import '../screens/first_downloadapp_screen.dart';
 import '../screens/auth/auth_choice_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/signup_screen.dart';
-import '../screens/mood_selection_screen.dart';
+import '../screens/action/mood_selection_screen.dart';
 import '../screens/onboarding/onboarding_flow.dart';
 import '../screens/onboarding/gdpr_consent_screen.dart';
 import '../screens/onboarding/permissions_screen.dart';
@@ -19,10 +19,10 @@ import '../screens/onboarding/questionnaire_q1_screen.dart';
 import '../screens/onboarding/questionnaire_q2_screen.dart';
 import '../screens/onboarding/questionnaire_q3_screen.dart';
 import '../screens/onboarding/questionnaire_q4_screen.dart';
-import '../screens/affirmation_screen.dart';
+import '../screens/inspiration/affirmation_screen.dart';
 import '../screens/main_app_shell.dart';
-import '../screens/voice_journal_screen.dart';
-import '../screens/review_submit_screen.dart';
+import '../screens/action/recording_screen.dart';
+import '../screens/action/review_submit_screen.dart';
 import '../screens/paywall_screen.dart';
 
 // Custom page transition builder for smooth animations
@@ -239,7 +239,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/test-voice',
         name: 'test-voice',
-        builder: (context, state) => const VoiceJournalScreen(),
+        builder: (context, state) => const RecordingScreen(),
       ),
 
       // Review & Submit Screen

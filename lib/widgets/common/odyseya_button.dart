@@ -7,7 +7,7 @@ import '../../constants/animations.dart';
 
 /// Unified button component matching the reference design
 /// Provides consistent button styling across the entire app
-/// Framework: Height 56px, Radius 24px, Primary bg #D8A36C
+/// Framework v1.5: Height 60px, Radius 16px, Primary bg #D8A36C
 class OdyseyaButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -25,7 +25,7 @@ class OdyseyaButton extends StatelessWidget {
     this.icon,
     this.isLoading = false,
     this.width,
-    this.height = 56,
+    this.height = 60,
   });
 
   /// Primary button - Western Sunrise background, white text (emotional peak)
@@ -36,7 +36,7 @@ class OdyseyaButton extends StatelessWidget {
     this.icon,
     this.isLoading = false,
     this.width,
-    this.height = 56,
+    this.height = 60,
   }) : buttonStyle = OdyseyaButtonStyle.primary;
 
   /// Secondary button - Beige background, brown text
@@ -47,7 +47,7 @@ class OdyseyaButton extends StatelessWidget {
     this.icon,
     this.isLoading = false,
     this.width,
-    this.height = 56,
+    this.height = 60,
   }) : buttonStyle = OdyseyaButtonStyle.secondary;
 
   /// Tertiary button - Transparent background, brown text, border
@@ -58,7 +58,7 @@ class OdyseyaButton extends StatelessWidget {
     this.icon,
     this.isLoading = false,
     this.width,
-    this.height = 56,
+    this.height = 60,
   }) : buttonStyle = OdyseyaButtonStyle.tertiary;
 
   @override
@@ -107,14 +107,14 @@ class OdyseyaButton extends StatelessWidget {
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(OdyseyaSpacing.radiusPill),
+            borderRadius: BorderRadius.circular(OdyseyaSpacing.radiusButton),
             side: borderColor != null
                 ? BorderSide(color: borderColor, width: 1.5)
                 : BorderSide.none,
           ),
           padding: EdgeInsets.symmetric(
             horizontal: OdyseyaSpacing.buttonHorizontalPadding,
-            vertical: OdyseyaSpacing.lg,
+            vertical: 0,
           ),
           animationDuration: OdyseyaAnimations.buttonTap,
         ),

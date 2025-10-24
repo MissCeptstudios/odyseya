@@ -150,7 +150,7 @@ class OdyseyaTypography {
     fontSize: 18,
     fontWeight: FontWeight.w600,
     height: 1.2,
-    letterSpacing: 1.2,
+    letterSpacing: 1.0,
     color: Colors.white, // White for buttons on filled backgrounds
   );
 

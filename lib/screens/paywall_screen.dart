@@ -5,8 +5,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../constants/colors.dart';
 import '../constants/typography.dart';
 import '../providers/subscription_provider.dart';
-import '../widgets/common/app_background.dart';
-import '../widgets/navigation/top_navigation_bar.dart';
 
 /// Paywall screen showing premium features and subscription options
 class PaywallScreen extends ConsumerStatefulWidget {
@@ -35,22 +33,17 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: DesertColors.creamBeige,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            const OdyseyaTopNavigationBar(),
             Expanded(
-              child: AppBackground(
-                useOverlay: true,
-                overlayOpacity: 0.03,
-                child: subscriptionState.isLoading && offerings == null
+              child: subscriptionState.isLoading && offerings == null
                     ? _buildLoadingState()
                     : offerings?.current == null
                         ? _buildErrorState()
                         : _buildContent(offerings!.current!),
-              ),
             ),
           ],
         ),
@@ -523,7 +516,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             ),
           SizedBox(
             width: double.infinity,
-            height: 56,
+            height: 60,
             child: ElevatedButton(
               onPressed: _isProcessing || packages.isEmpty
                   ? null
@@ -717,7 +710,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
         ),
         title: Text(
           'Terms of Service',
@@ -760,7 +753,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: DesertColors.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(16),
         ),
         title: Text(
           'Privacy Policy',

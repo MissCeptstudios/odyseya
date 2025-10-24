@@ -2,7 +2,7 @@
 
 **Inner peace**
 
-**Odyseya** is a cross-platform Flutter app that helps users reflect on their emotions through voice journaling, mood tracking, and personalized AI insights. It creates a calm, private, and intelligent space for emotional self-awareness and healing.
+**Odyseya** is a mobile Flutter app (iOS and Android) that helps users reflect on their emotions through voice journaling, mood tracking, and personalized AI insights. It creates a calm, private, and intelligent space for emotional self-awareness and healing.
 
 ---
 
@@ -30,14 +30,17 @@
 
 | Layer            | Technology              |
 |------------------|-------------------------|
-| Frontend         | Flutter (iOS + Android) |
-| Voice to Text    | speech_to_text (MVP1) / Whisper (V2+) |
-| AI Integration   | Claude or GPT API       |
-| Backend          | Firebase (Auth, Firestore, Storage) |
+| Frontend         | Flutter (iOS + Android **only**) |
+| Platforms        | **iOS** (iPhone, iPad) & **Android** (phones, tablets) |
+| Voice to Text    | OpenAI Whisper API |
+| AI Integration   | Groq (Llama 3), OpenAI GPT, Claude (planned) |
+| Backend          | Firebase (Auth, Firestore, Storage, Cloud Functions) |
 | Subscriptions    | RevenueCat SDK          |
-| State Management | Riverpod / Provider     |
+| State Management | Riverpod               |
 | Analytics        | Firebase Analytics, Crashlytics |
 | CI/CD            | GitHub Actions          |
+
+**Platform Note:** Web, macOS, Windows, and Linux are NOT supported. Odyseya is designed exclusively for mobile devices to provide the best voice journaling experience.
 
 ---
 

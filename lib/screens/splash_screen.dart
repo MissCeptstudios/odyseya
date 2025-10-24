@@ -43,12 +43,24 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _navigateToHome() async {
-    // Wait for 8 seconds
-    await Future.delayed(const Duration(seconds: 8));
+    try {
+      // Wait for 8 seconds
+      await Future.delayed(const Duration(seconds: 8));
 
-    // Navigate to first download/marketing screen
-    if (mounted) {
-      context.go('/first-download');
+      // Navigate to auth screen (Sign In / Create Account)
+      if (mounted) {
+        context.go('/auth');
+      }
+    } catch (e) {
+      // Log error but don't show UI - splash screen should always proceed
+      debugPrint('Splash navigation error: $e');
+      // Fallback: navigate anyway after a short delay
+      if (mounted) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (mounted) {
+          context.go('/auth');
+        }
+      }
     }
   }
 
@@ -63,16 +75,19 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Desert background from UX folder
+          // Full-screen background image - no muting, full opacity
           Image.asset(
-            'assets/images/Background_F.png',
+            'assets/images/Background.png',
             fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
 
-          // Centered logo and text
+          // Content overlay
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Compass with spinning animation
                 SizedBox(
@@ -109,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
 
-                SizedBox(height: compassSize * 0.15),
+                SizedBox(height: compassSize * 0.12),
 
                 // "Odyseya" text from UX folder - bigger size
                 Image.asset(

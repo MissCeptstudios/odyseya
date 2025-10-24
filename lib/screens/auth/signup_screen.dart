@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
+import '../../config/env_config.dart';
+import '../../widgets/auth/social_auth_buttons.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -19,6 +23,18 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Auto-fill demo credentials in debug mode for easier testing
+    if (kDebugMode && !EnvConfig.isProduction) {
+      _nameController.text = 'Demo User';
+      _emailController.text = 'demo@odyseya.app';
+      _passwordController.text = 'DemoPass123!';
+      _confirmPasswordController.text = 'DemoPass123!';
+    }
+  }
 
   @override
   void dispose() {
@@ -44,16 +60,48 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Desert background
+          // Full-screen background image
           Image.asset(
-            'assets/images/Background_F.png',
+            'assets/images/Background.png',
             fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
 
-          // Content
+          // Content overlay
           SafeArea(
             child: Column(
               children: [
+                // Debug mode indicator
+                if (kDebugMode && !EnvConfig.isProduction)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      color: DesertColors.waterWash,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.bug_report,
+                          size: 14,
+                          color: DesertColors.brownBramble,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'DEBUG MODE - Auto-filled',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: DesertColors.brownBramble,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 // Back button
                 Align(
                   alignment: Alignment.topLeft,
@@ -104,11 +152,25 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                           const SizedBox(height: 40),
 
+                          // Social Auth Buttons
+                          SocialAuthButtons(
+                            onAppleSignIn: () {
+                              ref.read(authStateProvider.notifier).signInWithApple();
+                            },
+                            onGoogleSignIn: () {
+                              ref.read(authStateProvider.notifier).signInWithGoogle();
+                            },
+                            isLoading: authState.isLoading,
+                          ),
+
+                          // Divider
+                          const AuthDivider(),
+
                           // Name Field
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -127,13 +189,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               decoration: const InputDecoration(
                                 hintText: 'Full Name',
                                 hintStyle: TextStyle(
-                                  color: Color(0xFF6B4423),
+                                  color: DesertColors.treeBranch,
                                   fontSize: 18,
                                 ),
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 24,
-                                  vertical: 20,
+                                  vertical: 16,
                                 ),
                               ),
                               validator: (value) {
@@ -154,7 +216,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -174,13 +236,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               decoration: const InputDecoration(
                                 hintText: 'Email',
                                 hintStyle: TextStyle(
-                                  color: Color(0xFF6B4423),
+                                  color: DesertColors.treeBranch,
                                   fontSize: 18,
                                 ),
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 24,
-                                  vertical: 20,
+                                  vertical: 16,
                                 ),
                               ),
                               validator: (value) {
@@ -198,7 +260,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -253,7 +315,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.08),
@@ -344,7 +406,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 elevation: 0,
                                 shadowColor: Colors.black.withValues(alpha: 0.08),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
                               child: authState.isLoading
@@ -356,15 +418,39 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                       ),
                                     )
-                                  : const Text(
+                                  : Text(
                                       'CONTINUE',
+                                      style: OdyseyaTypography.buttonLarge,
+                                    ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Already have an account? Sign in
+                          Center(
+                            child: GestureDetector(
+                              onTap: () => context.go('/login'),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Already have an account? ',
+                                    ),
+                                    TextSpan(
+                                      text: 'Sign in',
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.white,
-                                        letterSpacing: 1.0,
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
 

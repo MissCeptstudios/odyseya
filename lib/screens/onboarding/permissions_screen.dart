@@ -223,25 +223,61 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
   }
 
   Future<void> _requestMicrophonePermission() async {
-    final onboardingNotifier = ref.read(onboardingProvider.notifier);
-    final status = await Permission.microphone.request();
-    onboardingNotifier.updateMicrophonePermission(status.isGranted);
+    try {
+      final onboardingNotifier = ref.read(onboardingProvider.notifier);
+      final status = await Permission.microphone.request();
+      onboardingNotifier.updateMicrophonePermission(status.isGranted);
+    } catch (e) {
+      debugPrint('Microphone permission error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to request microphone permission. Please check settings.'),
+            backgroundColor: Colors.red.shade700,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _requestNotificationPermission() async {
-    final onboardingNotifier = ref.read(onboardingProvider.notifier);
-    final notificationNotifier = ref.read(notificationProvider.notifier);
-    
-    // Use the notification service to request permissions
-    final granted = await notificationNotifier.requestPermissions();
-    
-    // Update onboarding state
-    onboardingNotifier.updateNotificationPermission(granted);
+    try {
+      final onboardingNotifier = ref.read(onboardingProvider.notifier);
+      final notificationNotifier = ref.read(notificationProvider.notifier);
+
+      // Use the notification service to request permissions
+      final granted = await notificationNotifier.requestPermissions();
+
+      // Update onboarding state
+      onboardingNotifier.updateNotificationPermission(granted);
+    } catch (e) {
+      debugPrint('Notification permission error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to request notification permission. You can enable it later in settings.'),
+            backgroundColor: Colors.orange.shade700,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _requestLocationPermission() async {
-    final onboardingNotifier = ref.read(onboardingProvider.notifier);
-    final status = await Permission.locationWhenInUse.request();
-    onboardingNotifier.updateLocationPermission(status.isGranted);
+    try {
+      final onboardingNotifier = ref.read(onboardingProvider.notifier);
+      final status = await Permission.locationWhenInUse.request();
+      onboardingNotifier.updateLocationPermission(status.isGranted);
+    } catch (e) {
+      debugPrint('Location permission error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to request location permission. This is optional and can be enabled later.'),
+            backgroundColor: Colors.orange.shade700,
+          ),
+        );
+      }
+    }
   }
 }

@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/navigation/bottom_navigation_bar.dart';
-import '../widgets/navigation/top_navigation_bar.dart';
-import '../widgets/common/app_background.dart';
-import 'dashboard_screen.dart';
-import 'mood_selection_screen.dart';
-import 'recording_screen.dart';
-import 'journal_calendar_screen.dart';
-import 'settings_screen.dart';
+import 'reflection/dashboard_screen.dart';
+import 'action/mood_selection_screen.dart';
+import 'action/recording_screen.dart';
+import 'reflection/journal_calendar_screen.dart';
+import 'settings/settings_screen.dart';
 
 // Provider to manage current navigation index based on route
 final navigationIndexProvider = Provider<int>((ref) {
@@ -29,18 +27,7 @@ class MainAppShell extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         bottom: false,
-        child: Column(
-          children: [
-            const OdyseyaTopNavigationBar(),
-            Expanded(
-              child: AppBackground(
-                useOverlay: true,
-                overlayOpacity: 0.05,
-                child: currentScreen,
-              ),
-            ),
-          ],
-        ),
+        child: currentScreen,
       ),
       bottomNavigationBar: OdyseyaBottomNavigationBar(
         currentIndex: currentIndex,
@@ -64,7 +51,7 @@ class MainAppShell extends ConsumerWidget {
       case '/calendar':
         return 3;
       case '/settings':
-        return 4;
+        return -1; // Settings moved to top navigation, not in bottom nav
       default:
         return 0; // Default to Dashboard
     }
@@ -104,9 +91,7 @@ class MainAppShell extends ConsumerWidget {
       case 3:
         context.go('/calendar');
         break;
-      case 4:
-        context.go('/settings');
-        break;
+      // Settings (index 4) removed from bottom navigation
     }
   }
 }

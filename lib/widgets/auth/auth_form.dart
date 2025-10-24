@@ -209,7 +209,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
           // Submit Button
           SizedBox(
             width: double.infinity,
-            height: 56,
+            height: 60,
             child: ElevatedButton(
               onPressed: widget.isLoading ? null : _submitForm,
               style: ElevatedButton.styleFrom(
@@ -217,7 +217,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 disabledBackgroundColor: DesertColors.primary.withValues(
                   alpha: 0.6,
@@ -271,27 +271,27 @@ class _AuthFormState extends ConsumerState<AuthForm> {
         labelStyle: TextStyle(color: DesertColors.onSecondary),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(
             color: DesertColors.waterWash.withValues(alpha: 0.5),
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(
             color: DesertColors.waterWash.withValues(alpha: 0.5),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: DesertColors.primary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
         fillColor: DesertColors.surface,
