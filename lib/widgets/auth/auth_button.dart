@@ -40,7 +40,7 @@ class AuthButton extends StatelessWidget {
               ? BorderSide(color: borderColor!, width: 1.5)
               : null,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(OdyseyaSpacing.radiusMedium),
+            borderRadius: BorderRadius.circular(OdyseyaSpacing.radiusButton),
           ),
           disabledBackgroundColor: backgroundColor.withValues(alpha: 0.5),
           disabledForegroundColor: textColor.withValues(alpha: 0.5),

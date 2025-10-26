@@ -169,7 +169,7 @@ class OdyseyaScreenLayout extends StatelessWidget {
         children: [
           // Primary button
           if (primaryButtonText != null)
-            OdyseyaButton.secondary(
+            OdyseyaButton.primary(
               text: primaryButtonText!,
               onPressed: onPrimaryPressed,
               isLoading: isPrimaryLoading,

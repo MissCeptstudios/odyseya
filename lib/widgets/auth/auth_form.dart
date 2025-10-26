@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/auth_provider.dart';
+import '../../constants/typography.dart';
 
 class AuthForm extends ConsumerStatefulWidget {
   final bool isSignUp;
@@ -194,10 +195,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                   Expanded(
                     child: Text(
                       widget.error!,
-                      style: TextStyle(
-                        color: Colors.red.shade700,
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.bodySmall.copyWith(color: Colors.red.shade700),
                     ),
                   ),
                 ],
@@ -234,10 +232,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                     )
                   : Text(
                       widget.isSignUp ? 'Create Account' : 'Sign In',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTextStyles.h4,
                     ),
             ),
           ),
@@ -265,7 +260,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
       validator: validator,
       onChanged: onChanged,
       onFieldSubmitted: onFieldSubmitted,
-      style: TextStyle(color: DesertColors.onSurface, fontSize: 16),
+      style: AppTextStyles.body.copyWith(color: DesertColors.onSurface),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: DesertColors.onSecondary),
@@ -321,11 +316,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             const SizedBox(width: 8),
             Text(
               'Demo credentials valid!',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: DesertColors.sageGreen,
-              ),
+              style: AppTextStyles.captionSmall.copyWith(color: DesertColors.sageGreen),
             ),
           ],
         ),
@@ -346,11 +337,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
         children: [
           Text(
             'Password requirements:',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSurface),
           ),
           const SizedBox(height: 4),
           _buildPasswordRequirement(
@@ -382,11 +369,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             ),
             child: Text(
               'Demo: Use demo@gmail.com / Demo1234&&',
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: DesertColors.accent,
-              ),
+              style: AppTextStyles.captionSmall.copyWith(color: DesertColors.accent),
             ),
           ),
         ],
@@ -405,10 +388,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
         const SizedBox(width: 6),
         Text(
           text,
-          style: TextStyle(
-            fontSize: 11,
-            color: isMet ? DesertColors.sageGreen : DesertColors.onSecondary,
-          ),
+          style: AppTextStyles.captionSmall.copyWith(color: isMet ? DesertColors.sageGreen : DesertColors.onSecondary),
         ),
       ],
     );

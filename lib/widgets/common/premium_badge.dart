@@ -216,7 +216,7 @@ class PremiumGate extends ConsumerWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Not Now',
-              style: TextStyle(color: DesertColors.treeBranch),
+              style: AppTextStyles.body.copyWith(color: DesertColors.treeBranch),
             ),
           ),
           ElevatedButton(

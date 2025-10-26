@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../models/ai_analysis.dart';
 import '../../providers/voice_journal_provider.dart';
+import '../../constants/typography.dart';
 
 class InsightPreview extends ConsumerStatefulWidget {
   const InsightPreview({super.key});
@@ -163,19 +164,12 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
                       : voiceState.hasAnalysis
                           ? 'Emotional Insights'
                           : 'AI Analysis',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
-                  ),
+                  style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                 ),
                 if (voiceState.isAnalyzing)
                   Text(
                     'Finding patterns and insights',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: DesertColors.onSecondary,
-                    ),
+                    style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary),
                   ),
               ],
             ),
@@ -200,9 +194,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
           ),
           child: Text(
             '${(voiceState.aiAnalysis!.confidence * 100).round()}% confident',
-            style: TextStyle(
-              fontSize: 11,
-              color: _getConfidenceColor(voiceState.aiAnalysis!.confidence),
+            style: AppTextStyles.captionSmall.copyWith(color: _getConfidenceColor(voiceState.aiAnalysis!.confidence),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -277,19 +269,12 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
           const SizedBox(height: 20),
           Text(
             'Analyzing your emotional patterns...',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSurface),
           ),
           const SizedBox(height: 8),
           Text(
             'This thoughtful process helps us understand your feelings better',
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -357,20 +342,12 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
               children: [
                 Text(
                   'Emotional Tone',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: DesertColors.onSecondary,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextStyles.uiSmall.copyWith(color: DesertColors.onSecondary),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   analysis.emotionalTone,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
-                  ),
+                  style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                 ),
               ],
             ),
@@ -403,22 +380,14 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
               const SizedBox(width: 8),
               Text(
                 'Insight',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: DesertColors.onSurface,
-                ),
+                style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface),
               ),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             analysis.insight,
-            style: TextStyle(
-              fontSize: 14,
-              height: 1.5,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface, height: 1.5),
           ),
         ],
       ),
@@ -442,11 +411,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
               children: [
                 Text(
                   _isExpanded ? 'Show Less' : 'Show More Details',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.primary,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.primary),
                 ),
                 const SizedBox(width: 8),
                 AnimatedRotation(
@@ -518,11 +483,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
               const SizedBox(width: 8),
               Text(
                 'Potential Triggers',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: DesertColors.onSurface,
-                ),
+                style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface),
               ),
             ],
           ),
@@ -538,11 +499,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
               ),
               child: Text(
                 trigger,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: DesertColors.terracotta,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.uiSmall.copyWith(color: DesertColors.terracotta),
               ),
             )).toList(),
           ),
@@ -574,11 +531,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
               const SizedBox(width: 8),
               Text(
                 'Suggestions for Well-being',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: DesertColors.onSurface,
-                ),
+                style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface),
               ),
             ],
           ),
@@ -599,11 +552,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
                   child: Center(
                     child: Text(
                       '${entry.key + 1}',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: DesertColors.sageGreen,
-                      ),
+                      style: AppTextStyles.bodySmall.copyWith(color: DesertColors.sageGreen),
                     ),
                   ),
                 ),
@@ -611,11 +560,7 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
                 Expanded(
                   child: Text(
                     entry.value,
-                    style: TextStyle(
-                      fontSize: 13,
-                      height: 1.4,
-                      color: DesertColors.onSurface,
-                    ),
+                    style: AppTextStyles.hint.copyWith(color: DesertColors.onSurface, height: 1.4),
                   ),
                 ),
               ],
@@ -647,18 +592,12 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
           const SizedBox(height: 16),
           Text(
             'Analysis unavailable',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSecondary),
           ),
           const SizedBox(height: 8),
           Text(
             'Don\'t worry - you can still save your entry',
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSecondary.withValues(alpha: 0.7),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           ),
@@ -688,18 +627,12 @@ class _InsightPreviewState extends ConsumerState<InsightPreview>
           const SizedBox(height: 16),
           Text(
             'Add your voice first',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSecondary),
           ),
           const SizedBox(height: 8),
           Text(
             'AI insights will appear here',
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSecondary.withValues(alpha: 0.7),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           ),

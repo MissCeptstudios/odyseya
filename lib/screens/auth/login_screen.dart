@@ -6,6 +6,7 @@ import '../../providers/auth_provider.dart';
 import '../../models/auth_user.dart';
 import '../../constants/typography.dart';
 import '../../constants/colors.dart';
+import '../../constants/spacing.dart';
 import '../../config/env_config.dart';
 import '../../widgets/auth/social_auth_buttons.dart';
 
@@ -98,11 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const SizedBox(width: 6),
                         Text(
                           'DEBUG MODE - Auto-filled',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: DesertColors.brownBramble,
-                          ),
+                          style: AppTextStyles.uiSmall.copyWith(color: DesertColors.brownBramble),
                         ),
                       ],
                     ),
@@ -118,7 +115,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Icons.arrow_back,
                         size: 28,
                       ),
-                      color: OdyseyaTypography.h1.color,
+                      color: DesertColors.brownBramble,
                       onPressed: () => context.go('/first-download'),
                     ),
                   ),
@@ -137,7 +134,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           // Title
                           Text(
                             'Sign In',
-                            style: OdyseyaTypography.h1Large.copyWith(
+                            style: AppTextStyles.h1Large.copyWith(
                               fontSize: 40,
                             ),
                           ),
@@ -147,10 +144,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           // Subtitle
                           Text(
                             'Welcome back to your journey',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: DesertColors.treeBranch,
-                            ),
+                            style: AppTextStyles.body.copyWith(color: DesertColors.treeBranch),
                           ),
 
                           const SizedBox(height: 40),
@@ -171,6 +165,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                           // Email Field
                           Container(
+                            height: OdyseyaSpacing.buttonHeight, // Match button height
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
@@ -186,10 +181,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: DesertColors.brownBramble,
-                              ),
+                              style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.brownBramble),
                               decoration: InputDecoration(
                                 hintText: 'Email',
                                 hintStyle: TextStyle(
@@ -215,6 +207,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                           // Password Field
                           Container(
+                            height: OdyseyaSpacing.buttonHeight, // Match button height
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
@@ -230,10 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: DesertColors.brownBramble,
-                              ),
+                              style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.brownBramble),
                               decoration: InputDecoration(
                                 hintText: 'Password',
                                 hintStyle: TextStyle(
@@ -283,7 +273,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   Expanded(
                                     child: Text(
                                       authState.error!,
-                                      style: TextStyle(color: Colors.red.shade700),
+                                      style: AppTextStyles.body.copyWith(color: Colors.red.shade700),
                                     ),
                                   ),
                                 ],
@@ -296,7 +286,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           // Sign In Button
                           SizedBox(
                             width: double.infinity,
-                            height: 56,
+                            height: OdyseyaSpacing.buttonHeight,
                             child: ElevatedButton(
                               onPressed: authState.isLoading ? null : _submitForm,
                               style: ElevatedButton.styleFrom(
@@ -318,8 +308,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                     )
                                   : Text(
-                                      'SIGN IN',
-                                      style: OdyseyaTypography.buttonLarge,
+                                      'Sign In'.toUpperCase(),
+                                      style: AppTextStyles.buttonLarge.copyWith(
+                                        letterSpacing: 1.2,
+                                      ),
                                     ),
                             ),
                           ),
@@ -332,20 +324,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onTap: () => context.go('/signup'),
                               child: RichText(
                                 text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
+                                  style: AppTextStyles.body.copyWith(color: Colors.white),
                                   children: [
                                     const TextSpan(
                                       text: "Don't have an account? ",
                                     ),
                                     TextSpan(
                                       text: 'Sign up',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+                                      style: AppTextStyles.body.copyWith(color: Colors.white),
                                     ),
                                   ],
                                 ),

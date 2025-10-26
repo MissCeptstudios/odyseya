@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 
 class PrivacyNotice extends StatelessWidget {
   const PrivacyNotice({super.key});
@@ -30,11 +31,7 @@ class PrivacyNotice extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Your data is encrypted and secure',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: DesertColors.onSurface,
-                    ),
+                    style: AppTextStyles.ui.copyWith(color: DesertColors.onSurface),
                   ),
                 ),
               ],
@@ -44,11 +41,7 @@ class PrivacyNotice extends StatelessWidget {
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: TextStyle(
-                fontSize: 12,
-                color: DesertColors.onSecondary,
-                height: 1.4,
-              ),
+              style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
               children: [
                 const TextSpan(text: 'By continuing, you agree to our '),
                 WidgetSpan(
@@ -56,12 +49,7 @@ class PrivacyNotice extends StatelessWidget {
                     onTap: () => _showTermsOfService(context),
                     child: Text(
                       'Terms of Service',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: DesertColors.primary,
-                        decoration: TextDecoration.underline,
-                        decorationColor: DesertColors.primary,
-                      ),
+                      style: AppTextStyles.captionSmall.copyWith(color: DesertColors.primary),
                     ),
                   ),
                 ),
@@ -71,12 +59,7 @@ class PrivacyNotice extends StatelessWidget {
                     onTap: () => _showPrivacyPolicy(context),
                     child: Text(
                       'Privacy Policy',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: DesertColors.primary,
-                        decoration: TextDecoration.underline,
-                        decorationColor: DesertColors.primary,
-                      ),
+                      style: AppTextStyles.captionSmall.copyWith(color: DesertColors.primary),
                     ),
                   ),
                 ),
@@ -99,10 +82,7 @@ class PrivacyNotice extends StatelessWidget {
         ),
         title: Text(
           'Terms of Service',
-          style: TextStyle(
-            color: DesertColors.onSurface,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.body.copyWith(color: DesertColors.onSurface),
         ),
         content: SizedBox(
           width: double.maxFinite,
@@ -110,10 +90,7 @@ class PrivacyNotice extends StatelessWidget {
           child: SingleChildScrollView(
             child: Text(
               _getTermsOfServiceText(),
-              style: TextStyle(
-                color: DesertColors.onSecondary,
-                height: 1.5,
-              ),
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary, height: 1.5),
             ),
           ),
         ),
@@ -122,7 +99,7 @@ class PrivacyNotice extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: TextStyle(color: DesertColors.primary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.primary),
             ),
           ),
         ],
@@ -140,10 +117,7 @@ class PrivacyNotice extends StatelessWidget {
         ),
         title: Text(
           'Privacy Policy',
-          style: TextStyle(
-            color: DesertColors.onSurface,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.body.copyWith(color: DesertColors.onSurface),
         ),
         content: SizedBox(
           width: double.maxFinite,
@@ -151,10 +125,7 @@ class PrivacyNotice extends StatelessWidget {
           child: SingleChildScrollView(
             child: Text(
               _getPrivacyPolicyText(),
-              style: TextStyle(
-                color: DesertColors.onSecondary,
-                height: 1.5,
-              ),
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary, height: 1.5),
             ),
           ),
         ),
@@ -163,7 +134,7 @@ class PrivacyNotice extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: TextStyle(color: DesertColors.primary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.primary),
             ),
           ),
         ],

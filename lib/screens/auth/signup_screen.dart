@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
 import '../../constants/colors.dart';
 import '../../constants/typography.dart';
+import '../../constants/spacing.dart';
 import '../../config/env_config.dart';
 import '../../widgets/auth/social_auth_buttons.dart';
 
@@ -92,11 +93,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         const SizedBox(width: 6),
                         Text(
                           'DEBUG MODE - Auto-filled',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: DesertColors.brownBramble,
-                          ),
+                          style: AppTextStyles.uiSmall.copyWith(color: DesertColors.brownBramble),
                         ),
                       ],
                     ),
@@ -131,12 +128,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           // Title
                           Text(
                             'Create Account',
-                            style: TextStyle(
-
-                              fontSize: 32,
-                              fontWeight: FontWeight.w600,
-                              color: DesertColors.brownBramble,
-                            ),
+                            style: AppTextStyles.h1Large.copyWith(color: DesertColors.brownBramble),
                           ),
 
                           const SizedBox(height: 8),
@@ -144,10 +136,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           // Subtitle
                           Text(
                             'Start your emotional journey today',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: DesertColors.treeBranch,
-                            ),
+                            style: AppTextStyles.body.copyWith(color: DesertColors.treeBranch),
                           ),
 
                           const SizedBox(height: 40),
@@ -168,6 +157,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                           // Name Field
                           Container(
+                            height: OdyseyaSpacing.buttonHeight, // Match button height
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
@@ -182,10 +172,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             child: TextFormField(
                               controller: _nameController,
                               textInputAction: TextInputAction.next,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: DesertColors.brownBramble,
-                              ),
+                              style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.brownBramble),
                               decoration: const InputDecoration(
                                 hintText: 'Full Name',
                                 hintStyle: TextStyle(
@@ -214,6 +201,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                           // Email Field
                           Container(
+                            height: OdyseyaSpacing.buttonHeight, // Match button height
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
@@ -229,10 +217,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: DesertColors.brownBramble,
-                              ),
+                              style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.brownBramble),
                               decoration: const InputDecoration(
                                 hintText: 'Email',
                                 hintStyle: TextStyle(
@@ -258,6 +243,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                           // Password Field
                           Container(
+                            height: OdyseyaSpacing.buttonHeight, // Match button height
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
@@ -273,10 +259,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.next,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: DesertColors.brownBramble,
-                              ),
+                              style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.brownBramble),
                               decoration: InputDecoration(
                                 hintText: 'Password',
                                 hintStyle: TextStyle(
@@ -313,6 +296,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                           // Confirm Password Field
                           Container(
+                            height: OdyseyaSpacing.buttonHeight, // Match button height
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
@@ -328,10 +312,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               controller: _confirmPasswordController,
                               obscureText: _obscureConfirmPassword,
                               textInputAction: TextInputAction.done,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: DesertColors.brownBramble,
-                              ),
+                              style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.brownBramble),
                               decoration: InputDecoration(
                                 hintText: 'Confirm Password',
                                 hintStyle: TextStyle(
@@ -384,7 +365,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                   Expanded(
                                     child: Text(
                                       authState.error!,
-                                      style: TextStyle(color: Colors.red.shade700),
+                                      style: AppTextStyles.body.copyWith(color: Colors.red.shade700),
                                     ),
                                   ),
                                 ],
@@ -397,7 +378,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           // Continue Button
                           SizedBox(
                             width: double.infinity,
-                            height: 56,
+                            height: OdyseyaSpacing.buttonHeight,
                             child: ElevatedButton(
                               onPressed: authState.isLoading ? null : _submitForm,
                               style: ElevatedButton.styleFrom(
@@ -419,8 +400,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                       ),
                                     )
                                   : Text(
-                                      'CONTINUE',
-                                      style: OdyseyaTypography.buttonLarge,
+                                      'Continue'.toUpperCase(),
+                                      style: AppTextStyles.buttonLarge.copyWith(
+                                        letterSpacing: 1.2,
+                                      ),
                                     ),
                             ),
                           ),
@@ -433,20 +416,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               onTap: () => context.go('/login'),
                               child: RichText(
                                 text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
+                                  style: AppTextStyles.body.copyWith(color: Colors.white),
                                   children: [
                                     const TextSpan(
                                       text: 'Already have an account? ',
                                     ),
                                     TextSpan(
                                       text: 'Sign in',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+                                      style: AppTextStyles.body.copyWith(color: Colors.white),
                                     ),
                                   ],
                                 ),

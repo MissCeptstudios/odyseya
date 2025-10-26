@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../models/onboarding_data.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../constants/typography.dart';
 
 class EmotionalGoalsScreen extends ConsumerWidget {
   const EmotionalGoalsScreen({super.key});
@@ -60,11 +61,7 @@ class EmotionalGoalsScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'Your emotional wellness journey is unique',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: DesertColors.onSurface,
-                        ),
+                        style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                       ),
                     ),
                   ],
@@ -72,11 +69,7 @@ class EmotionalGoalsScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 Text(
                   'We\'ll use your goals to provide personalized insights, suggestions, and gentle guidance throughout your journaling practice.',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                 ),
               ],
             ),
@@ -100,11 +93,7 @@ class EmotionalGoalsScreen extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Text(
                     '${onboardingData.emotionalGoals.length} goal${onboardingData.emotionalGoals.length > 1 ? "s" : ""} selected',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: DesertColors.primary,
-                    ),
+                    style: AppTextStyles.ui.copyWith(color: DesertColors.primary),
                   ),
                 ],
               ),
@@ -170,11 +159,7 @@ class EmotionalGoalsScreen extends ConsumerWidget {
             Expanded(
               child: Text(
                 label,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: isSelected ? DesertColors.primary : DesertColors.onSurface,
-                ),
+                style: AppTextStyles.bodyMedium.copyWith(color: isSelected ? DesertColors.primary : DesertColors.onSurface),
               ),
             ),
             if (isSelected)

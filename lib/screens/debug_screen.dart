@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/colors.dart';
 import '../widgets/common/app_background.dart';
+import '../constants/typography.dart';
 
 class DebugScreen extends StatelessWidget {
   const DebugScreen({super.key});
@@ -23,13 +24,9 @@ class DebugScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
+            Text(
               'Debug Screen',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: DesertColors.onSurface,
-              ),
+              style: AppTextStyles.h1.copyWith(color: DesertColors.onSurface),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -72,13 +69,10 @@ class DebugScreen extends StatelessWidget {
             ),
             
             const SizedBox(height: 32),
-            
-            const Text(
+
+            Text(
               'Use this screen to navigate directly to different parts of the app for testing.',
-              style: TextStyle(
-                color: DesertColors.onSurfaceVariant,
-                fontSize: 14,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurfaceVariant),
               textAlign: TextAlign.center,
             ),
           ],

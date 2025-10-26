@@ -136,10 +136,11 @@ class OdyseyaButton extends StatelessWidget {
                     SizedBox(width: OdyseyaSpacing.sm),
                   ],
                   Text(
-                    text,
+                    text.toUpperCase(), // CTA buttons use uppercase per design system
                     style: OdyseyaTypography.buttonLarge.copyWith(
                       color: textColor,
                       fontWeight: FontWeight.w600,
+                      letterSpacing: 1.5, // Optimized for uppercase text
                     ),
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../models/mood.dart';
+import '../../constants/typography.dart';
 
 class StatisticsBar extends StatelessWidget {
   final int streak;
@@ -106,18 +107,11 @@ class StatisticsBar extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: DesertColors.onSurface,
-          ),
+          style: AppTextStyles.body.copyWith(color: DesertColors.onSurface),
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 11,
-            color: DesertColors.onSurfaceVariant,
-          ),
+          style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSurfaceVariant),
         ),
       ],
     );
@@ -130,15 +124,12 @@ class StatisticsBar extends StatelessWidget {
       children: [
         Text(
           mood.emoji,
-          style: const TextStyle(fontSize: 20),
+          style: AppTextStyles.bodyLarge,
         ),
         const SizedBox(height: 2),
         Text(
           'Top Mood',
-          style: TextStyle(
-            fontSize: 11,
-            color: DesertColors.onSurfaceVariant,
-          ),
+          style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSurfaceVariant),
         ),
       ],
     );

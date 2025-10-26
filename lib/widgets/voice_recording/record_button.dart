@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/voice_journal_provider.dart';
+import '../../constants/typography.dart';
 
 class RecordButton extends ConsumerStatefulWidget {
   final VoidCallback? onStartRecording;
@@ -128,14 +129,9 @@ class _RecordButtonState extends ConsumerState<RecordButton>
             margin: const EdgeInsets.only(top: 24),
             child: Text(
               ref.watch(recordingProgressProvider),
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w300,
+              style: AppTextStyles.h1Large.copyWith(
                 color: Colors.white,
                 letterSpacing: 2.0,
-                fontFeatures: [
-                  FontFeature.tabularFigures(),
-                ],
                 shadows: [
                   Shadow(
                     color: Colors.black26,
@@ -274,12 +270,7 @@ class _RecordButtonState extends ConsumerState<RecordButton>
             const SizedBox(height: 8),
             Text(
               buttonLabel,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.3,
-              ),
+              style: AppTextStyles.hint.copyWith(color: Colors.white, letterSpacing: 0.3),
               textAlign: TextAlign.center,
             ),
           ],
@@ -326,12 +317,7 @@ class _RecordButtonState extends ConsumerState<RecordButton>
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
-              color: DesertColors.brownBramble,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.3,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.brownBramble, letterSpacing: 0.3),
           ),
         ],
       ),

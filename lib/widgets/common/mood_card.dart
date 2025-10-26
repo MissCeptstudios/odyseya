@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/mood.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 
 class MoodCard extends StatefulWidget {
   final Mood mood;
@@ -122,21 +123,29 @@ class _MoodCardState extends State<MoodCard>
                         padding: const EdgeInsets.all(8),
                         transform: Matrix4.identity()..scale(widget.isSelected ? 1.05 : 1.0),
                         child: widget.mood.imagePath != null
-                            ? Image.asset(
-                                widget.mood.imagePath!,
-                                fit: BoxFit.contain,
-                                cacheWidth: 300,  // ⚡ Performance: Cache mood images at 300x300
-                                cacheHeight: 300,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Text(
-                                    widget.mood.emoji,
-                                    style: const TextStyle(fontSize: 64),
-                                  );
-                                },
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent, // Ensure transparent background
+                                ),
+                                child: Image.asset(
+                                  widget.mood.imagePath!,
+                                  fit: BoxFit.contain,
+                                  cacheWidth: 300,  // ⚡ Performance: Cache mood images at 300x300
+                                  cacheHeight: 300,
+                                  // Force transparent background
+                                  color: null,
+                                  colorBlendMode: BlendMode.dst,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Text(
+                                      widget.mood.emoji,
+                                      style: AppTextStyles.h1,
+                                    );
+                                  },
+                                ),
                               )
                             : Text(
                                 widget.mood.emoji,
-                                style: const TextStyle(fontSize: 64),
+                                style: AppTextStyles.h1,
                               ),
                       ),
                     ),

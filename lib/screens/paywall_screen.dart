@@ -62,7 +62,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           const SizedBox(height: 16),
           Text(
             'Loading subscription options...',
-            style: OdyseyaTypography.body.copyWith(
+            style: AppTextStyles.body.copyWith(
               color: DesertColors.treeBranch,
             ),
           ),
@@ -86,7 +86,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             const SizedBox(height: 16),
             Text(
               'Unable to load subscription options',
-              style: OdyseyaTypography.h2.copyWith(
+              style: AppTextStyles.h3.copyWith(
                 color: DesertColors.brownBramble,
               ),
               textAlign: TextAlign.center,
@@ -94,7 +94,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             const SizedBox(height: 8),
             Text(
               'Please check your internet connection and try again.',
-              style: OdyseyaTypography.body.copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: DesertColors.treeBranch,
               ),
               textAlign: TextAlign.center,
@@ -119,7 +119,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               onPressed: () => context.pop(),
               child: Text(
                 'Go Back',
-                style: TextStyle(color: DesertColors.treeBranch),
+                style: AppTextStyles.buttonSmall.copyWith(
+                  color: DesertColors.treeBranch,
+                ),
               ),
             ),
           ],
@@ -197,7 +199,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 const SizedBox(width: 8),
                 Text(
                   'PREMIUM',
-                  style: OdyseyaTypography.button.copyWith(
+                  style: AppTextStyles.button.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -211,7 +213,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           // Title
           Text(
             'Unlock Your Full\nEmotional Journey',
-            style: OdyseyaTypography.h1.copyWith(
+            style: AppTextStyles.h1.copyWith(
               color: DesertColors.brownBramble,
               fontSize: 32,
             ),
@@ -223,7 +225,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           // Subtitle
           Text(
             'Get unlimited access to all features and insights',
-            style: OdyseyaTypography.bodyLarge.copyWith(
+            style: AppTextStyles.bodyLarge.copyWith(
               color: DesertColors.treeBranch,
             ),
             textAlign: TextAlign.center,
@@ -282,7 +284,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         children: [
           Text(
             'Premium Features',
-            style: OdyseyaTypography.h2.copyWith(
+            style: AppTextStyles.h3.copyWith(
               color: DesertColors.brownBramble,
             ),
           ),
@@ -326,7 +328,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               children: [
                 Text(
                   title,
-                  style: OdyseyaTypography.button.copyWith(
+                  style: AppTextStyles.button.copyWith(
                     color: DesertColors.brownBramble,
                     fontSize: 16,
                   ),
@@ -334,7 +336,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: OdyseyaTypography.ui.copyWith(
+                  style: AppTextStyles.ui.copyWith(
                     color: DesertColors.treeBranch,
                     fontSize: 13,
                   ),
@@ -355,7 +357,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         children: [
           Text(
             'Choose Your Plan',
-            style: OdyseyaTypography.h2.copyWith(
+            style: AppTextStyles.h3.copyWith(
               color: DesertColors.brownBramble,
             ),
           ),
@@ -439,7 +441,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     children: [
                       Text(
                         package.storeProduct.title.replaceAll('(Odyseya)', '').trim(),
-                        style: OdyseyaTypography.button.copyWith(
+                        style: AppTextStyles.button.copyWith(
                           color: DesertColors.brownBramble,
                           fontSize: 18,
                         ),
@@ -457,7 +459,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                           ),
                           child: Text(
                             savingsText,
-                            style: OdyseyaTypography.ui.copyWith(
+                            style: AppTextStyles.ui.copyWith(
                               color: Colors.white,
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
@@ -470,7 +472,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   const SizedBox(height: 4),
                   Text(
                     package.storeProduct.description,
-                    style: OdyseyaTypography.ui.copyWith(
+                    style: AppTextStyles.ui.copyWith(
                       color: DesertColors.treeBranch,
                       fontSize: 13,
                     ),
@@ -484,7 +486,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             // Price
             Text(
               package.storeProduct.priceString,
-              style: OdyseyaTypography.h2.copyWith(
+              style: AppTextStyles.h3.copyWith(
                 color: DesertColors.brownBramble,
                 fontSize: 20,
               ),
@@ -508,7 +510,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               padding: const EdgeInsets.only(bottom: 12),
               child: Text(
                 subscriptionState.error!,
-                style: OdyseyaTypography.ui.copyWith(
+                style: AppTextStyles.ui.copyWith(
                   color: DesertColors.terracotta,
                 ),
                 textAlign: TextAlign.center,
@@ -539,10 +541,11 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       ),
                     )
                   : Text(
-                      'Start Premium',
-                      style: OdyseyaTypography.button.copyWith(
+                      'Start Premium'.toUpperCase(),
+                      style: AppTextStyles.button.copyWith(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
                       ),
                     ),
             ),
@@ -550,7 +553,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           const SizedBox(height: 12),
           Text(
             'Cancel anytime from your device settings',
-            style: OdyseyaTypography.ui.copyWith(
+            style: AppTextStyles.ui.copyWith(
               color: DesertColors.treeBranch,
               fontSize: 12,
             ),
@@ -571,7 +574,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             onPressed: _isProcessing ? null : _handleRestore,
             child: Text(
               'Restore Purchases',
-              style: OdyseyaTypography.button.copyWith(
+              style: AppTextStyles.button.copyWith(
                 color: DesertColors.dustyBlue,
               ),
             ),
@@ -585,7 +588,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             children: [
               Text(
                 'By subscribing, you agree to our ',
-                style: OdyseyaTypography.ui.copyWith(
+                style: AppTextStyles.ui.copyWith(
                   color: DesertColors.treeBranch,
                   fontSize: 11,
                 ),
@@ -594,7 +597,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 onTap: () => _showTermsOfService(context),
                 child: Text(
                   'Terms of Service',
-                  style: OdyseyaTypography.ui.copyWith(
+                  style: AppTextStyles.ui.copyWith(
                     color: DesertColors.dustyBlue,
                     fontSize: 11,
                     decoration: TextDecoration.underline,
@@ -603,7 +606,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               ),
               Text(
                 ' and ',
-                style: OdyseyaTypography.ui.copyWith(
+                style: AppTextStyles.ui.copyWith(
                   color: DesertColors.treeBranch,
                   fontSize: 11,
                 ),
@@ -612,7 +615,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 onTap: () => _showPrivacyPolicy(context),
                 child: Text(
                   'Privacy Policy',
-                  style: OdyseyaTypography.ui.copyWith(
+                  style: AppTextStyles.ui.copyWith(
                     color: DesertColors.dustyBlue,
                     fontSize: 11,
                     decoration: TextDecoration.underline,
@@ -714,7 +717,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         ),
         title: Text(
           'Terms of Service',
-          style: OdyseyaTypography.h2.copyWith(
+          style: AppTextStyles.h3.copyWith(
             color: DesertColors.onSurface,
             fontWeight: FontWeight.w600,
           ),
@@ -725,7 +728,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           child: SingleChildScrollView(
             child: Text(
               _getTermsOfService(),
-              style: OdyseyaTypography.body.copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: DesertColors.onSecondary,
                 height: 1.5,
               ),
@@ -737,7 +740,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: OdyseyaTypography.button.copyWith(
+              style: AppTextStyles.button.copyWith(
                 color: DesertColors.primary,
               ),
             ),
@@ -757,7 +760,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         ),
         title: Text(
           'Privacy Policy',
-          style: OdyseyaTypography.h2.copyWith(
+          style: AppTextStyles.h3.copyWith(
             color: DesertColors.onSurface,
             fontWeight: FontWeight.w600,
           ),
@@ -768,7 +771,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           child: SingleChildScrollView(
             child: Text(
               _getPrivacyPolicy(),
-              style: OdyseyaTypography.body.copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: DesertColors.onSecondary,
                 height: 1.5,
               ),
@@ -780,7 +783,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: OdyseyaTypography.button.copyWith(
+              style: AppTextStyles.button.copyWith(
                 color: DesertColors.primary,
               ),
             ),

@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import '../../constants/typography.dart';
 
 /// Social authentication buttons widget
 /// Displays Sign in with Apple and/or Sign in with Google
@@ -88,12 +89,7 @@ class _AppleSignInButton extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     'Continue with Apple',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      letterSpacing: 0.2,
-                    ),
+                    style: AppTextStyles.h4.copyWith(color: Colors.white, letterSpacing: 0.2),
                   ),
                 ],
               ),
@@ -158,10 +154,7 @@ class _GoogleSignInButton extends StatelessWidget {
                     child: Center(
                       child: Text(
                         'G',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4285F4), // Google blue
+                        style: AppTextStyles.body.copyWith(color: Color(0xFF4285F4), // Google blue
                         ),
                       ),
                     ),
@@ -169,10 +162,7 @@ class _GoogleSignInButton extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     'Continue with Google',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF1F1F1F),
+                    style: AppTextStyles.h4.copyWith(color: Color(0xFF1F1F1F),
                       letterSpacing: 0.2,
                     ),
                   ),
@@ -212,10 +202,7 @@ class AuthDivider extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'OR',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.white.withValues(alpha: 0.8),
+              style: AppTextStyles.bodySmall.copyWith(color: Colors.white.withValues(alpha: 0.8),
                 letterSpacing: 1.5,
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../models/journal_entry.dart';
 import '../../models/mood.dart';
+import '../../constants/typography.dart';
 
 class EntryPreviewCard extends StatelessWidget {
   final List<JournalEntry> entries;
@@ -55,11 +56,7 @@ class EntryPreviewCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   _formatDate(selectedDate),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
-                  ),
+                  style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                 ),
                 const Spacer(),
                 if (entries.length > 1)
@@ -71,11 +68,7 @@ class EntryPreviewCard extends StatelessWidget {
                     ),
                     child: Text(
                       '${entries.length} entries',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: DesertColors.accent,
-                      ),
+                      style: AppTextStyles.captionSmall.copyWith(color: DesertColors.accent),
                     ),
                   ),
               ],
@@ -120,7 +113,7 @@ class EntryPreviewCard extends StatelessWidget {
             children: [
               Text(
                 mood.emoji,
-                style: const TextStyle(fontSize: 24),
+                style: AppTextStyles.h1,
               ),
               const SizedBox(width: 8),
               Column(
@@ -128,18 +121,11 @@ class EntryPreviewCard extends StatelessWidget {
                 children: [
                   Text(
                     mood.label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: DesertColors.onSurface,
-                    ),
+                    style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                   ),
                   Text(
                     _formatTime(entry.createdAt),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: DesertColors.onSurfaceVariant,
-                    ),
+                    style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -155,10 +141,7 @@ class EntryPreviewCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       entry.displayDuration,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: DesertColors.onSurfaceVariant,
-                      ),
+                      style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSurfaceVariant),
                     ),
                     const SizedBox(width: 8),
                   ],
@@ -178,11 +161,7 @@ class EntryPreviewCard extends StatelessWidget {
             // Transcription Preview
             Text(
               _getTranscriptionPreview(entry.transcription),
-              style: TextStyle(
-                fontSize: 14,
-                height: 1.4,
-                color: DesertColors.onSurface,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface, height: 1.4),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
@@ -208,11 +187,7 @@ class EntryPreviewCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       entry.aiAnalysis!.insight,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: DesertColors.sageGreen,
-                        fontStyle: FontStyle.italic,
-                      ),
+                      style: AppTextStyles.hint.copyWith(color: DesertColors.sageGreen),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -235,11 +210,7 @@ class EntryPreviewCard extends StatelessWidget {
               child: Text(
                 'Tap to view full entry',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: DesertColors.primary,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.uiSmall.copyWith(color: DesertColors.primary),
               ),
             ),
           ),
@@ -324,18 +295,12 @@ class EntryPreviewCard extends StatelessWidget {
                         children: [
                           Text(
                             _formatDate(entry.createdAt),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: DesertColors.onSurface,
-                            ),
+                            style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             _formatTime(entry.createdAt),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: DesertColors.onSecondary.withValues(alpha: 0.7),
+                            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.7),
                             ),
                           ),
                         ],
@@ -359,15 +324,12 @@ class EntryPreviewCard extends StatelessWidget {
                         children: [
                           Text(
                             Mood.fromString(entry.mood).emoji,
-                            style: const TextStyle(fontSize: 20),
+                            style: AppTextStyles.bodyLarge,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             Mood.fromString(entry.mood).label,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Mood.fromString(entry.mood).color,
+                            style: AppTextStyles.bodySmall.copyWith(color: Mood.fromString(entry.mood).color,
                             ),
                           ),
                         ],
@@ -384,22 +346,14 @@ class EntryPreviewCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Transcription
-                      const Text(
+                      Text(
                         'Your Journal Entry',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: DesertColors.onSurface,
-                        ),
+                        style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         entry.transcription,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: DesertColors.onSecondary,
-                          height: 1.6,
-                        ),
+                        style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary, height: 1.6),
                       ),
                       // AI Analysis (if available)
                       if (entry.aiAnalysis != null) ...[
@@ -424,24 +378,16 @@ class EntryPreviewCard extends StatelessWidget {
                                     size: 20,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text(
+                                  Text(
                                     'AI Insights',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: DesertColors.onSurface,
-                                    ),
+                                    style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 12),
                               Text(
                                 entry.aiAnalysis!.insight,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: DesertColors.onSecondary,
-                                  height: 1.5,
-                                ),
+                                style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.5),
                               ),
                               if (entry.aiAnalysis!.triggers.isNotEmpty) ...[
                                 const SizedBox(height: 12),
@@ -463,11 +409,7 @@ class EntryPreviewCard extends StatelessWidget {
                                           ),
                                           child: Text(
                                             trigger,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: DesertColors.primary,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                            style: AppTextStyles.uiSmall.copyWith(color: DesertColors.primary),
                                           ),
                                         ),
                                       )
@@ -491,9 +433,7 @@ class EntryPreviewCard extends StatelessWidget {
                             const SizedBox(width: 6),
                             Text(
                               'Recording: ${entry.displayDuration}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: DesertColors.onSecondary
+                              style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary
                                     .withValues(alpha: 0.7),
                               ),
                             ),
@@ -519,12 +459,9 @@ class EntryPreviewCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Close',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTextStyles.h4,
                     ),
                   ),
                 ),

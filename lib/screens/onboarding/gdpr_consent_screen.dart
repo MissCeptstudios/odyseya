@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
 import '../../widgets/common/odyseya_button.dart';
+import '../../constants/typography.dart';
 
 class GdprConsentScreen extends ConsumerStatefulWidget {
   const GdprConsentScreen({super.key});
@@ -29,11 +30,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
         ),
         title: Text(
           title,
-          style: TextStyle(
-            color: DesertColors.brownBramble,
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
+          style: AppTextStyles.h2.copyWith(color: DesertColors.brownBramble),
         ),
         content: Container(
           width: double.maxFinite,
@@ -41,11 +38,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
           child: SingleChildScrollView(
             child: Text(
               content,
-              style: TextStyle(
-                color: DesertColors.treeBranch,
-                height: 1.5,
-                fontSize: 14,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: DesertColors.treeBranch, height: 1.5),
             ),
           ),
         ),
@@ -54,10 +47,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: TextStyle(
-                color: DesertColors.westernSunrise,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyles.body.copyWith(color: DesertColors.westernSunrise),
             ),
           ),
         ],
@@ -91,22 +81,13 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
               Text(
                 'We care about your privacy',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                  color: DesertColors.brownBramble,
-                  height: 1.2,
-                ),
+                style: AppTextStyles.splashQuote.copyWith(color: DesertColors.brownBramble, height: 1.2),
               ),
               const SizedBox(height: 12),
               Text(
                 'Please accept our terms and privacy policy to create your account.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: DesertColors.treeBranch,
-                  height: 1.5,
-                ),
+                style: AppTextStyles.body.copyWith(color: DesertColors.treeBranch, height: 1.5),
               ),
 
               const SizedBox(height: 24),
@@ -176,11 +157,7 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                             Expanded(
                               child: Text(
                                 'Your data is encrypted and secure. You can change these preferences anytime in settings.',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: DesertColors.treeBranch,
-                                  height: 1.4,
-                                ),
+                                style: AppTextStyles.hint.copyWith(color: DesertColors.treeBranch, height: 1.4),
                               ),
                             ),
                           ],
@@ -198,8 +175,8 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                 text: 'Create Account',
                 onPressed: _canContinue
                     ? () {
-                        // Store consent and navigate directly to welcome screen
-                        context.go('/welcome');
+                        // Store consent and navigate to permissions screen
+                        context.go('/permissions');
                       }
                     : null,
               ),
@@ -269,44 +246,27 @@ class _GdprConsentScreenState extends ConsumerState<GdprConsentScreen> {
                         Expanded(
                           child: Text(
                             title,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: DesertColors.brownBramble, // UX Framework: Primary text
-                            ),
+                            style: AppTextStyles.h4.copyWith(color: DesertColors.brownBramble),
                           ),
                         ),
                         if (isRequired)
                           Text(
                             '*',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red.shade700,
-                            ),
+                            style: AppTextStyles.h4.copyWith(color: Colors.red.shade700),
                           ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: DesertColors.treeBranch, // UX Framework: Secondary text
-                        height: 1.4,
-                      ),
+                      style: AppTextStyles.bodySmall.copyWith(color: DesertColors.treeBranch, height: 1.4),
                     ),
                     const SizedBox(height: 8),
                     GestureDetector(
                       onTap: onReadMore,
                       child: Text(
                         'Read more',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: DesertColors.westernSunrise, // UX Framework: Accent
-                          fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline,
-                        ),
+                        style: AppTextStyles.bodySmall.copyWith(color: DesertColors.westernSunrise),
                       ),
                     ),
                   ],

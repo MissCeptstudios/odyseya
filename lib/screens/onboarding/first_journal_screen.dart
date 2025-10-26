@@ -68,9 +68,7 @@ class FirstJournalScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 Text(
                   'Your journey begins now',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                  style: AppTextStyles.h2.copyWith(
                     color: DesertColors.onSurface,
                   ),
                 ),
@@ -78,8 +76,7 @@ class FirstJournalScreen extends ConsumerWidget {
                 Text(
                   'Take a moment to reflect on how you\'re feeling and what\'s on your mind.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: AppTextStyles.body.copyWith(
                     color: DesertColors.onSecondary,
                     height: 1.4,
                   ),
@@ -140,8 +137,7 @@ class FirstJournalScreen extends ConsumerWidget {
                     children: [
                       Text(
                         'Helpful tip',
-                        style: TextStyle(
-                          fontSize: 14,
+                        style: AppTextStyles.ui.copyWith(
                           fontWeight: FontWeight.w600,
                           color: DesertColors.onSurface,
                         ),
@@ -149,8 +145,7 @@ class FirstJournalScreen extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Text(
                         'There\'s no right or wrong way to journal. Just be honest and speak from your heart.',
-                        style: TextStyle(
-                          fontSize: 14,
+                        style: AppTextStyles.bodySmall.copyWith(
                           color: DesertColors.onSecondary,
                           height: 1.4,
                         ),
@@ -184,8 +179,7 @@ class FirstJournalScreen extends ConsumerWidget {
           child: Center(
             child: Text(
               number,
-              style: const TextStyle(
-                fontSize: 16,
+              style: AppTextStyles.bodyMedium.copyWith(
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
@@ -213,16 +207,14 @@ class FirstJournalScreen extends ConsumerWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 16,
+                style: AppTextStyles.bodyMedium.copyWith(
                   fontWeight: FontWeight.w600,
                   color: DesertColors.onSurface,
                 ),
               ),
               Text(
                 description,
-                style: TextStyle(
-                  fontSize: 14,
+                style: AppTextStyles.bodySmall.copyWith(
                   color: DesertColors.onSecondary,
                 ),
               ),
@@ -269,9 +261,7 @@ class FirstJournalScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             Text(
               'Welcome to Odyseya!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
+              style: AppTextStyles.h1.copyWith(
                 color: DesertColors.onSurface,
               ),
             ),
@@ -279,8 +269,7 @@ class FirstJournalScreen extends ConsumerWidget {
             Text(
               'You\'re all set to begin your emotional journaling journey. Let\'s create your first entry!',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
+              style: AppTextStyles.body.copyWith(
                 color: DesertColors.onSecondary,
                 height: 1.4,
               ),
@@ -306,8 +295,10 @@ class FirstJournalScreen extends ConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  'LET\'S GO!',
-                  style: OdyseyaTypography.buttonLarge,
+                  'Let\'s Go!'.toUpperCase(),
+                  style: AppTextStyles.buttonLarge.copyWith(
+                    letterSpacing: 1.2,
+                  ),
                 ),
               ),
             ),

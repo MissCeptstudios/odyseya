@@ -9,19 +9,30 @@ class AffirmationState {
   final bool isLoading;
   final String? error;
   final JournalEntry? lastEntry;
+  final bool isFavourite;
+  final int selectedDayIndex; // 0 = Monday, 6 = Sunday
 
-  const AffirmationState({
+  AffirmationState({
     this.affirmation,
     this.isLoading = false,
     this.error,
     this.lastEntry,
-  });
+    this.isFavourite = false,
+    int? selectedDayIndex,
+  }) : selectedDayIndex = selectedDayIndex ?? _getTodayIndex();
+
+  static int _getTodayIndex() {
+    final todayWeekday = DateTime.now().weekday;
+    return todayWeekday == 7 ? 6 : todayWeekday - 1;
+  }
 
   AffirmationState copyWith({
     String? affirmation,
     bool? isLoading,
     String? error,
     JournalEntry? lastEntry,
+    bool? isFavourite,
+    int? selectedDayIndex,
     bool clearError = false,
   }) {
     return AffirmationState(
@@ -29,6 +40,8 @@ class AffirmationState {
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
       lastEntry: lastEntry ?? this.lastEntry,
+      isFavourite: isFavourite ?? this.isFavourite,
+      selectedDayIndex: selectedDayIndex ?? this.selectedDayIndex,
     );
   }
 }
@@ -42,7 +55,7 @@ class AffirmationNotifier extends StateNotifier<AffirmationState> {
     this._affirmationService,
     this._firestoreService,
     this._ref,
-  ) : super(const AffirmationState());
+  ) : super(AffirmationState());
 
   Future<void> loadTodaysAffirmation() async {
     try {
@@ -92,7 +105,18 @@ class AffirmationNotifier extends StateNotifier<AffirmationState> {
   }
 
   void clearAffirmation() {
-    state = const AffirmationState();
+    state = AffirmationState();
+  }
+
+  void toggleFavourite() {
+    state = state.copyWith(isFavourite: !state.isFavourite);
+    // TODO: Save to Firestore/local storage for persistence
+  }
+
+  void selectDay(int dayIndex) {
+    state = state.copyWith(selectedDayIndex: dayIndex);
+    // TODO: Load affirmation for selected day
+    // For now, just update the selected day
   }
 }
 

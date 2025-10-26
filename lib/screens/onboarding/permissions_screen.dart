@@ -7,6 +7,7 @@ import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../constants/typography.dart';
 
 class PermissionsScreen extends ConsumerStatefulWidget {
   const PermissionsScreen({super.key});
@@ -23,8 +24,8 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
     return OnboardingLayout(
       title: 'Let\'s set up your experience',
       subtitle: 'These permissions help us provide you with the best journaling experience. You can always change these later in settings.',
-      onNext: () => context.go('/welcome'),
-      onSkip: () => context.go('/welcome'),
+      onNext: () => context.go('/onboarding/questionnaire/q1'),
+      onSkip: () => context.go('/onboarding/questionnaire/q1'),
       child: Column(
         children: [
           _buildPermissionCard(
@@ -80,11 +81,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 Expanded(
                   child: Text(
                     'Your privacy is our priority. All data is encrypted and stored securely on your device and our protected servers.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: DesertColors.onSecondary,
-                      height: 1.4,
-                    ),
+                    style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                   ),
                 ),
               ],
@@ -148,11 +145,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                     Expanded(
                       child: Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: DesertColors.onSurface,
-                        ),
+                        style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                       ),
                     ),
                     if (isRequired) ...[
@@ -165,11 +158,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                         ),
                         child: Text(
                           'Required',
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w500,
-                            color: DesertColors.primary,
-                          ),
+                          style: AppTextStyles.bodySmall.copyWith(color: DesertColors.primary),
                         ),
                       ),
                     ],
@@ -178,11 +167,7 @@ class _PermissionsScreenState extends ConsumerState<PermissionsScreen> {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                 ),
               ],
             ),

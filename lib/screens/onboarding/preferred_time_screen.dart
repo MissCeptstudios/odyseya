@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../models/onboarding_data.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../constants/typography.dart';
 
 class PreferredTimeScreen extends ConsumerWidget {
   const PreferredTimeScreen({super.key});
@@ -59,21 +60,13 @@ class PreferredTimeScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 Text(
                   'Flexible by design',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
-                  ),
+                  style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'You can always adjust your journaling schedule later. We\'ll send gentle reminders based on your preference.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                 ),
               ],
             ),
@@ -164,18 +157,12 @@ class PreferredTimeScreen extends ConsumerWidget {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? DesertColors.primary : DesertColors.onSurface,
-                    ),
+                    style: AppTextStyles.h3.copyWith(color: isSelected ? DesertColors.primary : DesertColors.onSurface),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isSelected 
+                    style: AppTextStyles.bodySmall.copyWith(color: isSelected 
                           ? DesertColors.primary.withValues(alpha: 0.8)
                           : DesertColors.onSecondary,
                       height: 1.3,

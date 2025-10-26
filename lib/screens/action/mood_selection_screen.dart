@@ -7,6 +7,7 @@ import '../../constants/colors.dart';
 import '../../constants/typography.dart';
 import '../../widgets/common/swipeable_mood_cards.dart';
 import '../../providers/mood_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class MoodSelectionScreen extends ConsumerStatefulWidget {
   const MoodSelectionScreen({super.key});
@@ -43,24 +44,40 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     final moodState = ref.watch(moodProvider);
+    final currentUser = ref.watch(currentUserProvider);
     // Building MoodSelectionScreen, hasMood: ${moodState.hasMood}
 
     return Scaffold(
-      backgroundColor: DesertColors.creamBeige,
-      appBar: AppBar(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/Background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         iconTheme: const IconThemeData(color: DesertColors.onSurface),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
+          color: DesertColors.brownBramble,
           onPressed: () => context.go('/dashboard'),
         ),
-        title: null, // Removed title from AppBar
+        title: Text(
+          'Hi ${currentUser?.displayName ?? 'there'}',
+          style: AppTextStyles.h2.copyWith(
+            color: DesertColors.onBackground,
+          ),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
+            color: DesertColors.brownBramble,
             onPressed: () => context.go('/settings'),
           ),
         ],
@@ -88,16 +105,13 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
           Column(
             children: [
               const SizedBox(height: 24),
-              // "How are you feeling?" section - no card background
+              // "How are you feeling?" section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Text(
                   'How are you feeling?',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 32,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.brownBramble, // Primary Brown
+                  style: AppTextStyles.h1Large.copyWith(
+                    color: DesertColors.brownBramble,
                   ),
                 ),
               ),
@@ -109,6 +123,23 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                   selectedMood: moodState.selectedMood,
                 ),
               ),
+
+              // "Skip to journal" link
+              TextButton(
+                onPressed: () => context.go('/main'),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                ),
+                child: Text(
+                  'Skip to journal →',
+                  style: AppTextStyles.secondary.copyWith(
+                    color: DesertColors.caramelDrizzle,
+                    decoration: TextDecoration.underline,
+                    decorationColor: DesertColors.caramelDrizzle,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
               SafeArea(
                 top: false,
                 child: Padding(
@@ -135,9 +166,11 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
                       ),
                       child: Text(
                         moodState.selectedMood != null
-                            ? 'CONTINUE TO JOURNAL'
-                            : 'SELECT A MOOD',
-                        style: OdyseyaTypography.buttonLarge,
+                            ? 'Continue to Journal'.toUpperCase()
+                            : 'Select a Mood'.toUpperCase(),
+                        style: AppTextStyles.buttonLarge.copyWith(
+                          letterSpacing: 1.2,
+                        ),
                       ),
                     ),
                   ),
@@ -146,6 +179,8 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
             ],
           ),
         ],
+        ),
+      ),
       ),
     );
   }

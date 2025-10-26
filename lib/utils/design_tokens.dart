@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
+import '../constants/typography.dart';
 
 class DesignTokens {
   // ============================================================================
@@ -284,76 +285,50 @@ class DesignTokens {
   // ============================================================================
   // TYPOGRAPHY HELPERS (Section 2: Typography)
   // ============================================================================
+  //
+  // IMPORTANT: These styles now delegate to AppTextStyles for consistency
+  // All typography should use AppTextStyles from constants/typography.dart
+  // which uses Google Fonts with proper line heights and letter spacing
+  //
+  // @deprecated - Use AppTextStyles directly for new code
 
   /// H1 Large style - 32pt, weight 600
   /// Usage: "What's on your mind today?"
-  static TextStyle get h1Large => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 32,
-    fontWeight: FontWeight.w600,
-    color: DesertColors.brownBramble,
-  );
+  /// @deprecated Use AppTextStyles.h1Large
+  static TextStyle get h1Large => AppTextStyles.h1Large;
 
   /// H1 style - 24pt, weight 600
   /// Usage: "Today's affirmation", section headers
-  static TextStyle get h1 => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 24,
-    fontWeight: FontWeight.w600,
-    color: DesertColors.brownBramble,
-  );
+  /// @deprecated Use AppTextStyles.h1
+  static TextStyle get h1 => AppTextStyles.h1;
 
   /// H2 style - 20pt, weight 600
   /// Usage: Card titles, subsections
-  static TextStyle get h2 => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 20,
-    fontWeight: FontWeight.w600,
-    color: DesertColors.brownBramble,
-  );
+  /// @deprecated Use AppTextStyles.h2
+  static TextStyle get h2 => AppTextStyles.h2;
 
   /// Body style - 16pt, weight 400
   /// Usage: Main journal text
-  static TextStyle get body => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: DesertColors.brownBramble,
-  );
+  /// @deprecated Use AppTextStyles.body
+  static TextStyle get body => AppTextStyles.body;
 
   /// Body small style - 14pt, weight 400
   /// Usage: Secondary body text
-  static TextStyle get bodySmall => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    color: DesertColors.brownBramble,
-  );
+  /// @deprecated Use AppTextStyles.bodySmall
+  static TextStyle get bodySmall => AppTextStyles.bodySmall;
 
   /// Secondary style - 14pt, weight 400
   /// Usage: Subtitles, descriptions
-  static TextStyle get secondary => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    color: DesertColors.treeBranch,
-  );
+  /// @deprecated Use AppTextStyles.secondary
+  static TextStyle get secondary => AppTextStyles.secondary;
 
   /// Button style - 16pt, weight 600
   /// Usage: Button text
-  static TextStyle get button => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    color: Colors.white,
-  );
+  /// @deprecated Use AppTextStyles.button or AppTextStyles.ctaButtonText
+  static TextStyle get button => AppTextStyles.button;
 
   /// Caption style - 12pt, weight 300
   /// Usage: Hints, metadata, timestamps
-  static TextStyle get caption => const TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 12,
-    fontWeight: FontWeight.w300,
-    color: DesertColors.treeBranch,
-  );
+  /// @deprecated Use AppTextStyles.caption
+  static TextStyle get caption => AppTextStyles.caption;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 import '../../providers/onboarding_provider.dart';
 
 class OnboardingLayout extends ConsumerStatefulWidget {
@@ -88,11 +89,10 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
                 foregroundColor: DesertColors.onSecondary,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
               ),
-              child: const Text(
+              child: Text(
                 'Skip',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: DesertColors.onSecondary,
                 ),
               ),
             ),
@@ -140,13 +140,7 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
                         if (widget.title != null) ...[
                           Text(
                             widget.title!,
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w300,
-                              color: DesertColors.onSurface,
-                              height: 1.2,
-                              letterSpacing: -0.5,
-                            ),
+                            style: AppTextStyles.h1Large,
                           ),
                           const SizedBox(height: 16),
                         ],
@@ -154,11 +148,8 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
                         if (widget.subtitle != null) ...[
                           Text(
                             widget.subtitle!,
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: AppTextStyles.bodyLarge.copyWith(
                               color: DesertColors.onSecondary,
-                              height: 1.5,
-                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 32),
@@ -194,14 +185,8 @@ class _OnboardingLayoutState extends ConsumerState<OnboardingLayout>
                       disabledForegroundColor: DesertColors.onSecondary.withValues(alpha: 0.5),
                     ),
                     child: Text(
-                      widget.nextButtonText,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.0,
-                        color: Colors.white,
-                      ),
+                      widget.nextButtonText.toUpperCase(), // CTA buttons use uppercase
+                      style: AppTextStyles.buttonLarge,
                     ),
                   ),
                 ),

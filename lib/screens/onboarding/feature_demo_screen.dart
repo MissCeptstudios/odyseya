@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../constants/typography.dart';
 
 class FeatureDemoScreen extends ConsumerStatefulWidget {
   const FeatureDemoScreen({super.key});
@@ -136,22 +137,14 @@ class _FeatureDemoScreenState extends ConsumerState<FeatureDemoScreen>
                       const SizedBox(width: 8),
                       Text(
                         'AI Insight',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: DesertColors.primary,
-                        ),
+                        style: AppTextStyles.bodySmall.copyWith(color: DesertColors.primary),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Your calm mood suggests you\'re finding balance today. Consider exploring what\'s contributing to this peaceful feeling.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: DesertColors.onSecondary,
-                      height: 1.4,
-                    ),
+                    style: AppTextStyles.hint.copyWith(color: DesertColors.onSecondary, height: 1.4),
                   ),
                 ],
               ),
@@ -180,21 +173,13 @@ class _FeatureDemoScreenState extends ConsumerState<FeatureDemoScreen>
                 const SizedBox(height: 12),
                 Text(
                   'Ready to try it yourself?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
-                  ),
+                  style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'After setup, you\'ll create your first journal entry with guided prompts and gentle support.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                 ),
               ],
             ),
@@ -228,19 +213,12 @@ class _FeatureDemoScreenState extends ConsumerState<FeatureDemoScreen>
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
           ),
           const SizedBox(height: 4),
           Text(
             description,
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary),
           ),
           const SizedBox(height: 16),
           child,
@@ -265,7 +243,7 @@ class _FeatureDemoScreenState extends ConsumerState<FeatureDemoScreen>
       child: Center(
         child: Text(
           emoji,
-          style: const TextStyle(fontSize: 28),
+          style: AppTextStyles.splashQuote,
         ),
       ),
     );

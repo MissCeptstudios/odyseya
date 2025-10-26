@@ -7,6 +7,7 @@ import '../../providers/calendar_provider.dart';
 import '../../widgets/calendar/calendar_widget.dart';
 import '../../widgets/calendar/statistics_bar.dart';
 import '../../widgets/calendar/entry_preview_card.dart';
+import '../../constants/typography.dart';
 
 class JournalCalendarScreen extends ConsumerWidget {
   const JournalCalendarScreen({super.key});
@@ -17,19 +18,30 @@ class JournalCalendarScreen extends ConsumerWidget {
     final calendarNotifier = ref.read(calendarProvider.notifier);
 
     return Scaffold(
-        backgroundColor: DesertColors.creamBeige,
-        appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          'Your Journal',
-          style: TextStyle(
-            color: DesertColors.onBackground,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/Background.png'),
+            fit: BoxFit.cover,
           ),
         ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Your Journal',
+          style: AppTextStyles.h2.copyWith(color: DesertColors.onBackground),
+        ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            color: DesertColors.brownBramble,
+            onPressed: () => context.go('/settings'),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -49,11 +61,7 @@ class JournalCalendarScreen extends ConsumerWidget {
                 ),
                 Text(
                   _formatMonthYear(calendarState.currentMonth),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onBackground,
-                  ),
+                  style: AppTextStyles.h3.copyWith(color: DesertColors.onBackground),
                 ),
                 IconButton(
                   onPressed: calendarNotifier.nextMonth,
@@ -108,6 +116,8 @@ class JournalCalendarScreen extends ConsumerWidget {
             ),
           ),
         ],
+        ),
+      ),
       ),
     );
   }
@@ -161,11 +171,7 @@ class JournalCalendarScreen extends ConsumerWidget {
               : isToday
                 ? 'No entries today'
                 : 'No entries on this date',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
           ),
           const SizedBox(height: 8),
           Text(
@@ -175,11 +181,7 @@ class JournalCalendarScreen extends ConsumerWidget {
                 ? 'Start your first journal entry for today'
                 : 'No journal entries were created on this date',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSurfaceVariant,
-              height: 1.4,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurfaceVariant, height: 1.4),
           ),
           if (isToday) ...[
             const SizedBox(height: 20),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/mood.dart';
 import 'mood_card.dart';
+import '../../constants/typography.dart';
 
 class SwipeableMoodCards extends StatefulWidget {
   final List<Mood> moods;
@@ -116,11 +117,7 @@ class _SwipeableMoodCardsState extends State<SwipeableMoodCards> {
                     ),
                     child: Text(
                       '${_currentIndex + 1} of ${widget.moods.length}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                      style: AppTextStyles.captionSmall.copyWith(color: Colors.white),
                     ),
                   ),
 

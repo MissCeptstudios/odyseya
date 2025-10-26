@@ -571,3 +571,130 @@ function buildSummaryPrompt(entries: any[], frequency: string): string {
 
   return prompt;
 }
+
+// ============================================================================
+// FEEDBACK EMAIL NOTIFICATION
+// ============================================================================
+
+/**
+ * Send email notification when new feedback is submitted
+ * Triggered automatically when a document is added to /feedback collection
+ */
+export const sendFeedbackEmail = functions
+  .region("us-central1")
+  .firestore.document("feedback/{feedbackId}")
+  .onCreate(async (snapshot, context) => {
+    const feedbackData = snapshot.data();
+    const feedbackId = context.params.feedbackId;
+
+    console.log(`📧 New feedback received: ${feedbackId}`);
+
+    try {
+      // Email configuration
+      const adminEmail = "odyseya.journal@gmail.com";
+      const appName = "Odyseya";
+
+      // Format the email content
+      const emailSubject = `New Feedback from ${appName} - ${feedbackData.userName}`;
+
+      const emailBody = `
+Hello!
+
+You have received new feedback from your ${appName} app:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FEEDBACK DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: ${feedbackData.userName}
+User ID: ${feedbackData.userId}
+Email: ${feedbackData.userEmail || "Not provided"}
+Platform: ${feedbackData.platform}
+Status: ${feedbackData.status}
+Submitted: ${new Date().toLocaleString()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FEEDBACK MESSAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${feedbackData.feedback}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+View in Firebase Console:
+https://console.firebase.google.com/project/${process.env.GCLOUD_PROJECT}/firestore/data/feedback/${feedbackId}
+
+Best regards,
+${appName} Feedback System
+      `.trim();
+
+      // Send email using Gmail SMTP or SendGrid
+      // Option 1: Using Nodemailer with Gmail (recommended for personal projects)
+      await sendEmailViaNodemailer(adminEmail, emailSubject, emailBody);
+
+      console.log(`✅ Feedback email sent to ${adminEmail}`);
+
+      // Update feedback status to indicate email was sent
+      await snapshot.ref.update({
+        emailSent: true,
+        emailSentAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (error) {
+      console.error("❌ Error sending feedback email:", error);
+
+      // Log error but don't throw - we don't want to fail the function
+      await snapshot.ref.update({
+        emailSent: false,
+        emailError: String(error),
+      });
+    }
+  });
+
+/**
+ * Send email using Nodemailer
+ * Requires configuration: firebase functions:config:set gmail.email="your@gmail.com" gmail.password="app_password"
+ */
+async function sendEmailViaNodemailer(
+  to: string,
+  subject: string,
+  text: string
+): Promise<void> {
+  // For now, we'll use Firebase Cloud Functions to trigger an HTTP endpoint
+  // or you can set up SendGrid/Nodemailer
+
+  // Get Gmail config from Firebase Functions config
+  const gmailEmail = functions.config().gmail?.email;
+  const gmailPassword = functions.config().gmail?.password;
+
+  if (!gmailEmail || !gmailPassword) {
+    console.warn("⚠️  Gmail credentials not configured. Skipping email send.");
+    console.log("Configure with: firebase functions:config:set gmail.email='your@gmail.com' gmail.password='app_password'");
+
+    // For development: just log the email instead of sending
+    console.log("📧 EMAIL CONTENT:");
+    console.log(`To: ${to}`);
+    console.log(`Subject: ${subject}`);
+    console.log(`Body:\n${text}`);
+    return;
+  }
+
+  // Import nodemailer dynamically
+  const nodemailer = await import("nodemailer");
+
+  // Create transporter
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: gmailEmail,
+      pass: gmailPassword,
+    },
+  });
+
+  // Send email
+  await transporter.sendMail({
+    from: `Odyseya App <${gmailEmail}>`,
+    to: to,
+    subject: subject,
+    text: text,
+  });
+}

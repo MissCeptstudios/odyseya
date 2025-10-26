@@ -1,7 +1,7 @@
 "use strict";
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsageStats = exports.generateSummary = exports.analyzeJournalEntry = void 0;
+exports.sendFeedbackEmail = exports.getUsageStats = exports.generateSummary = exports.analyzeJournalEntry = void 0;
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const axios_1 = require("axios");
@@ -426,5 +426,113 @@ function buildSummaryPrompt(entries, frequency) {
     });
     prompt += "\nProvide a comprehensive JSON summary with: overallMoodTrend, keyThemes, emotionalHighlights, challengingMoments, growthAreas, suggestedFocus, executiveSummary, detailedInsight, actionableSteps";
     return prompt;
+}
+// ============================================================================
+// FEEDBACK EMAIL NOTIFICATION
+// ============================================================================
+/**
+ * Send email notification when new feedback is submitted
+ * Triggered automatically when a document is added to /feedback collection
+ */
+exports.sendFeedbackEmail = functions
+    .region("us-central1")
+    .firestore.document("feedback/{feedbackId}")
+    .onCreate(async (snapshot, context) => {
+    const feedbackData = snapshot.data();
+    const feedbackId = context.params.feedbackId;
+    console.log(`📧 New feedback received: ${feedbackId}`);
+    try {
+        // Email configuration
+        const adminEmail = "odyseya.journal@gmail.com";
+        const appName = "Odyseya";
+        // Format the email content
+        const emailSubject = `New Feedback from ${appName} - ${feedbackData.userName}`;
+        const emailBody = `
+Hello!
+
+You have received new feedback from your ${appName} app:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FEEDBACK DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+From: ${feedbackData.userName}
+User ID: ${feedbackData.userId}
+Email: ${feedbackData.userEmail || "Not provided"}
+Platform: ${feedbackData.platform}
+Status: ${feedbackData.status}
+Submitted: ${new Date().toLocaleString()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FEEDBACK MESSAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${feedbackData.feedback}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+View in Firebase Console:
+https://console.firebase.google.com/project/${process.env.GCLOUD_PROJECT}/firestore/data/feedback/${feedbackId}
+
+Best regards,
+${appName} Feedback System
+      `.trim();
+        // Send email using Gmail SMTP or SendGrid
+        // Option 1: Using Nodemailer with Gmail (recommended for personal projects)
+        await sendEmailViaNodemailer(adminEmail, emailSubject, emailBody);
+        console.log(`✅ Feedback email sent to ${adminEmail}`);
+        // Update feedback status to indicate email was sent
+        await snapshot.ref.update({
+            emailSent: true,
+            emailSentAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+    }
+    catch (error) {
+        console.error("❌ Error sending feedback email:", error);
+        // Log error but don't throw - we don't want to fail the function
+        await snapshot.ref.update({
+            emailSent: false,
+            emailError: String(error),
+        });
+    }
+});
+/**
+ * Send email using Nodemailer
+ * Requires configuration: firebase functions:config:set gmail.email="your@gmail.com" gmail.password="app_password"
+ */
+async function sendEmailViaNodemailer(to, subject, text) {
+    // For now, we'll use Firebase Cloud Functions to trigger an HTTP endpoint
+    // or you can set up SendGrid/Nodemailer
+    var _a, _b;
+    // Get Gmail config from Firebase Functions config
+    const gmailEmail = (_a = functions.config().gmail) === null || _a === void 0 ? void 0 : _a.email;
+    const gmailPassword = (_b = functions.config().gmail) === null || _b === void 0 ? void 0 : _b.password;
+    if (!gmailEmail || !gmailPassword) {
+        console.warn("⚠️  Gmail credentials not configured. Skipping email send.");
+        console.log("Configure with: firebase functions:config:set gmail.email='your@gmail.com' gmail.password='app_password'");
+        // For development: just log the email instead of sending
+        console.log("📧 EMAIL CONTENT:");
+        console.log(`To: ${to}`);
+        console.log(`Subject: ${subject}`);
+        console.log(`Body:\n${text}`);
+        return;
+    }
+    // Import nodemailer dynamically
+    const nodemailer = await Promise.resolve().then(() => require("nodemailer"));
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: gmailEmail,
+            pass: gmailPassword,
+        },
+    });
+    // Send email
+    await transporter.sendMail({
+        from: `Odyseya App <${gmailEmail}>`,
+        to: to,
+        subject: subject,
+        text: text,
+    });
 }
 //# sourceMappingURL=index.js.map

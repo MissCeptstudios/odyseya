@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 
 class OnboardingSuccessScreen extends StatefulWidget {
   const OnboardingSuccessScreen({super.key});
@@ -136,12 +137,7 @@ class _OnboardingSuccessScreenState extends State<OnboardingSuccessScreen>
                         Text(
                           'Welcome to Odyseya!',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
-                            color: DesertColors.onSurface,
-                            letterSpacing: 0.5,
-                          ),
+                          style: AppTextStyles.h1Large.copyWith(color: DesertColors.onSurface, letterSpacing: 0.5),
                         ),
                         
                         const SizedBox(height: 16),
@@ -149,11 +145,7 @@ class _OnboardingSuccessScreenState extends State<OnboardingSuccessScreen>
                         Text(
                           'Your emotional journey begins now',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: DesertColors.onSecondary,
-                            height: 1.4,
-                          ),
+                          style: AppTextStyles.bodyLarge.copyWith(color: DesertColors.onSecondary, height: 1.4),
                         ),
                         
                         const SizedBox(height: 24),
@@ -178,21 +170,13 @@ class _OnboardingSuccessScreenState extends State<OnboardingSuccessScreen>
                               Text(
                                 'Enjoy your journaling journey',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: DesertColors.onSurface,
-                                ),
+                                style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSurface),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Take a moment to reflect, express yourself, and discover insights about your emotional world',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: DesertColors.onSecondary,
-                                  height: 1.4,
-                                ),
+                                style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                               ),
                             ],
                           ),
@@ -215,10 +199,7 @@ class _OnboardingSuccessScreenState extends State<OnboardingSuccessScreen>
                       onPressed: () => context.go('/home'),
                       child: Text(
                         'Continue to App',
-                        style: TextStyle(
-                          color: DesertColors.primary,
-                          fontSize: 16,
-                        ),
+                        style: AppTextStyles.body.copyWith(color: DesertColors.primary),
                       ),
                     ),
                   );

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../providers/onboarding_provider.dart';
 import 'account_creation_screen.dart';
 import 'permissions_screen.dart';
-import 'welcome_screen.dart';
 import 'journaling_experience_screen.dart';
 import 'emotional_goals_screen.dart';
 import 'preferred_time_screen.dart';
@@ -33,18 +32,16 @@ class OnboardingFlow extends ConsumerWidget {
       case 1:
         return const PermissionsScreen(); // Second: Permissions
       case 2:
-        return const WelcomeScreen(); // Third: Welcome
-      case 3:
         return const JournalingExperienceScreen(); // Continue normal flow
-      case 4:
+      case 3:
         return const EmotionalGoalsScreen();
-      case 5:
+      case 4:
         return const PreferredTimeScreen();
-      case 6:
+      case 5:
         return const PrivacyPreferencesScreen();
-      case 7:
+      case 6:
         return const FeatureDemoScreen();
-      case 8:
+      case 7:
         return const FirstJournalScreen();
       default:
         return const AccountCreationScreen();

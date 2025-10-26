@@ -33,7 +33,7 @@ class ComingSoonScreen extends StatelessWidget {
                 // Title - Using framework typography
                 Text(
                   'Renewal',
-                  style: OdyseyaTypography.h1.copyWith(
+                  style: AppTextStyles.h1.copyWith(
                     color: DesertColors.brownBramble,
                     fontSize: 32,
                   ),
@@ -45,7 +45,7 @@ class ComingSoonScreen extends StatelessWidget {
                 // Subtitle - Poetic description
                 Text(
                   'Your space for healing & reconnection',
-                  style: OdyseyaTypography.body.copyWith(
+                  style: AppTextStyles.body.copyWith(
                     color: DesertColors.treeBranch,
                     fontSize: 18,
                   ),
@@ -73,7 +73,7 @@ class ComingSoonScreen extends StatelessWidget {
                       // Coming Soon heading
                       Text(
                         'Coming Soon',
-                        style: OdyseyaTypography.h2.copyWith(
+                        style: AppTextStyles.h3.copyWith(
                           color: DesertColors.brownBramble,
                         ),
                         textAlign: TextAlign.center,
@@ -92,7 +92,7 @@ class ComingSoonScreen extends StatelessWidget {
                       // Poetic message
                       Text(
                         'Rest here.\nNew paths are being shaped by the wind.',
-                        style: OdyseyaTypography.body.copyWith(
+                        style: AppTextStyles.body.copyWith(
                           fontStyle: FontStyle.italic,
                           color: DesertColors.treeBranch,
                           fontSize: 15,
@@ -108,7 +108,7 @@ class ComingSoonScreen extends StatelessWidget {
                 // MVP2 Timeline hint
                 Text(
                   'Available in the next release',
-                  style: OdyseyaTypography.caption.copyWith(
+                  style: AppTextStyles.caption.copyWith(
                     color: DesertColors.treeBranch.withValues(alpha: 0.7),
                   ),
                   textAlign: TextAlign.center,
@@ -135,7 +135,7 @@ class ComingSoonScreen extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: OdyseyaTypography.body.copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: DesertColors.brownBramble,
                 fontSize: 16,
               ),

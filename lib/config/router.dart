@@ -5,7 +5,7 @@ import '../providers/auth_provider.dart';
 import '../providers/mood_provider.dart';
 import '../models/auth_user.dart';
 import '../screens/splash_screen.dart';
-import '../screens/first_downloadapp_screen.dart';
+import '../screens/marketing_screen.dart';
 import '../screens/auth/auth_choice_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/signup_screen.dart';
@@ -13,13 +13,13 @@ import '../screens/action/mood_selection_screen.dart';
 import '../screens/onboarding/onboarding_flow.dart';
 import '../screens/onboarding/gdpr_consent_screen.dart';
 import '../screens/onboarding/permissions_screen.dart';
-import '../screens/onboarding/welcome_screen.dart';
 import '../screens/onboarding/onboarding_success_screen.dart';
 import '../screens/onboarding/questionnaire_q1_screen.dart';
 import '../screens/onboarding/questionnaire_q2_screen.dart';
 import '../screens/onboarding/questionnaire_q3_screen.dart';
 import '../screens/onboarding/questionnaire_q4_screen.dart';
 import '../screens/inspiration/affirmation_screen.dart';
+import '../screens/inspiration/carousel_color_demo.dart';
 import '../screens/main_app_shell.dart';
 import '../screens/action/recording_screen.dart';
 import '../screens/action/review_submit_screen.dart';
@@ -70,7 +70,7 @@ CustomTransitionPage<void> _buildPageWithSlideTransition({
 // Router configuration
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    initialLocation: '/splash', // Show splash screen first when app is downloaded
+    initialLocation: '/splash',
     debugLogDiagnostics: true,
     routes: [
       // Splash Screen - First thing users see when downloading the app
@@ -80,11 +80,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SplashScreen(),
       ),
 
-      // First Download/Marketing Screen - After splash
+      // Marketing Screen - Apple Store quality landing page
       GoRoute(
-        path: '/first-download',
-        name: 'first-download',
-        builder: (context, state) => const FirstDownloadAppScreen(),
+        path: '/marketing',
+        name: 'marketing',
+        pageBuilder: (context, state) => _buildPageWithFadeTransition(
+          child: const MarketingScreen(),
+          state: state,
+        ),
       ),
 
       // Onboarding Flow
@@ -123,16 +126,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'permissions',
         pageBuilder: (context, state) => _buildPageWithSlideTransition(
           child: const PermissionsScreen(),
-          state: state,
-        ),
-      ),
-
-      // Welcome Screen (after permissions)
-      GoRoute(
-        path: '/welcome',
-        name: 'welcome',
-        pageBuilder: (context, state) => _buildPageWithSlideTransition(
-          child: const WelcomeScreen(),
           state: state,
         ),
       ),
@@ -177,12 +170,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // Individual tab routes (accessible via bottom navigation)
+
+      // Inspire tab - Affirmations
       GoRoute(
-        path: '/dashboard',
-        name: 'dashboard',
+        path: '/affirmations',
+        name: 'affirmations',
         builder: (context, state) => const MainAppShell(),
       ),
 
+      // Express tab - Mood Selection/Journal
       GoRoute(
         path: '/home',
         name: 'home',
@@ -195,12 +191,35 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const MainAppShell(),
       ),
 
+      // Reflect tab - Dashboard/Journey Overview
+      GoRoute(
+        path: '/reflect',
+        name: 'reflect',
+        builder: (context, state) => const MainAppShell(),
+      ),
+
+      // Legacy /dashboard route - redirects to /reflect for backward compatibility
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) => const MainAppShell(),
+      ),
+
+      // Renew tab - Self-Care Rituals
+      GoRoute(
+        path: '/renew',
+        name: 'renew',
+        builder: (context, state) => const MainAppShell(),
+      ),
+
+      // Calendar (now in Reflect tab)
       GoRoute(
         path: '/calendar',
         name: 'calendar',
         builder: (context, state) => const MainAppShell(),
       ),
 
+      // Settings
       GoRoute(
         path: '/settings',
         name: 'settings',
@@ -233,6 +252,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/affirmation',
         name: 'affirmation',
         builder: (context, state) => const AffirmationScreen(),
+      ),
+
+      // Carousel Color Demo - To preview both color variants
+      GoRoute(
+        path: '/carousel-demo',
+        name: 'carousel-demo',
+        builder: (context, state) => const CarouselColorDemo(),
       ),
 
       // Debug route for voice recording screen testing
@@ -290,8 +316,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           state.matchedLocation == '/onboarding-success';
       // final isOnMoodSelection = state.matchedLocation == '/home';
       final isOnDashboard = state.matchedLocation == '/dashboard';
+      final isOnReflect = state.matchedLocation == '/reflect';
+      final isOnAffirmations = state.matchedLocation == '/affirmations';
       final isOnJournal = state.matchedLocation == '/journal';
       final isOnCalendar = state.matchedLocation == '/calendar';
+      final isOnRenew = state.matchedLocation == '/renew';
 
       // Allow everyone to see splash screen (it auto-navigates after 3 seconds)
       if (isOnSplash) {
@@ -345,11 +374,11 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // If user is not authenticated
       // User is not authenticated
-      // Allow auth routes, GDPR, permissions, welcome, questionnaire, journal, main app, and calendar for unauthenticated users
+      // Allow auth routes, GDPR, permissions, questionnaire, journal, main app, and calendar for unauthenticated users
       final isOnGdpr = state.matchedLocation == '/gdpr-consent';
       final isOnPermissions = state.matchedLocation == '/permissions';
-      final isOnWelcome = state.matchedLocation == '/welcome';
       final isOnMoodSelection = state.matchedLocation == '/mood-selection';
+      final isOnMarketing = state.matchedLocation == '/marketing';
       final isOnQuestionnaire = state.matchedLocation.startsWith(
         '/onboarding/questionnaire',
       );
@@ -361,13 +390,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           isOnSignup ||
           isOnGdpr ||
           isOnPermissions ||
-          isOnWelcome ||
           isOnDashboard ||
+          isOnReflect ||
+          isOnAffirmations ||
           isOnCalendar ||
+          isOnRenew ||
           isOnQuestionnaire ||
           isOnMoodSelection ||
           isOnJournal ||
           isOnMain ||
+          isOnMarketing ||
           isOnTestVoice) {
         // Unauthenticated user on allowed route
         return null;

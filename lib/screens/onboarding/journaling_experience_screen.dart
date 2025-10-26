@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../models/onboarding_data.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../constants/typography.dart';
 
 class JournalingExperienceScreen extends ConsumerWidget {
   const JournalingExperienceScreen({super.key});
@@ -58,22 +59,13 @@ class JournalingExperienceScreen extends ConsumerWidget {
                 Text(
                   'No matter where you\'re starting from, Odyseya will meet you there',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: DesertColors.onSurface,
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSurface, height: 1.4),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Whether you\'re completely new to journaling or a seasoned writer, we\'ll provide personalized guidance and support.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.4,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
                 ),
               ],
             ),
@@ -138,11 +130,7 @@ class JournalingExperienceScreen extends ConsumerWidget {
             Expanded(
               child: Text(
                 label,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: isSelected ? DesertColors.primary : DesertColors.onSurface,
-                ),
+                style: AppTextStyles.bodyMedium.copyWith(color: isSelected ? DesertColors.primary : DesertColors.onSurface),
               ),
             ),
             if (isSelected)

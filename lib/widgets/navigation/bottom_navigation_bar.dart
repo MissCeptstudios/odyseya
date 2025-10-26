@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../constants/typography.dart';
 import '../../constants/colors.dart';
 import '../../constants/spacing.dart';
+import 'custom_nav_icons.dart';
 
 /// Framework v1.4: Height 84px, Top radius 24px, Active #D8A36C, Inactive #7A4C25
 class OdyseyaBottomNavigationBar extends StatelessWidget {
@@ -40,35 +41,34 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(
+              _buildCustomNavItem(
                 context,
-                icon: Icons.dashboard_outlined,
-                label: 'Dashboard',
+                iconBuilder: (color, size) => CustomNavIcons.inspire(color, size),
+                label: 'Inspire',
                 index: 0,
                 isSelected: currentIndex == 0,
               ),
-              _buildNavItem(
+              _buildCustomNavItem(
                 context,
-                icon: Icons.sentiment_satisfied_alt_outlined,
-                label: 'Home',
+                iconBuilder: (color, size) => CustomNavIcons.express(color, size),
+                label: 'Express',
                 index: 1,
                 isSelected: currentIndex == 1,
               ),
-              _buildNavItem(
+              _buildCustomNavItem(
                 context,
-                icon: Icons.mic_none,
-                label: 'Journal',
+                iconBuilder: (color, size) => CustomNavIcons.reflect(color, size),
+                label: 'Reflect',
                 index: 2,
                 isSelected: currentIndex == 2,
               ),
-              _buildNavItem(
+              _buildCustomNavItem(
                 context,
-                icon: Icons.calendar_today_outlined,
-                label: 'Calendar',
+                iconBuilder: (color, size) => CustomNavIcons.renew(color, size),
+                label: 'Renew',
                 index: 3,
                 isSelected: currentIndex == 3,
               ),
-              // Settings removed per UX requirements - now in top navigation
             ],
           ),
         ),
@@ -76,17 +76,17 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(
+  Widget _buildCustomNavItem(
     BuildContext context, {
-    required IconData icon,
+    required Widget Function(Color, double) iconBuilder,
     required String label,
     required int index,
     required bool isSelected,
   }) {
     // Framework v1.4: Active #D8A36C, Inactive #7A4C25
     final iconColor = isSelected
-        ? DesertColors.westernSunrise // Framework: #D8A36C (was caramelDrizzle)
-        : DesertColors.warmBrown; // Framework: #7A4C25 (was treeBranch)
+        ? DesertColors.westernSunrise // Framework: #D8A36C
+        : DesertColors.warmBrown; // Framework: #7A4C25
     final textColor = isSelected
         ? DesertColors.brownBramble
         : DesertColors.warmBrown; // Framework: #7A4C25
@@ -109,11 +109,12 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 22,
-                color: iconColor,
+              SizedBox(
+                width: 28,
+                height: 28,
+                child: iconBuilder(iconColor, 28),
               ),
+              const SizedBox(height: 4),
               Text(
                 label,
                 style: (isSelected
@@ -122,6 +123,7 @@ class OdyseyaBottomNavigationBar extends StatelessWidget {
                 ).copyWith(
                   color: textColor,
                   height: 1.0,
+                  fontSize: 13,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 1,

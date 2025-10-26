@@ -1,9 +1,11 @@
 // Enforce design consistency based on UX_odyseya_framework.md
+import '../../constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/common/odyseya_screen_layout.dart';
+import '../../constants/typography.dart';
 
 class QuestionnaireQ1Screen extends ConsumerWidget {
   const QuestionnaireQ1Screen({super.key});
@@ -94,7 +96,7 @@ class QuestionnaireQ1Screen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isSelected
-                  ? const Color(0xFF6B4423) // Brown border when selected
+                  ? DesertColors.brownBramble // Brown border when selected
                   : Colors.transparent,
                 width: 2,
               ),
@@ -114,12 +116,12 @@ class QuestionnaireQ1Screen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isSelected
-                      ? const Color(0xFFC9A882) // Tan/beige background for check
+                      ? DesertColors.caramelDrizzle // Tan/beige background for check
                       : Colors.transparent,
                     border: Border.all(
                       color: isSelected
-                        ? const Color(0xFFC9A882)
-                        : const Color(0xFFD4C4B0).withValues(alpha: 0.5),
+                        ? DesertColors.caramelDrizzle
+                        : DesertColors.waterWash.withValues(alpha: 0.5),
                       width: 2,
                     ),
                   ),
@@ -135,10 +137,7 @@ class QuestionnaireQ1Screen extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF6B4423),
+                    style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.brownBramble,
                     ),
                   ),
                 ),

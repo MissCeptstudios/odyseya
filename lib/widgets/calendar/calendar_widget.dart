@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../models/journal_entry.dart';
 import '../../models/mood.dart';
+import '../../constants/typography.dart';
 
 class CalendarWidget extends StatelessWidget {
   final DateTime currentMonth;
@@ -66,11 +67,7 @@ class CalendarWidget extends StatelessWidget {
         child: Center(
           child: Text(
             day,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: DesertColors.onSurfaceVariant,
-            ),
+            style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSurfaceVariant),
           ),
         ),
       )).toList(),
@@ -168,10 +165,7 @@ class CalendarWidget extends StatelessWidget {
             Center(
               child: Text(
                 '${date.day}',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: isToday || isSelected ? FontWeight.w700 : FontWeight.w500,
-                  color: isSelected
+                style: AppTextStyles.bodySmall.copyWith(color: isSelected
                       ? DesertColors.onPrimary
                       : isCurrentMonth
                           ? isFuture
@@ -215,11 +209,7 @@ class CalendarWidget extends StatelessWidget {
                   child: Center(
                     child: Text(
                       '${entries.length}',
-                      style: TextStyle(
-                        fontSize: 8,
-                        fontWeight: FontWeight.w600,
-                        color: DesertColors.onAccent,
-                      ),
+                      style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onAccent),
                     ),
                   ),
                 ),

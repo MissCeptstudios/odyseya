@@ -44,7 +44,7 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                   ),
                   Text(
                     'Hi Mike',
-                    style: OdyseyaTypography.h1,
+                    style: AppTextStyles.h1,
                   ),
                   IconButton(
                     icon: const Icon(Icons.settings, color: DesertColors.brownBramble, size: 28),
@@ -78,7 +78,7 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                     // Question text
                     Text(
                       'Whats on your mind?',
-                      style: OdyseyaTypography.h1Large,
+                      style: AppTextStyles.h1,
                     ),
 
                     const SizedBox(height: 16),
@@ -140,16 +140,14 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                           children: [
                             Text(
                               _formatDuration(voiceState.recordingDuration),
-                              style: OdyseyaTypography.h1Large.copyWith(
+                              style: AppTextStyles.h2.copyWith(
                                 color: DesertColors.brownBramble,
-                                fontWeight: FontWeight.w300,
                               ),
                             ),
                             Text(
                               _formatDuration(const Duration(minutes: 2, seconds: 30)),
-                              style: OdyseyaTypography.h1Large.copyWith(
+                              style: AppTextStyles.h2.copyWith(
                                 color: DesertColors.brownBramble,
-                                fontWeight: FontWeight.w300,
                               ),
                             ),
                           ],
@@ -166,18 +164,25 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                           height: 100,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: DesertColors.waterWash,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                DesertColors.westernSunrise,
+                                DesertColors.roseSand,
+                              ],
+                            ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.15),
+                                color: DesertColors.westernSunrise.withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 offset: const Offset(0, 8),
                               ),
                             ],
                           ),
                           child: Icon(
-                            voiceState.isRecording ? Icons.stop : Icons.mic,
-                            color: DesertColors.brownBramble,
+                            voiceState.isRecording ? Icons.stop_rounded : Icons.mic_rounded,
+                            color: Colors.white,
                             size: 48,
                           ),
                         ),
@@ -211,9 +216,9 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                             decoration: InputDecoration(
                               hintText: 'Share your thoughts...',
                               border: InputBorder.none,
-                              hintStyle: OdyseyaTypography.hint,
+                              hintStyle: AppTextStyles.hint,
                             ),
-                            style: OdyseyaTypography.bodyLarge,
+                            style: AppTextStyles.bodyLarge,
                           ),
                         ),
                       ),
@@ -242,8 +247,10 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
                             shadowColor: Colors.transparent,
                           ),
                           child: Text(
-                            'CONTINUE',
-                            style: OdyseyaTypography.buttonLarge,
+                            'Continue'.toUpperCase(),
+                            style: AppTextStyles.buttonLarge.copyWith(
+                              letterSpacing: 1.2,
+                            ),
                           ),
                         ),
                       ),
@@ -271,21 +278,27 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
         height: 60,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? DesertColors.waterWash : DesertColors.cardWhite,
+          color: isSelected ? DesertColors.arcticRain : DesertColors.cardWhite,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected
+                ? DesertColors.arcticRain
+                : DesertColors.treeBranch.withValues(alpha: 0.2),
+            width: isSelected ? 2 : 1,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
+              color: DesertColors.shadowGrey.withValues(alpha: 0.08),
               blurRadius: 8,
-              offset: const Offset(0, 4),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: OdyseyaTypography.button.copyWith(
-            color: isSelected ? DesertColors.brownBramble : DesertColors.caramelDrizzle,
+          style: AppTextStyles.button.copyWith(
+            color: isSelected ? DesertColors.brownBramble : DesertColors.treeBranch,
           ),
         ),
       ),

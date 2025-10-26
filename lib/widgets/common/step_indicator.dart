@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 
 /// Step indicator component (numbered circles at top of screen)
 /// Shows progress through a multi-step flow
@@ -66,11 +67,7 @@ class StepIndicator extends StatelessWidget {
       child: Center(
         child: Text(
           '$stepNumber',
-          style: TextStyle(
-            fontSize: isActive ? 18 : 14,
-            fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
-            color: textColor,
-          ),
+          style: AppTextStyles.body.copyWith(color: textColor),
         ),
       ),
     );
@@ -152,10 +149,7 @@ class StepProgressIndicator extends StatelessWidget {
       child: Center(
         child: Text(
           '$stepNumber',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: isCompleted || isActive
+          style: AppTextStyles.captionSmall.copyWith(color: isCompleted || isActive
                 ? Colors.white
                 : DesertColors.treeBranch.withValues(alpha: 0.5),
           ),

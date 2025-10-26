@@ -303,4 +303,30 @@ class FirestoreService {
       return {};
     }
   }
+
+  /// Save user feedback to Firestore
+  /// Collection structure: feedback/{feedbackId}
+  Future<void> saveFeedback({
+    required String userId,
+    required String userName,
+    required String feedback,
+    String? userEmail,
+  }) async {
+    try {
+      await _firestore.collection('feedback').add({
+        'userId': userId,
+        'userName': userName,
+        'userEmail': userEmail,
+        'feedback': feedback,
+        'createdAt': FieldValue.serverTimestamp(),
+        'status': 'new', // new, reviewed, resolved
+        'platform': defaultTargetPlatform.name,
+      });
+
+      debugPrint('✅ Feedback saved successfully');
+    } catch (e) {
+      debugPrint('❌ Error saving feedback: $e');
+      rethrow;
+    }
+  }
 }

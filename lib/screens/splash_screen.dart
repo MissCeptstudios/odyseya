@@ -47,9 +47,9 @@ class _SplashScreenState extends State<SplashScreen>
       // Wait for 8 seconds
       await Future.delayed(const Duration(seconds: 8));
 
-      // Navigate to auth screen (Sign In / Create Account)
+      // Navigate to marketing screen
       if (mounted) {
-        context.go('/auth');
+        context.go('/marketing');
       }
     } catch (e) {
       // Log error but don't show UI - splash screen should always proceed
@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (mounted) {
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
-          context.go('/auth');
+          context.go('/marketing');
         }
       }
     }
@@ -68,6 +68,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     // Get screen dimensions for proper sizing
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final compassSize = screenWidth * 0.5; // Compass is 50% of screen width
     final insideSize = compassSize * 0.65; // Inside is 65% of compass size
 
@@ -83,57 +84,56 @@ class _SplashScreenState extends State<SplashScreen>
             height: double.infinity,
           ),
 
-          // Content overlay
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Compass with spinning animation
-                SizedBox(
-                  width: compassSize,
-                  height: compassSize,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Inner graphic (STATIC - blue crown stays in place)
-                      Image.asset(
-                        'assets/images/inside_compass.png',
-                        width: insideSize,
-                        height: insideSize,
-                        fit: BoxFit.contain,
-                      ),
-
-                      // Outer compass ring (SPINNING ANIMATION)
-                      AnimatedBuilder(
-                        animation: _rotationAnimation,
-                        builder: (context, child) {
-                          return Transform.rotate(
-                            angle: _rotationAnimation.value,
-                            child: child,
-                          );
-                        },
-                        child: Image.asset(
-                          'assets/images/just_compass.png',
-                          width: compassSize,
-                          height: compassSize,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ],
+          // Compass centered at half screen height
+          Positioned(
+            top: (screenHeight / 2) - (compassSize / 2),
+            left: (screenWidth / 2) - (compassSize / 2),
+            child: SizedBox(
+              width: compassSize,
+              height: compassSize,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Inner graphic (STATIC - blue crown stays in place)
+                  Image.asset(
+                    'assets/images/inside_compass.png',
+                    width: insideSize,
+                    height: insideSize,
+                    fit: BoxFit.contain,
                   ),
-                ),
 
-                // Bardzo mały gap - logo zlizane jak na zdjęciu
-                const SizedBox(height: 4),
+                  // Outer compass ring (SPINNING ANIMATION)
+                  AnimatedBuilder(
+                    animation: _rotationAnimation,
+                    builder: (context, child) {
+                      return Transform.rotate(
+                        angle: _rotationAnimation.value,
+                        child: child,
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/images/just_compass.png',
+                      width: compassSize,
+                      height: compassSize,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
-                // "Odyseya" text from UX folder - bardzo blisko kompasu
-                Image.asset(
-                  'assets/images/Odyseya_word.png',
-                  width: compassSize * 1.4,
-                  fit: BoxFit.contain,
-                ),
-              ],
+          // "Odyseya" text positioned below compass
+          Positioned(
+            top: (screenHeight / 2) + (compassSize / 2) + 4,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'assets/images/Odyseya_word.png',
+                width: compassSize * 1.4,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
         ],

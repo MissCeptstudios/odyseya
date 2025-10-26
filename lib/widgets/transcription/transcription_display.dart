@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/colors.dart';
 import '../../providers/voice_journal_provider.dart';
+import '../../constants/typography.dart';
 
 class TranscriptionDisplay extends ConsumerStatefulWidget {
   const TranscriptionDisplay({super.key});
@@ -139,19 +140,12 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
                       : voiceState.hasTranscription
                           ? 'Your voice, in words'
                           : 'Transcription',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: DesertColors.onSurface,
-                  ),
+                  style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                 ),
                 if (voiceState.isTranscribing)
                   Text(
                     'This may take a moment',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: DesertColors.onSecondary,
-                    ),
+                    style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary),
                   ),
               ],
             ),
@@ -190,11 +184,7 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
           ),
           child: Text(
             '${voiceState.transcription.split(' ').where((word) => word.isNotEmpty).length} words',
-            style: TextStyle(
-              fontSize: 11,
-              color: DesertColors.onSecondary,
-              fontWeight: FontWeight.w500,
-            ),
+            style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary),
           ),
         ),
       ],
@@ -245,19 +235,12 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
           const SizedBox(height: 16),
           Text(
             'Listening to your voice...',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSurface),
           ),
           const SizedBox(height: 8),
           Text(
             'We\'re carefully converting your words into text',
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary),
             textAlign: TextAlign.center,
           ),
         ],
@@ -274,11 +257,7 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
           TextField(
             controller: _textController,
             maxLines: 8,
-            style: TextStyle(
-              fontSize: 16,
-              height: 1.6,
-              color: DesertColors.onSurface,
-            ),
+            style: AppTextStyles.body.copyWith(color: DesertColors.onSurface, height: 1.6),
             decoration: InputDecoration(
               hintText: 'Your transcription will appear here. You can edit it if needed.',
               hintStyle: TextStyle(
@@ -342,20 +321,13 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
           const SizedBox(width: 8),
           Text(
             '$wordCount words • $charCount characters',
-            style: TextStyle(
-              fontSize: 12,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary),
           ),
           const Spacer(),
           if (wordCount > 0)
             Text(
               'Perfect for analysis',
-              style: TextStyle(
-                fontSize: 12,
-                color: DesertColors.sageGreen,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppTextStyles.uiSmall.copyWith(color: DesertColors.sageGreen),
             ),
         ],
       ),
@@ -383,18 +355,12 @@ class _TranscriptionDisplayState extends ConsumerState<TranscriptionDisplay>
           const SizedBox(height: 16),
           Text(
             'Record your voice first',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: DesertColors.onSecondary,
-            ),
+            style: AppTextStyles.bodyMedium.copyWith(color: DesertColors.onSecondary),
           ),
           const SizedBox(height: 8),
           Text(
             'Your words will appear here as text',
-            style: TextStyle(
-              fontSize: 14,
-              color: DesertColors.onSecondary.withValues(alpha: 0.7),
+            style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           ),

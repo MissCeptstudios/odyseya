@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../models/onboarding_data.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/onboarding/onboarding_layout.dart';
+import '../../constants/typography.dart';
 
 class PrivacyPreferencesScreen extends ConsumerWidget {
   const PrivacyPreferencesScreen({super.key});
@@ -68,11 +69,7 @@ class PrivacyPreferencesScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'Your privacy is our priority',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: DesertColors.onSurface,
-                        ),
+                        style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                       ),
                     ),
                   ],
@@ -80,11 +77,7 @@ class PrivacyPreferencesScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 Text(
                   '• All processing happens securely with enterprise-grade encryption\n• Your journal entries are never shared or sold\n• AI analysis is performed with strict privacy controls\n• You can export or delete your data anytime',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DesertColors.onSecondary,
-                    height: 1.5,
-                  ),
+                  style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.5),
                 ),
               ],
             ),
@@ -174,18 +167,12 @@ class PrivacyPreferencesScreen extends ConsumerWidget {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? DesertColors.primary : DesertColors.onSurface,
-                    ),
+                    style: AppTextStyles.h4.copyWith(color: isSelected ? DesertColors.primary : DesertColors.onSurface),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isSelected 
+                    style: AppTextStyles.bodySmall.copyWith(color: isSelected 
                           ? DesertColors.primary.withValues(alpha: 0.8)
                           : DesertColors.onSecondary,
                       height: 1.4,

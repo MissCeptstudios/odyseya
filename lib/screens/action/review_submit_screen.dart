@@ -15,20 +15,33 @@ class ReviewSubmitScreen extends ConsumerStatefulWidget {
 
 class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
   String? selectedMood;
-  // UX Framework: Use approved color palette for mood colors
+  // UX Framework: Use approved color palette for mood colors with Material icons
   final List<Map<String, dynamic>> moods = [
-    {'emoji': '😊', 'label': 'Happy', 'color': DesertColors.westernSunrise},
-    {'emoji': '😢', 'label': 'Sad', 'color': DesertColors.arcticRain},
-    {'emoji': '😰', 'label': 'Anxious', 'color': DesertColors.caramelDrizzle},
-    {'emoji': '😌', 'label': 'Calm', 'color': DesertColors.waterWash},
-    {'emoji': '😠', 'label': 'Angry', 'color': DesertColors.roseSand},
+    {'icon': Icons.sentiment_satisfied_rounded, 'label': 'Happy', 'color': DesertColors.westernSunrise},
+    {'icon': Icons.sentiment_dissatisfied_rounded, 'label': 'Sad', 'color': DesertColors.arcticRain},
+    {'icon': Icons.sentiment_very_dissatisfied_rounded, 'label': 'Anxious', 'color': DesertColors.caramelDrizzle},
+    {'icon': Icons.spa_rounded, 'label': 'Calm', 'color': DesertColors.waterWash},
+    {'icon': Icons.mood_bad_rounded, 'label': 'Angry', 'color': DesertColors.roseSand},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: DesertColors.creamBeige,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            color: DesertColors.brownBramble,
+            onPressed: () => context.go('/settings'),
+          ),
+        ],
+      ),
       body: SafeArea(
+        top: false,
         bottom: false,
         child: Column(
           children: [
@@ -47,7 +60,7 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
                       // How are you feeling?
                       Text(
                         'How are you feeling?',
-                        style: OdyseyaTypography.h2Large.copyWith(
+                        style: AppTextStyles.h2Large.copyWith(
                           color: DesertColors.brownBramble, // Framework: Use brown for text
                         ),
                       ),
@@ -69,28 +82,34 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
                                 width: 80,
                                 margin: const EdgeInsets.only(right: 12),
                                 decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? DesertColors.cardWhite
-                                      : DesertColors.cardWhite.withValues(alpha: 0.3),
+                                  color: DesertColors.cardWhite,
                                   borderRadius: BorderRadius.circular(16),
-                                  border: isSelected
-                                      ? Border.all(
-                                          color: mood['color'],
-                                          width: 3,
-                                        )
-                                      : null,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? mood['color']
+                                        : DesertColors.treeBranch.withValues(alpha: 0.2),
+                                    width: isSelected ? 3 : 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: DesertColors.shadowGrey.withValues(alpha: 0.08),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      mood['emoji'],
-                                      style: const TextStyle(fontSize: 36),
+                                    Icon(
+                                      mood['icon'],
+                                      color: mood['color'],
+                                      size: 36,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
                                       mood['label'],
-                                      style: OdyseyaTypography.uiSmall.copyWith(
+                                      style: AppTextStyles.uiSmall.copyWith(
                                         color: isSelected
                                             ? DesertColors.brownBramble // Framework: Brown for text
                                             : DesertColors.treeBranch,
@@ -109,7 +128,7 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
                       // Your Entry Preview
                       Text(
                         'Your Entry',
-                        style: OdyseyaTypography.h2Large.copyWith(
+                        style: AppTextStyles.h2Large.copyWith(
                           color: DesertColors.brownBramble, // Framework: Use brown for text
                         ),
                       ),
@@ -143,7 +162,7 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
                                 const SizedBox(width: 8),
                                 Text(
                                   'Voice Recording',
-                                  style: OdyseyaTypography.ui.copyWith(
+                                  style: AppTextStyles.ui.copyWith(
                                     color: DesertColors.brownBramble, // Framework: Brown for text
                                   ),
                                 ),
@@ -152,14 +171,14 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
                             const SizedBox(height: 12),
                             Text(
                               'Duration: 00:45',
-                              style: OdyseyaTypography.body.copyWith(
+                              style: AppTextStyles.body.copyWith(
                                 color: DesertColors.treeBranch, // Framework: Tree branch for secondary text
                               ),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               'Tap to play and review your recording',
-                              style: OdyseyaTypography.bodySmall.copyWith(
+                              style: AppTextStyles.bodySmall.copyWith(
                                 color: DesertColors.treeBranch,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -192,8 +211,10 @@ class _ReviewSubmitScreenState extends ConsumerState<ReviewSubmitScreen> {
                             shadowColor: Colors.transparent,
                           ),
                           child: Text(
-                            'Submit Entry',
-                            style: OdyseyaTypography.buttonLarge,
+                            'Submit Entry'.toUpperCase(),
+                            style: AppTextStyles.buttonLarge.copyWith(
+                              letterSpacing: 1.2,
+                            ),
                           ),
                         ),
                       ),

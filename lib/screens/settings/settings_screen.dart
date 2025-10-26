@@ -12,8 +12,10 @@ import '../../providers/settings_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../providers/subscription_provider.dart';
 import '../../services/data_export_service.dart';
+import '../../services/firestore_service.dart';
 import '../../widgets/common/premium_badge.dart';
 import '../../providers/journal_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -33,12 +35,10 @@ class SettingsScreen extends ConsumerWidget {
         backgroundColor: DesertColors.creamBeige,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Settings',
-          style: TextStyle(
+          style: AppTextStyles.h2.copyWith(
             color: DesertColors.onSurface,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
@@ -160,15 +160,31 @@ class SettingsScreen extends ConsumerWidget {
               ),
               
               const SizedBox(height: 32),
-              
+
+              _buildSettingsSection(
+                title: 'Feedback',
+                children: [
+                  _buildSettingsTile(
+                    title: 'Write to Us',
+                    subtitle: 'We would love feedback to improve this app',
+                    trailing: const Icon(
+                      Icons.send,
+                      color: DesertColors.onSecondary,
+                    ),
+                    onTap: () => _showFeedbackDialog(context, ref),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 32),
+
               // App Info
               Center(
                 child: Column(
                   children: [
                     Text(
                       'Odyseya',
-                      style: TextStyle(
-                        fontSize: 16,
+                      style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                         color: DesertColors.onSurface.withValues(alpha: 0.7),
                       ),
@@ -176,8 +192,7 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 4),
                     Text(
                       'Version 1.0.0',
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: AppTextStyles.bodySmall.copyWith(
                         color: DesertColors.onSecondary.withValues(alpha: 0.6),
                       ),
                     ),
@@ -202,9 +217,7 @@ class SettingsScreen extends ConsumerWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+          style: AppTextStyles.h3.copyWith(
             color: DesertColors.onSurface,
           ),
         ),
@@ -250,8 +263,7 @@ class SettingsScreen extends ConsumerWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w600,
                         color: DesertColors.onSurface,
                       ),
@@ -259,8 +271,7 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: AppTextStyles.bodySmall.copyWith(
                         color: DesertColors.onSecondary.withValues(alpha: 0.8),
                       ),
                     ),
@@ -337,11 +348,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(width: 8),
             Text(
               'AI Analysis Level',
-              style: TextStyle(
-                color: DesertColors.onSurface,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
+              style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
             ),
           ],
         ),
@@ -384,18 +391,12 @@ class SettingsScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 level.displayName,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: DesertColors.onSurface,
-                                ),
+                                style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 level.description,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: DesertColors.onSecondary.withValues(alpha: 0.8),
+                                style: AppTextStyles.hint.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.8),
                                 ),
                               ),
                             ],
@@ -414,7 +415,7 @@ class SettingsScreen extends ConsumerWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Cancel',
-              style: TextStyle(color: DesertColors.onSecondary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary),
             ),
           ),
         ],
@@ -449,11 +450,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(width: 8),
             Text(
               'Summary Frequency',
-              style: TextStyle(
-                color: DesertColors.onSurface,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
+              style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
             ),
           ],
         ),
@@ -462,11 +459,7 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             Text(
               'How often would you like to receive emotional insights and summaries?',
-              style: TextStyle(
-                fontSize: 14,
-                color: DesertColors.onSecondary,
-                height: 1.4,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
             ),
             const SizedBox(height: 16),
             ...SummaryFrequency.values.map((frequency) {
@@ -506,20 +499,14 @@ class SettingsScreen extends ConsumerWidget {
                               children: [
                                 Text(
                                   frequency.displayName,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: DesertColors.onSurface,
-                                  ),
+                                  style: AppTextStyles.h4.copyWith(color: DesertColors.onSurface),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   frequency == SummaryFrequency.twoWeeks 
                                       ? 'Get insights after 14 days of journaling'
                                       : 'Get insights after 30 days of journaling',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: DesertColors.onSecondary.withValues(alpha: 0.8),
+                                  style: AppTextStyles.hint.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.8),
                                   ),
                                 ),
                               ],
@@ -539,7 +526,7 @@ class SettingsScreen extends ConsumerWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Cancel',
-              style: TextStyle(color: DesertColors.onSecondary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary),
             ),
           ),
         ],
@@ -574,11 +561,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(width: 8),
             Text(
               'Export Your Data',
-              style: TextStyle(
-                color: DesertColors.onSurface,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
+              style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
             ),
           ],
         ),
@@ -588,10 +571,7 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             Text(
               'Choose what you\'d like to export:',
-              style: TextStyle(
-                fontSize: 14,
-                color: DesertColors.onSecondary,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary),
             ),
             const SizedBox(height: 16),
             _buildExportOption(
@@ -635,10 +615,7 @@ class SettingsScreen extends ConsumerWidget {
                   Expanded(
                     child: Text(
                       'Data will be exported as PDF or JSON files to your device.',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: DesertColors.onSecondary,
-                      ),
+                      style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary),
                     ),
                   ),
                 ],
@@ -651,7 +628,7 @@ class SettingsScreen extends ConsumerWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: TextStyle(color: DesertColors.onSecondary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary),
             ),
           ),
         ],
@@ -700,18 +677,12 @@ class SettingsScreen extends ConsumerWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: DesertColors.onSurface,
-                      ),
+                      style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSurface),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: DesertColors.onSecondary.withValues(alpha: 0.8),
+                      style: AppTextStyles.captionSmall.copyWith(color: DesertColors.onSecondary.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -1044,28 +1015,20 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(width: 8),
             Text(
               'Permission Required',
-              style: TextStyle(
-                color: DesertColors.onSurface,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
+              style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
             ),
           ],
         ),
         content: Text(
           'To receive daily reminders, please allow notifications in your device settings. This helps you maintain a consistent journaling habit.',
-          style: TextStyle(
-            fontSize: 14,
-            color: DesertColors.onSecondary,
-            height: 1.4,
-          ),
+          style: AppTextStyles.bodySmall.copyWith(color: DesertColors.onSecondary, height: 1.4),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Not Now',
-              style: TextStyle(color: DesertColors.onSecondary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary),
             ),
           ),
           TextButton(
@@ -1076,12 +1039,216 @@ class SettingsScreen extends ConsumerWidget {
             },
             child: Text(
               'Open Settings',
-              style: TextStyle(color: DesertColors.primary),
+              style: AppTextStyles.body.copyWith(color: DesertColors.primary),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _showFeedbackDialog(BuildContext context, WidgetRef ref) async {
+    final TextEditingController feedbackController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+
+    await showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: DesertColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(32),
+            topRight: Radius.circular(32),
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.feedback,
+              color: DesertColors.primary,
+              size: 24,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'Write to Us',
+              style: AppTextStyles.h3.copyWith(color: DesertColors.onSurface),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'We would love to hear your thoughts, suggestions, or any issues you\'re experiencing.',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: DesertColors.onSecondary,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Your Email (optional)',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: DesertColors.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  hintText: 'your@email.com',
+                  hintStyle: AppTextStyles.inputPlaceholder,
+                  filled: true,
+                  fillColor: DesertColors.creamBeige,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
+                ),
+                style: AppTextStyles.inputText,
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Your Feedback',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: DesertColors.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: feedbackController,
+                maxLines: 6,
+                decoration: InputDecoration(
+                  hintText: 'Tell us what you think...',
+                  hintStyle: AppTextStyles.inputPlaceholder,
+                  filled: true,
+                  fillColor: DesertColors.creamBeige,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.all(16),
+                ),
+                style: AppTextStyles.inputText,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              feedbackController.dispose();
+              emailController.dispose();
+              Navigator.of(dialogContext).pop();
+            },
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.body.copyWith(color: DesertColors.onSecondary),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final feedback = feedbackController.text.trim();
+              final email = emailController.text.trim();
+
+              if (feedback.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Please enter your feedback'),
+                    backgroundColor: DesertColors.terracotta,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    margin: const EdgeInsets.all(16),
+                  ),
+                );
+                return;
+              }
+
+              // Close dialog
+              Navigator.of(dialogContext).pop();
+
+              // Dispose controllers
+              feedbackController.dispose();
+              emailController.dispose();
+
+              // Send feedback to Firestore
+              await _sendFeedbackToFirestore(context, ref, feedback, email);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: DesertColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            ),
+            child: Text(
+              'Send',
+              style: AppTextStyles.button,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _sendFeedbackToFirestore(BuildContext context, WidgetRef ref, String feedback, String email) async {
+    try {
+      // Get current user ID
+      final userId = ref.read(authStateProvider).user?.id ?? 'anonymous';
+      final userName = ref.read(authStateProvider).user?.displayName ?? 'Anonymous User';
+
+      // Save feedback to Firestore
+      final firestoreService = FirestoreService();
+      await firestoreService.saveFeedback(
+        userId: userId,
+        userName: userName,
+        feedback: feedback,
+        userEmail: email.isNotEmpty ? email : null,
+      );
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Thank you for your feedback! We will review it soon.'),
+            backgroundColor: DesertColors.sageGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            margin: const EdgeInsets.all(16),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error sending feedback: ${e.toString()}'),
+            backgroundColor: DesertColors.terracotta,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    }
   }
 
   Widget _buildPremiumSection(
@@ -1129,7 +1296,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             Text(
               'Premium Active',
-              style: OdyseyaTypography.h2.copyWith(
+              style: AppTextStyles.h3.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
@@ -1140,7 +1307,7 @@ class SettingsScreen extends ConsumerWidget {
                 subscriptionState.willRenew
                     ? 'Renews on ${_formatDate(subscriptionState.expirationDate!)}'
                     : 'Expires on ${_formatDate(subscriptionState.expirationDate!)}',
-                style: OdyseyaTypography.body.copyWith(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 14,
                 ),
@@ -1148,7 +1315,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             Text(
               'You have access to all premium features:',
-              style: OdyseyaTypography.body.copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: Colors.white.withValues(alpha: 0.9),
                 fontSize: 13,
               ),
@@ -1208,7 +1375,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 child: Text(
                   'Manage Subscription',
-                  style: OdyseyaTypography.button.copyWith(
+                  style: AppTextStyles.button.copyWith(
                     color: Colors.white,
                   ),
                 ),
@@ -1263,7 +1430,7 @@ class SettingsScreen extends ConsumerWidget {
                       const SizedBox(width: 6),
                       Text(
                         'PREMIUM',
-                        style: OdyseyaTypography.ui.copyWith(
+                        style: AppTextStyles.ui.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
@@ -1277,7 +1444,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             Text(
               'Unlock Your Full Journey',
-              style: OdyseyaTypography.h2.copyWith(
+              style: AppTextStyles.h3.copyWith(
                 color: DesertColors.brownBramble,
                 fontWeight: FontWeight.bold,
               ),
@@ -1285,7 +1452,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Text(
               'Get unlimited access to all features and deeper emotional insights',
-              style: OdyseyaTypography.body.copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: DesertColors.treeBranch,
                 fontSize: 14,
               ),
@@ -1315,8 +1482,10 @@ class SettingsScreen extends ConsumerWidget {
                   shadowColor: Colors.transparent,
                 ),
                 child: Text(
-                  'Upgrade to Premium',
-                  style: OdyseyaTypography.button,
+                  'Upgrade to Premium'.toUpperCase(),
+                  style: AppTextStyles.button.copyWith(
+                    letterSpacing: 1.2,
+                  ),
                 ),
               ),
             ),
@@ -1339,7 +1508,7 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(width: 8),
           Text(
             text,
-            style: OdyseyaTypography.body.copyWith(
+            style: AppTextStyles.body.copyWith(
               color: Colors.white.withValues(alpha: 0.95),
               fontSize: 14,
             ),
@@ -1369,7 +1538,7 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(width: 12),
           Text(
             text,
-            style: OdyseyaTypography.body.copyWith(
+            style: AppTextStyles.body.copyWith(
               color: DesertColors.brownBramble,
               fontSize: 14,
             ),

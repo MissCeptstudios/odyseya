@@ -1,9 +1,11 @@
 // Enforce design consistency based on UX_odyseya_framework.md
+import '../../constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../widgets/common/odyseya_screen_layout.dart';
+import '../../constants/typography.dart';
 
 class QuestionnaireQ2Screen extends ConsumerWidget {
   const QuestionnaireQ2Screen({super.key});
@@ -92,7 +94,7 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isSelected
-                  ? const Color(0xFF6B4423) // Brown border when selected
+                  ? DesertColors.brownBramble // Brown border when selected
                   : Colors.transparent,
                 width: 2,
               ),
@@ -112,12 +114,12 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isSelected
-                      ? const Color(0xFFC9A882) // Tan/beige background for radio
+                      ? DesertColors.caramelDrizzle // Tan/beige background for radio
                       : Colors.transparent,
                     border: Border.all(
                       color: isSelected
-                        ? const Color(0xFFC9A882)
-                        : const Color(0xFFD4C4B0).withValues(alpha: 0.5),
+                        ? DesertColors.caramelDrizzle
+                        : DesertColors.waterWash.withValues(alpha: 0.5),
                       width: 2,
                     ),
                   ),
@@ -139,18 +141,13 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
                     children: [
                       Text(
                         label,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF6B4423),
+                        style: AppTextStyles.h4.copyWith(color: DesertColors.brownBramble,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         description,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: const Color(0xFF8B6F47).withValues(alpha: 0.8),
+                        style: AppTextStyles.bodySmall.copyWith(color: const Color(0xFF8B6F47).withValues(alpha: 0.8),
                           height: 1.3,
                         ),
                       ),

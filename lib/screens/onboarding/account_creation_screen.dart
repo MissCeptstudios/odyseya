@@ -82,9 +82,8 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   'or',
-                  style: TextStyle(
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: DesertColors.onSecondary,
-                    fontSize: 14,
                   ),
                 ),
               ),
@@ -111,8 +110,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
               children: [
                 Text(
                   'Your data is protected',
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: AppTextStyles.ui.copyWith(
                     fontWeight: FontWeight.w600,
                     color: DesertColors.onSurface,
                   ),
@@ -121,8 +119,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
                 Text(
                   'End-to-end encryption • GDPR compliant • Never sold or shared',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTextStyles.captionSmall.copyWith(
                     color: DesertColors.onSecondary,
                   ),
                 ),
@@ -137,8 +134,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
             children: [
               Text(
                 'By continuing, you agree to our ',
-                style: TextStyle(
-                  fontSize: 12,
+                style: AppTextStyles.captionSmall.copyWith(
                   color: DesertColors.onSecondary,
                 ),
               ),
@@ -146,8 +142,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
                 onTap: () => _showTerms(),
                 child: Text(
                   'Terms',
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTextStyles.captionSmall.copyWith(
                     color: DesertColors.primary,
                     decoration: TextDecoration.underline,
                   ),
@@ -155,8 +150,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
               ),
               Text(
                 ' and ',
-                style: TextStyle(
-                  fontSize: 12,
+                style: AppTextStyles.captionSmall.copyWith(
                   color: DesertColors.onSecondary,
                 ),
               ),
@@ -164,8 +158,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
                 onTap: () => _showPrivacyPolicy(),
                 child: Text(
                   'Privacy Policy',
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTextStyles.captionSmall.copyWith(
                     color: DesertColors.primary,
                     decoration: TextDecoration.underline,
                   ),
@@ -222,17 +215,15 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
                       color: isPrimary ? Colors.white : DesertColors.onSurface,
                     ),
                   ),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: isPrimary 
+                    style: AppTextStyles.hint.copyWith(
+                      color: isPrimary
                           ? Colors.white.withValues(alpha: 0.8)
                           : DesertColors.onSecondary,
                     ),
@@ -277,16 +268,14 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
                 children: [
                   Text(
                     'Continue as guest',
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
                       color: DesertColors.onSurface,
                     ),
                   ),
                   Text(
                     'Start journaling now, create account later',
-                    style: TextStyle(
-                      fontSize: 13,
+                    style: AppTextStyles.hint.copyWith(
                       color: DesertColors.onSecondary,
                     ),
                   ),
@@ -343,7 +332,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
         ),
         title: Text(
           'Terms of Service',
-          style: OdyseyaTypography.h2.copyWith(
+          style: AppTextStyles.h3.copyWith(
             color: DesertColors.onSurface,
           ),
         ),
@@ -358,7 +347,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: OdyseyaTypography.button.copyWith(
+              style: AppTextStyles.button.copyWith(
                 color: DesertColors.primary,
               ),
             ),
@@ -378,7 +367,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
         ),
         title: Text(
           'Privacy Policy',
-          style: OdyseyaTypography.h2.copyWith(
+          style: AppTextStyles.h3.copyWith(
             color: DesertColors.onSurface,
           ),
         ),
@@ -393,7 +382,7 @@ class _AccountCreationScreenState extends ConsumerState<AccountCreationScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: OdyseyaTypography.button.copyWith(
+              style: AppTextStyles.button.copyWith(
                 color: DesertColors.primary,
               ),
             ),
@@ -490,7 +479,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                 // Title
                 Text(
                   'Create Account',
-                  style: OdyseyaTypography.h2.copyWith(
+                  style: AppTextStyles.h3.copyWith(
                     color: DesertColors.onSurface,
                   ),
                   textAlign: TextAlign.center,
@@ -498,7 +487,7 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                 const SizedBox(height: 8),
                 Text(
                   'Start your journaling journey',
-                  style: OdyseyaTypography.body.copyWith(
+                  style: AppTextStyles.body.copyWith(
                     color: DesertColors.onSecondary,
                   ),
                   textAlign: TextAlign.center,
@@ -646,8 +635,10 @@ class _EmailSignUpModalState extends State<_EmailSignUpModal> {
                             ),
                           )
                         : Text(
-                            'Create Account',
-                            style: OdyseyaTypography.button,
+                            'Create Account'.toUpperCase(),
+                            style: AppTextStyles.button.copyWith(
+                              letterSpacing: 1.2,
+                            ),
                           ),
                   ),
                 ),

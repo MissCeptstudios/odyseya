@@ -90,8 +90,29 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     }
 
     return Scaffold(
-      backgroundColor: DesertColors.creamBeige,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/Background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            color: DesertColors.brownBramble,
+            onPressed: () => context.go('/settings'),
+          ),
+        ],
+      ),
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(OdyseyaSpacing.md),
           child: Center(
@@ -116,6 +137,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
           ),
         ),
+        ),
+      ),
       ),
     );
   }
@@ -149,19 +172,29 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         children: [
           Text(
             'YOUR JOURNEY',
-            style: OdyseyaTypography.buttonSmall.copyWith(
+            style: AppTextStyles.buttonSmall.copyWith(
               color: DesertColors.brownBramble.withValues(alpha: 0.8),
               letterSpacing: 1.4,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            '$objective 🌿',
-            style: OdyseyaTypography.h2.copyWith(
-              color: DesertColors.brownBramble,
-              height: 1.3,
-            ),
+          Row(
+            children: [
+              Text(
+                objective,
+                style: AppTextStyles.h3.copyWith(
+                  color: DesertColors.brownBramble,
+                  height: 1.3,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(
+                Icons.eco_rounded,
+                color: DesertColors.sageGreen,
+                size: 24,
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Row(
@@ -185,21 +218,35 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return _SectionCard(
       child: Row(
         children: [
+          // Icon with background
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: DesertColors.caramelDrizzle.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.file_download_outlined,
+              size: 28,
+              color: DesertColors.caramelDrizzle,
+            ),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '📤 Export Your Journal',
-                  style: OdyseyaTypography.h2.copyWith(
+                  'Export Your Journal',
+                  style: AppTextStyles.h3.copyWith(
                     color: DesertColors.brownBramble,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Download your reflections as a PDF report.',
-                  style: OdyseyaTypography.secondary.copyWith(
-                    color: DesertColors.brownBramble.withValues(alpha: 0.8),
+                  'Download your reflections as a PDF report',
+                  style: AppTextStyles.secondary.copyWith(
+                    color: DesertColors.onSecondary,
                   ),
                 ),
               ],
@@ -210,7 +257,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             onPressed: () {
               setState(() => showExportScreen = true);
             },
-            text: 'Export →',
+            text: 'Export',
           ),
         ],
       ),
@@ -230,13 +277,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     _MiniStat(
                       label: 'Streak',
                       value: '$streakDays days',
-                      icon: '🔥',
+                      icon: Icons.local_fire_department_rounded,
+                      iconColor: DesertColors.sunsetOrange,
                     ),
                     const SizedBox(width: 16),
                     _MiniStat(
                       label: 'Most frequent mood',
-                      value: '🌿 $dominantMood',
-                      icon: '🌿',
+                      value: dominantMood,
+                      icon: Icons.spa_rounded,
+                      iconColor: DesertColors.sageGreen,
                     ),
                   ],
                 ),
@@ -266,7 +315,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             children: [
               Text(
                 'Recent reflections',
-                style: OdyseyaTypography.h2.copyWith(
+                style: AppTextStyles.h3.copyWith(
                   color: DesertColors.brownBramble,
                 ),
               ),
@@ -306,7 +355,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🌙', style: TextStyle(fontSize: 20)),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: DesertColors.caramelDrizzle.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.lightbulb_outline_rounded,
+              color: DesertColors.caramelDrizzle,
+              size: 24,
+            ),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -314,14 +374,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               children: [
                 Text(
                   'Your Journey So Far',
-                  style: OdyseyaTypography.secondary.copyWith(
+                  style: AppTextStyles.secondary.copyWith(
                     color: DesertColors.brownBramble.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   insight,
-                  style: OdyseyaTypography.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium.copyWith(
                     color: DesertColors.brownBramble,
                   ),
                 ),
@@ -333,7 +393,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   },
                   child: Text(
                     'View full analysis →',
-                    style: OdyseyaTypography.buttonSmall.copyWith(
+                    style: AppTextStyles.buttonSmall.copyWith(
                       color: DesertColors.brownBramble.withValues(alpha: 0.9),
                       decoration: TextDecoration.underline,
                       decorationStyle: TextDecorationStyle.solid,
@@ -352,7 +412,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return _SectionCard(
       child: Row(
         children: [
-          const Text('📚', style: TextStyle(fontSize: 32)),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: DesertColors.sageGreen.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.menu_book_rounded,
+              color: DesertColors.sageGreen,
+              size: 28,
+            ),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -360,21 +431,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               children: [
                 Text(
                   'Book of the Month',
-                  style: OdyseyaTypography.secondary.copyWith(
+                  style: AppTextStyles.secondary.copyWith(
                     color: DesertColors.brownBramble.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   'The Mountain Is You',
-                  style: OdyseyaTypography.h2.copyWith(
+                  style: AppTextStyles.h3.copyWith(
                     color: DesertColors.brownBramble,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   'Chosen to support your healing journey.',
-                  style: OdyseyaTypography.secondary.copyWith(
+                  style: AppTextStyles.secondary.copyWith(
                     color: DesertColors.brownBramble.withValues(alpha: 0.9),
                   ),
                 ),
@@ -442,14 +513,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             children: [
                               Text(
                                 '📄 Export Your Journal',
-                                style: OdyseyaTypography.h2.copyWith(
+                                style: AppTextStyles.h3.copyWith(
                                   color: DesertColors.brownBramble,
                                 ),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Choose a time period to generate your PDF report.',
-                                style: OdyseyaTypography.secondary.copyWith(
+                                style: AppTextStyles.secondary.copyWith(
                                   color: DesertColors.brownBramble.withValues(alpha: 0.8),
                                 ),
                               ),
@@ -471,7 +542,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               children: [
                                 Text(
                                   'Time Period',
-                                  style: OdyseyaTypography.secondary.copyWith(
+                                  style: AppTextStyles.secondary.copyWith(
                                     color: DesertColors.brownBramble.withValues(alpha: 0.7),
                                   ),
                                 ),
@@ -546,8 +617,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                       shadowColor: Colors.transparent,
                                     ),
                                     child: Text(
-                                      'Generate PDF Report',
-                                      style: OdyseyaTypography.buttonLarge,
+                                      'Generate PDF Report'.toUpperCase(),
+                                      style: AppTextStyles.buttonLarge.copyWith(
+                                        letterSpacing: 1.2,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -571,7 +644,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                     ),
                                     child: Text(
                                       '← Back to Dashboard',
-                                      style: OdyseyaTypography.button.copyWith(
+                                      style: AppTextStyles.button.copyWith(
                                         color: DesertColors.brownBramble,
                                       ),
                                     ),
@@ -612,7 +685,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Expanded(
               child: Text(
                 'Book Recommendation',
-                style: OdyseyaTypography.h2.copyWith(
+                style: AppTextStyles.h3.copyWith(
                   color: DesertColors.onSurface,
                 ),
               ),
@@ -626,7 +699,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             children: [
               Text(
                 '"The Gifts of Imperfection"',
-                style: OdyseyaTypography.h3.copyWith(
+                style: AppTextStyles.h3.copyWith(
                   color: DesertColors.primary,
                   fontWeight: FontWeight.w600,
                 ),
@@ -634,7 +707,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               const SizedBox(height: 4),
               Text(
                 'by Brené Brown',
-                style: OdyseyaTypography.body.copyWith(
+                style: AppTextStyles.body.copyWith(
                   color: DesertColors.onSecondary,
                   fontStyle: FontStyle.italic,
                 ),
@@ -642,7 +715,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               const SizedBox(height: 16),
               Text(
                 'Based on your recent journal entries and emotional patterns, this book explores themes of vulnerability, courage, and self-compassion—which align with your current journey of healing after burnout.',
-                style: OdyseyaTypography.body.copyWith(
+                style: AppTextStyles.body.copyWith(
                   color: DesertColors.onSecondary,
                   height: 1.5,
                 ),
@@ -662,7 +735,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   children: [
                     Text(
                       'Why this book?',
-                      style: OdyseyaTypography.button.copyWith(
+                      style: AppTextStyles.button.copyWith(
                         color: DesertColors.onSurface,
                       ),
                     ),
@@ -672,7 +745,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       '• Practical exercises for self-care\n'
                       '• Emphasis on authenticity and belonging\n'
                       '• Aligns with your gratitude practice',
-                      style: OdyseyaTypography.secondary.copyWith(
+                      style: AppTextStyles.secondary.copyWith(
                         color: DesertColors.onSecondary,
                         height: 1.4,
                       ),
@@ -688,7 +761,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Close',
-              style: OdyseyaTypography.button.copyWith(
+              style: AppTextStyles.button.copyWith(
                 color: DesertColors.onSecondary,
               ),
             ),
@@ -721,8 +794,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 shadowColor: Colors.transparent,
               ),
               child: Text(
-                'Add to List',
-                style: OdyseyaTypography.button,
+                'Add to List'.toUpperCase(),
+                style: AppTextStyles.button.copyWith(
+                  letterSpacing: 1.2,
+                ),
               ),
             ),
           ),
@@ -781,7 +856,7 @@ class _Pill extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: OdyseyaTypography.buttonSmall.copyWith(
+        style: AppTextStyles.buttonSmall.copyWith(
           color: DesertColors.treeBranch,
           fontWeight: FontWeight.w500,
         ),
@@ -793,12 +868,14 @@ class _Pill extends StatelessWidget {
 class _MiniStat extends StatelessWidget {
   final String label;
   final String value;
-  final String icon;
+  final IconData icon;
+  final Color? iconColor;
 
   const _MiniStat({
     required this.label,
     required this.value,
     required this.icon,
+    this.iconColor,
   });
 
   @override
@@ -809,21 +886,32 @@ class _MiniStat extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(icon, style: const TextStyle(fontSize: 18)),
-              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: (iconColor ?? DesertColors.sunsetOrange).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: iconColor ?? DesertColors.sunsetOrange,
+                ),
+              ),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       label,
-                      style: OdyseyaTypography.captionSmall.copyWith(
+                      style: AppTextStyles.captionSmall.copyWith(
                         color: DesertColors.brownBramble.withValues(alpha: 0.7),
                       ),
                     ),
                     Text(
                       value,
-                      style: OdyseyaTypography.buttonSmall.copyWith(
+                      style: AppTextStyles.buttonSmall.copyWith(
                         color: DesertColors.brownBramble,
                         fontWeight: FontWeight.w600,
                       ),
@@ -903,14 +991,14 @@ class _JournalCard extends StatelessWidget {
           children: [
             Text(
               entry.date,
-              style: OdyseyaTypography.captionSmall.copyWith(
+              style: AppTextStyles.captionSmall.copyWith(
                 color: DesertColors.brownBramble.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 4),
             Text(
               entry.title,
-              style: OdyseyaTypography.h2.copyWith(
+              style: AppTextStyles.h3.copyWith(
                 color: DesertColors.brownBramble,
               ),
               maxLines: 1,
@@ -919,7 +1007,7 @@ class _JournalCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               entry.summary,
-              style: OdyseyaTypography.secondary.copyWith(
+              style: AppTextStyles.secondary.copyWith(
                 color: DesertColors.brownBramble.withValues(alpha: 0.9),
               ),
               maxLines: 2,
@@ -932,7 +1020,7 @@ class _JournalCard extends StatelessWidget {
                 _Pill(text: 'Mood: ${entry.moodEmoji} ${entry.mood}'),
                 Text(
                   'View →',
-                  style: OdyseyaTypography.captionSmall.copyWith(
+                  style: AppTextStyles.captionSmall.copyWith(
                     color: DesertColors.brownBramble.withValues(alpha: 0.6),
                   ),
                 ),
@@ -973,7 +1061,7 @@ class _OutlinedButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: OdyseyaTypography.buttonSmall.copyWith(
+          textStyle: AppTextStyles.buttonSmall.copyWith(
             fontWeight: FontWeight.w500,
           ),
         ),
