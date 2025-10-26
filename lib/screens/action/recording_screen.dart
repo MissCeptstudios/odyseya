@@ -28,49 +28,37 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
     final voiceState = ref.watch(voiceJournalProvider);
 
     return Scaffold(
-      backgroundColor: DesertColors.creamBeige,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: DesertColors.brownBramble, size: 28),
+          onPressed: () => context.pop(),
+        ),
+        title: Text(
+          'Hi Mike',
+          style: AppTextStyles.h1,
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: DesertColors.brownBramble, size: 28),
+            onPressed: () {
+              context.push('/settings');
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Header with back arrow, greeting, and settings
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: DesertColors.brownBramble, size: 28),
-                    onPressed: () => context.pop(),
-                  ),
-                  Text(
-                    'Hi Mike',
-                    style: AppTextStyles.h1,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.settings, color: DesertColors.brownBramble, size: 28),
-                    onPressed: () {
-                      context.push('/settings');
-                    },
-                  ),
-                ],
-              ),
-            ),
 
-            // Main content container with white background
+            // Main content
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
                     const SizedBox(height: 16),
