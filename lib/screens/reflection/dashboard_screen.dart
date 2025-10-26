@@ -64,25 +64,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     objectiveDraft = objective;
   }
 
-  String _getRandomInsight() {
-    final options = [
-      "You've been journaling more consistently — your stability score rose this week.",
-      "Gratitude appears 11× this month — your attention is shifting to what nourishes you.",
-      "Your tone is calmer on days with voice notes — try a short recording today.",
-      "You're trending toward 'hopeful' — keep reinforcing the evening routine."
-    ];
-    return options[(options.length * 0.5).toInt() % options.length];
-  }
-
-  Future<void> _onRefresh() async {
-    setState(() => isRefreshing = true);
-    await Future.delayed(const Duration(milliseconds: 800));
-    setState(() {
-      insight = _getRandomInsight();
-      isRefreshing = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     if (showExportScreen) {
@@ -1057,44 +1038,6 @@ class _JournalCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _OutlinedButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final String text;
-  final Color? backgroundColor;
-
-  const _OutlinedButton({
-    required this.onPressed,
-    required this.text,
-    this.backgroundColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          foregroundColor: DesertColors.brownBramble,
-          side: BorderSide(
-            color: DesertColors.westernSunrise, // #D8A36C westernSunrise
-            width: 1.5,
-          ),
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          textStyle: AppTextStyles.buttonSmall.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        child: Text(text),
       ),
     );
   }
