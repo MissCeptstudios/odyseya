@@ -37,7 +37,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
     final moodState = ref.read(moodProvider);
     if (moodState.selectedMood != null) {
       // Continuing with mood: ${moodState.selectedMood!.label}
-      context.go('/main');
+      context.go('/recording');
     }
   }
 
@@ -126,7 +126,7 @@ class _MoodSelectionScreenState extends ConsumerState<MoodSelectionScreen> {
 
               // "Skip to journal" link
               TextButton(
-                onPressed: () => context.go('/main'),
+                onPressed: () => context.go('/recording'),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 ),

@@ -56,12 +56,12 @@ class _RecordingScreenState extends ConsumerState<RecordingScreen> {
               ),
             ),
 
-            // Main content container with cream background
+            // Main content container with white background
             Expanded(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: DesertColors.creamBeige,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(

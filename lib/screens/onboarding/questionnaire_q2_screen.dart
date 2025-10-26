@@ -114,21 +114,20 @@ class QuestionnaireQ2Screen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isSelected
-                      ? DesertColors.caramelDrizzle // Tan/beige background for radio
-                      : Colors.transparent,
+                      ? DesertColors.brownBramble // Brown background when selected
+                      : Colors.white,
                     border: Border.all(
                       color: isSelected
-                        ? DesertColors.caramelDrizzle
-                        : DesertColors.waterWash.withValues(alpha: 0.5),
+                        ? DesertColors.brownBramble
+                        : DesertColors.treeBranch.withValues(alpha: 0.3),
                       width: 2,
                     ),
                   ),
                   child: isSelected
-                    ? Container(
-                        width: 10,
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
+                    ? Center(
+                        child: Icon(
+                          Icons.check,
+                          size: 16,
                           color: Colors.white,
                         ),
                       )

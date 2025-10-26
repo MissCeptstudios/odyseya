@@ -268,6 +268,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const RecordingScreen(),
       ),
 
+      // Recording Screen - Main voice/text journal entry
+      GoRoute(
+        path: '/recording',
+        name: 'recording',
+        pageBuilder: (context, state) => _buildPageWithSlideTransition(
+          child: const RecordingScreen(),
+          state: state,
+        ),
+      ),
+
       // Review & Submit Screen
       GoRoute(
         path: '/review',

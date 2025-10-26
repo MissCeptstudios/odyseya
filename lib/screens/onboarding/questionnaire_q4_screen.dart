@@ -158,26 +158,25 @@ class QuestionnaireQ4Screen extends ConsumerWidget {
             child: Row(
               children: [
                 Container(
-                  width: 20,
-                  height: 20,
+                  width: 24,
+                  height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isSelected
-                      ? DesertColors.caramelDrizzle // Tan/beige background for radio
-                      : Colors.transparent,
+                      ? DesertColors.brownBramble // Brown background when selected
+                      : Colors.white,
                     border: Border.all(
                       color: isSelected
-                        ? DesertColors.caramelDrizzle
-                        : DesertColors.waterWash.withValues(alpha: 0.5),
+                        ? DesertColors.brownBramble
+                        : DesertColors.treeBranch.withValues(alpha: 0.3),
                       width: 2,
                     ),
                   ),
                   child: isSelected
-                    ? Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
+                    ? Center(
+                        child: Icon(
+                          Icons.check,
+                          size: 16,
                           color: Colors.white,
                         ),
                       )

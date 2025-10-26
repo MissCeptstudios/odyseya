@@ -144,163 +144,176 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildJourneyHeader() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            DesertColors.creamBeige,
-            DesertColors.caramelDrizzle.withValues(alpha: 0.4),
-            DesertColors.dustyBlue.withValues(alpha: 0.3),
-          ],
-          stops: const [0.0, 0.4, 1.0],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.12),
-            blurRadius: 60,
-            offset: const Offset(0, 20),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'YOUR JOURNEY',
-            style: AppTextStyles.buttonSmall.copyWith(
-              color: DesertColors.brownBramble.withValues(alpha: 0.8),
-              letterSpacing: 1.4,
-              fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: () {
+        setState(() => showEditObjective = true);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.black.withValues(alpha: 0.1)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.12),
+              blurRadius: 60,
+              offset: const Offset(0, 20),
             ),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              Text(
-                objective,
-                style: AppTextStyles.h3.copyWith(
-                  color: DesertColors.brownBramble,
-                  height: 1.3,
+          ],
+        ),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'YOUR JOURNEY',
+                  style: AppTextStyles.buttonSmall.copyWith(
+                    color: DesertColors.brownBramble.withValues(alpha: 0.8),
+                    letterSpacing: 1.4,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Icon(
-                Icons.eco_rounded,
-                color: DesertColors.sageGreen,
-                size: 24,
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              _OutlinedButton(
-                onPressed: () {
-                  setState(() => showEditObjective = true);
-                },
-                text: 'Edit My Journey',
-              ),
-              const SizedBox(width: 8),
-              const _Pill(text: 'Focus: Calm'),
-            ],
-          ),
-        ],
+                Icon(
+                  Icons.chevron_right,
+                  color: DesertColors.brownBramble.withValues(alpha: 0.4),
+                  size: 24,
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Text(
+                  objective,
+                  style: AppTextStyles.h3.copyWith(
+                    color: DesertColors.brownBramble,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.eco_rounded,
+                  color: DesertColors.sageGreen,
+                  size: 24,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const _Pill(text: 'Focus: Calm'),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildExportWidget() {
-    return _SectionCard(
-      child: Row(
-        children: [
-          // Icon with background
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: DesertColors.caramelDrizzle.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: () {
+        setState(() => showExportScreen = true);
+      },
+      child: _SectionCard(
+        child: Row(
+          children: [
+            // Icon with background
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: DesertColors.caramelDrizzle.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.file_download_outlined,
+                size: 28,
+                color: DesertColors.caramelDrizzle,
+              ),
             ),
-            child: Icon(
-              Icons.file_download_outlined,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Export Your Journal',
+                    style: AppTextStyles.h3.copyWith(
+                      color: DesertColors.brownBramble,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Download your reflections as a PDF report',
+                    style: AppTextStyles.secondary.copyWith(
+                      color: DesertColors.onSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Icon(
+              Icons.chevron_right,
+              color: DesertColors.brownBramble.withValues(alpha: 0.4),
               size: 28,
-              color: DesertColors.caramelDrizzle,
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Export Your Journal',
-                  style: AppTextStyles.h3.copyWith(
-                    color: DesertColors.brownBramble,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Download your reflections as a PDF report',
-                  style: AppTextStyles.secondary.copyWith(
-                    color: DesertColors.onSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          _OutlinedButton(
-            onPressed: () {
-              setState(() => showExportScreen = true);
-            },
-            text: 'Export',
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildMoodAndStreakCard() {
-    return _SectionCard(
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    _MiniStat(
-                      label: 'Streak',
-                      value: '$streakDays days',
-                      icon: Icons.local_fire_department_rounded,
-                      iconColor: DesertColors.sunsetOrange,
-                    ),
-                    const SizedBox(width: 16),
-                    _MiniStat(
-                      label: 'Most frequent mood',
-                      value: dominantMood,
-                      icon: Icons.spa_rounded,
-                      iconColor: DesertColors.sageGreen,
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: () {
+        context.go('/calendar');
+      },
+      child: _SectionCard(
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          _MiniStat(
+                            label: 'Streak',
+                            value: '$streakDays days',
+                            icon: Icons.local_fire_department_rounded,
+                            iconColor: DesertColors.sunsetOrange,
+                          ),
+                          const SizedBox(width: 16),
+                          _MiniStat(
+                            label: 'Most frequent mood',
+                            value: dominantMood,
+                            icon: Icons.spa_rounded,
+                            iconColor: DesertColors.sageGreen,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              _OutlinedButton(
-                onPressed: isRefreshing ? null : _onRefresh,
-                text: isRefreshing ? 'Refreshing…' : 'Refresh',
-                backgroundColor: Colors.white,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _Sparkline(points: moodsWeek),
-        ],
+                const SizedBox(width: 12),
+                Icon(
+                  Icons.chevron_right,
+                  color: DesertColors.brownBramble.withValues(alpha: 0.4),
+                  size: 28,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _Sparkline(points: moodsWeek),
+          ],
+        ),
       ),
     );
   }
@@ -310,17 +323,32 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Recent reflections',
-                style: AppTextStyles.h3.copyWith(
-                  color: DesertColors.brownBramble,
+          GestureDetector(
+            onTap: () {
+              context.go('/calendar');
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Recent reflections',
+                  style: AppTextStyles.h3.copyWith(
+                    color: DesertColors.brownBramble,
+                  ),
                 ),
-              ),
-              const _Pill(text: 'Swipe'),
-            ],
+                Row(
+                  children: [
+                    const _Pill(text: 'Swipe'),
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.chevron_right,
+                      color: DesertColors.brownBramble.withValues(alpha: 0.4),
+                      size: 24,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -346,128 +374,129 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildInsightsCard() {
-    return _SectionCard(
-      gradient: const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.white, DesertColors.backgroundSand],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: DesertColors.caramelDrizzle.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: () {
+        // Navigate to calendar where AI insights are shown in detail
+        context.go('/calendar');
+      },
+      child: _SectionCard(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, DesertColors.backgroundSand],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: DesertColors.caramelDrizzle.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.lightbulb_outline_rounded,
+                color: DesertColors.caramelDrizzle,
+                size: 24,
+              ),
             ),
-            child: Icon(
-              Icons.lightbulb_outline_rounded,
-              color: DesertColors.caramelDrizzle,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Your Journey So Far',
-                  style: AppTextStyles.secondary.copyWith(
-                    color: DesertColors.brownBramble.withValues(alpha: 0.7),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  insight,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: DesertColors.brownBramble,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                GestureDetector(
-                  onTap: () {
-                    // Navigate to calendar where AI insights are shown in detail
-                    context.go('/calendar');
-                  },
-                  child: Text(
-                    'View full analysis →',
-                    style: AppTextStyles.buttonSmall.copyWith(
-                      color: DesertColors.brownBramble.withValues(alpha: 0.9),
-                      decoration: TextDecoration.underline,
-                      decorationStyle: TextDecorationStyle.solid,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Your Journey So Far',
+                    style: AppTextStyles.secondary.copyWith(
+                      color: DesertColors.brownBramble.withValues(alpha: 0.7),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    insight,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: DesertColors.brownBramble,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Icon(
+              Icons.chevron_right,
+              color: DesertColors.brownBramble.withValues(alpha: 0.4),
+              size: 28,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildRecommendationCard() {
-    return _SectionCard(
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: DesertColors.sageGreen.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: () {
+        // Open a dialog with book recommendation details
+        _showBookDetails(context);
+      },
+      child: _SectionCard(
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: DesertColors.sageGreen.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.menu_book_rounded,
+                color: DesertColors.sageGreen,
+                size: 28,
+              ),
             ),
-            child: Icon(
-              Icons.menu_book_rounded,
-              color: DesertColors.sageGreen,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Book of the Month',
+                    style: AppTextStyles.secondary.copyWith(
+                      color: DesertColors.brownBramble.withValues(alpha: 0.7),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'The Mountain Is You',
+                    style: AppTextStyles.h3.copyWith(
+                      color: DesertColors.brownBramble,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Chosen to support your healing journey.',
+                    style: AppTextStyles.secondary.copyWith(
+                      color: DesertColors.brownBramble.withValues(alpha: 0.9),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Icon(
+              Icons.chevron_right,
+              color: DesertColors.brownBramble.withValues(alpha: 0.4),
               size: 28,
             ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Book of the Month',
-                  style: AppTextStyles.secondary.copyWith(
-                    color: DesertColors.brownBramble.withValues(alpha: 0.7),
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'The Mountain Is You',
-                  style: AppTextStyles.h3.copyWith(
-                    color: DesertColors.brownBramble,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Chosen to support your healing journey.',
-                  style: AppTextStyles.secondary.copyWith(
-                    color: DesertColors.brownBramble.withValues(alpha: 0.9),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          _OutlinedButton(
-            onPressed: () {
-              // Open a dialog with book recommendation details
-              _showBookDetails(context);
-            },
-            text: 'Read more',
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildExportScreen() {
     return Scaffold(
-      backgroundColor: DesertColors.creamBeige,
+      backgroundColor: DesertColors.backgroundSand,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(OdyseyaSpacing.lg),
@@ -497,7 +526,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                DesertColors.creamBeige,
+                                Colors.white,
                                 DesertColors.caramelDrizzle.withValues(alpha: 0.4),
                                 DesertColors.dustyBlue.withValues(alpha: 0.3),
                               ],
@@ -530,7 +559,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: const BoxDecoration(
-                            color: DesertColors.creamBeige,
+                            color: Colors.white,
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(40),
                               bottomRight: Radius.circular(40),
@@ -851,7 +880,7 @@ class _Pill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: DesertColors.creamBeige,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
@@ -976,7 +1005,7 @@ class _JournalCard extends StatelessWidget {
         width: 260,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.9),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
           boxShadow: [

@@ -81,15 +81,31 @@ Modals / Bottom Sheets (top only)	32 px
 Toasts / Snackbars	12 px
 Avatars / Photos	circular / 16 px clip
 Bottom Navigation (top)	24 px
-“If it touches the user’s focus zone, it has a 16 px curvature.”
+"If it touches the user's focus zone, it has a 16 px curvature."
+
+🎴 7.5 Card Background System (MANDATORY)
+ALL cards, containers, and content surfaces MUST use:
+- Background color: Pure White #FFFFFF (Colors.white or DesertColors.cardWhite)
+- NO semi-transparent whites (no alpha values)
+- NO cream/beige backgrounds on cards (only app background)
+- NO gradients on cards (gradients only for decorative headers)
+- Exception: Intentional colored states (selected, hover, disabled)
+
+Examples:
+✅ CORRECT: `color: Colors.white` or `color: DesertColors.cardWhite`
+❌ WRONG: `color: DesertColors.creamBeige` on cards
+❌ WRONG: `color: Colors.white.withValues(alpha: 0.9)` on cards
+❌ WRONG: LinearGradient on card backgrounds
+
 🔘 8. Components
 Component	Spec	Notes
 Primary Button	60 px height, 16 px radius, #D8A36C background	Hover: lighter caramel
 Functional Button (Chip)	White fill, caramel border, 16 px radius	Selected → Calm Blue
-Input Field / Journal Card	White, soft shadow, caramel border on focus	Padding 20 px
-Affirmation Card	White with 16 px radius	Poetic font
-ModalSheet	32 px top corners	Slide-up motion
-Toast	12 px radius	Fades in/out in 3 s
+Input Field / Journal Card	Pure White #FFFFFF, soft shadow, caramel border on focus	Padding 20 px
+Affirmation Card	Pure White #FFFFFF with 16 px radius	Poetic font
+ModalSheet	Pure White #FFFFFF, 32 px top corners	Slide-up motion
+Toast	Pure White #FFFFFF, 12 px radius	Fades in/out in 3 s
+ALL Cards/Containers	Pure White #FFFFFF background MANDATORY	No exceptions
 ☁️ 9. Shadows & Motion
 Element	Shadow	Motion
 Cards / Buttons	0 4 8 rgba(0,0,0,0.08)	fade/scale 200 ms

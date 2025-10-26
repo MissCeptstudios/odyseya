@@ -129,7 +129,7 @@ class SelfHelperScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(OdyseyaSpacing.lg),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.6),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(

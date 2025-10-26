@@ -116,12 +116,12 @@ class QuestionnaireQ1Screen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isSelected
-                      ? DesertColors.caramelDrizzle // Tan/beige background for check
-                      : Colors.transparent,
+                      ? DesertColors.brownBramble // Brown background when selected
+                      : Colors.white,
                     border: Border.all(
                       color: isSelected
-                        ? DesertColors.caramelDrizzle
-                        : DesertColors.waterWash.withValues(alpha: 0.5),
+                        ? DesertColors.brownBramble
+                        : DesertColors.treeBranch.withValues(alpha: 0.3),
                       width: 2,
                     ),
                   ),
